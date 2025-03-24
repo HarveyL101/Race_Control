@@ -36,6 +36,8 @@ function stopTimer() {
 function resetTimer() {
   console.log("resetTimer() Called");
 
+  startBtn.textContent = "Start";
+
   //same as stopTimer() but resets time to base values
   clearInterval(timerInterval);
   timerInterval = null;

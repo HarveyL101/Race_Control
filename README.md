@@ -3,7 +3,7 @@
 ## Core Features
 
 ### A user must be able to:
-  * Start a race timer
+  * Start a race timer 
   * Record the finish time of each runner in that race
   * Submit results to a server
   * Clear race results from their device after the race

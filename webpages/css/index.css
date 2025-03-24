@@ -1,0 +1,21 @@
+header {
+  text-align: center;
+}
+header h1 {
+  color: purple;
+}
+
+#volunteer-runner {
+  text-align: center;
+  border: solid white 5px;
+  color: purple;
+  margin: 20px;
+}
+
+#volunteer-runner button {
+  color: purple;
+}
+
+#login-section {
+  color: purple;
+}
