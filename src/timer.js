@@ -1,8 +1,11 @@
-let time = 0;
-let timerInterval = 0;
-let timer = document.querySelector('#timer');
-let startBtn = document.querySelector('#start-stop');
-let resetBtn = document.querySelector('#reset');
+let time = 0,
+  timerInterval = 0,
+  runnersFinished = 0;
+
+const timer = document.querySelector('#timer'),
+  startBtn = document.querySelector('#start-stop'),
+  resetBtn = document.querySelector('#reset'),
+  leaderboard = document.querySelector('#leaderboard');
 
 function startTimer() {
   console.log("startTimer has started");
@@ -36,16 +39,35 @@ function stopTimer() {
 function resetTimer() {
   console.log("resetTimer() Called");
 
+  timerInterval = null;
+  time = 0;
+  runnersFinished = 0;
   startBtn.textContent = "Start";
 
   //same as stopTimer() but resets time to base values
   clearInterval(timerInterval);
-  timerInterval = null;
-  time = 0;
+  
+  while(leaderboard.firstChild) {
+    leaderboard.removeChild(leaderboard.firstChild);
+  }
 
   timer.textContent = "00:00:00";
 }
 
+function leaderboardUpdate() {
+  runnersFinished++;
+  let time = timer.textContent;
+
+  console.log(time);
+
+  const newItem = document.createElement('li');
+
+  const newContent = document.createTextNode(`Position ${runnersFinished}: ${timer.textContent}`);
+
+  newItem.appendChild(newContent);
+
+  leaderboard.appendChild(newItem);
+}
 
 function timerHandler() {
   // if timer is running, stop it, otherwise start the timer again
