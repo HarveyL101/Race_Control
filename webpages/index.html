@@ -10,29 +10,30 @@
   <body>
     <header>
       <h1>Login To Your Account!</h1>
+      <a href="home.html">Home</a>
     </header>
     
     <section id="volunteer-runner">
       <div>
         <h2>Are you a Volunteer or a Runner?</h2>
         <h4>(A user would also come under 'Runner')</h4>
-        <button type="button">Volunteer</button>
-        <button type="button">Runner</button>
+        Volunteer:<input id="volunteer-chk" type="checkbox">
+        Runner:<input id="runner-chk" type="checkbox">
       </div>
     </section>
 
     <section id="login-section">
-      <div>
+      <form action="/login" method="POST">
         <div>
-          <p>Please enter a username:</p>
-          <input type="text">
+          <label>Please enter a username:</label>
+          <input type="text" id="username" name="username" required>
         </div>
         <div>
-          <p>Please enter a password</p>
-          <input type="password">
+          <label>Please enter a password:</label>
+          <input type="password" id="password" name="password" required>
         </div>
         <button type="submit">Submit</button>
-      </div>
+      </form>
       
     </section>
     <script defer src="index.js"></script>

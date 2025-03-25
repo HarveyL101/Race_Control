@@ -9,7 +9,11 @@ header h1 {
   text-align: center;
   border: solid white 5px;
   color: purple;
-  margin: 20px;
+  margin: 10px;
+}
+
+#volunteer-runner div h2 {
+  margin-bottom: 0;
 }
 
 #volunteer-runner button {
@@ -17,5 +21,38 @@ header h1 {
 }
 
 #login-section {
-  color: purple;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+#login-section div  {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+#login-section div div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#login-section p {
+  margin: 0;
+}
+
+#login-section input {
+  flex: 1;
+}
+#login-section button {
+  padding: 2px;
+  margin: 5px;
 }
