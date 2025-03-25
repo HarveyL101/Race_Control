@@ -1,3 +1,4 @@
+/*
 const isLoggedIn = true;
 const loginSection = document.querySelector('#login-section');
 
@@ -6,3 +7,4 @@ if (!isLoggedIn) {
 } else {
   loginSection.style.display = 'none';
 }
+*/
