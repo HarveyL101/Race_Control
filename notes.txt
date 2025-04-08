@@ -2,3 +2,22 @@ volunteer dashboard features:
 
 
 runner dashboard features:
+
+TODO List: 
+  * Start a race timer - complete
+  * Record the finish time of each runner in that race - complete
+  * Submit results to a server - incomplete
+    * send to server
+    * store on server
+    * read from server
+  * Clear race results from their device after the race - incomplete
+
+  * Record race results on a phone that is in "airplane mode" - i.e. offline - incomplete
+  * Store data from one race at a time. - incomplete
+  * Provide timing for races up to 24 hours in length - incomplete
+  * Upload race results to a server (either live during the race and/or as a batch upload afterwards if data is recorded in "airplane mode") - incomplete
+
+
+  * Receive data from users - In progress
+  * Display race results - In progress
+  * Provide timely results (as data is uploaded or immediately after, so runners can see their official positions and times before they go home). In progress
