@@ -1,31 +1,45 @@
-# User Specification:
-'Virtual Volunteer' app used by Parkrun is a great example
-## Core Features
+# Race Time - by up2118183
+## Key features
+Replace this text with an introduction to your key features.
 
-### A user must be able to:
-  * Start a race timer 
-  * Record the finish time of each runner in that race
-  * Submit results to a server
-  * Clear race results from their device after the race
 
-### The mobile app must be able to:
-  * Record race results on a phone that is in "airplane mode" - i.e. offline
-  * Store data from one race at a time.
-  * Provide timing for races up to 24 hours in length
-  * Upload race results to a server (either live during the race and/or as a batch upload afterwards if data is recorded in "airplane mode")
+### Key Feature Name/Description.
+Tell us briefly how to find & use it.
+Describe the thinking behind the design of this feature.  
 
-### The server should:
-  * Receive data from users
-  * Display race results
-  * Provide timely results (as data is uploaded or immediately after, so runners can see their official positions and times before they go home).
 
-## Additional Considerations And Features
+### Key Another Feature Name/Description.
+Tell us briefly how to find & use it.
+Describe the thinking behind the design of this feature.  
 
-##### Try to think of novel additions and use cases for this app, some examples of advanced features that could be included are:
+.
+.
+.
+### Final Key Feature Name/Description.
+Same for each feature… you get the idea :-)
 
-  *  Exporting results to a spreadsheet, possibly using Comma Separated Variable (CSV) format.
-  *  Share the race start time so other app users around the course can know when to expect the first runners.
-  *  Provide timing screens at checkpoints and at the finish.
-  *  Provide a URL for spectators to visit so they can track the face time and finishers.
-  *  Provide a capability for marshalls at random checkpoints to record the numbers of runners who pass them, the race-time of the event, and the location of the marshall - this can be useful in longer races to provide rigorous evidence of fair race completion by competitors. 
- 
+
+## AI
+Replace this with DETAIL about your use of AI, listing of the prompts you used, and whether the results formed or inspired part of your final submission and where we can see this (and if not, why not?). You may wish to group prompts into headings/sections - use markdown in any way that it helps you communicate your use of AI.  Tell us about what went right,  what went horribly wrong and what you learned from it.
+
+
+### Prompts to develop XYZ (example)
+#### Prompt ideas:
+using sqlite
+A sequence of prompts helped me develop this feature:
+
+
+>  this is an example prompt given to a chatbot
+The response was proved useless because the prompt wasn't specific enough about XYZ, so:
+
+>  this is an example prompt given to a chatbot detailing XYZ
+The response was better so I could specifically ask about QRST - this may evolve into a longer discussion highlighting some insight you gained… who knows where you might pick up marks!
+
+>  how can I integrate QRST here?
+The suggestion worked with minor modifications.
+
+### Prompts to develop GHIJ (example)
+For the GHIJ feature I ...
+
+>  this is an example prompt given to a chatbot
+words words words etc

@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "sqlite": "5.1.1",
+    "sqlite3": "5.1.7"
   },
   "scripts": {
     "start": "node svr.js",
