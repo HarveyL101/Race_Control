@@ -1,23 +1,25 @@
-
 import path from 'path';
+import { open } from 'sqlite';
+import sqlite3 from 'sqlite3';
+import { fileURLToPath } from 'url';
 
-// example db for runners and users
-const db = {
-  runners: [
-    {id: 100, username: "adminR", password: "adminPassword"},
-    {id: 101, username: "firstUser", password: "userPassword"},
-    {id: 102, username: "secondUser", password: "userPassword2"}
-  ],
-  volunteers: [
-    {id: 500, username: "adminV", password: "adminPasswordV"},
-    {id: 501, username: "firstVolunteer", password: "volunteerPassword"},
-    {id: 502, username: "secondVolunteer", password: "volunteerPassword2"}
-  ],
-  // example race to further understanding on loading from server
-  racers: [
-    "John", "John", "John", "John", "John", "John", "John", "There should be seven Johns"
-  ]
-};
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+async function connect() {
+  const db = await open({
+    filename: path.resolve(__dirname, 'database', 'initial.sql'),
+    driver: sqlite3.Database,
+    // To provide additional info when querying/ debugging during development (Remove when development is complete)
+    verbose: true
+  })
+}
+const dbCon = connect();
+
+export async function getMessages(table) {
+  const db = await dbCon;
+  return db.get('SELECT * FROM ?', table);
+}
 
 export function showFile(req, res, next) {
   console.log(`Serving: ${req.method} | ${req.url}`);
@@ -65,7 +67,7 @@ export function postLogin(req, res) {
     // Check if user exists in database
     if (checkUser(selectedDb, username, password)) {
       console.log(`Successful login, welcome ${username}!`);
-      res.redirect('/home.html');
+      res.redirect('/webpages/home.html');
     } else {
       res.status(401).send("Invalid Username or Password.");
       console.log("Invalid username and/ or password");
@@ -73,8 +75,5 @@ export function postLogin(req, res) {
   } catch (error) {
     console.log("Error in postLogin: ", error);
     res.status(500).send("Internal Server Error");
-  }
-  
+  } 
 }
-
-export { db };

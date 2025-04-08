@@ -23,6 +23,18 @@ app.use(express.static(path.join(__dirname, './webpages')));
 app.use('/src', express.static(path.join(__dirname, 'src')));
 app.use('/css', express.static(path.join(__dirname, 'css')));
 
+async function loadMessages() {
+  const result = await mb.getMessages(req.params.table);
+  if (result) {
+    res.json(result)
+  } else {
+    res.status(404).send("Data Not Found");
+  }
+  const messageList = document.querySelector('#message-list');
+  messageList.textContent = '';
+  showMessages(messages, messageList);
+}
+
 // Routes
 app.get('/', mb.getIndex);
 app.post('/login', mb.postLogin)
