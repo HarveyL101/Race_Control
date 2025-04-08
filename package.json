@@ -4,8 +4,8 @@
     "nodemon": "^3.1.9"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node svr.js",
+    "dev": "nodemon svr.js",
     "test": "echo \"Error: no tests specidied\" && exit 1"
   },
   "type": "module"
