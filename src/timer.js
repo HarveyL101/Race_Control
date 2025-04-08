@@ -77,3 +77,30 @@ function timerHandler() {
     startTimer();
   }
 }
+
+function showMessages(messages, where) {
+  for (const msg of messages) {
+    const li = document.createElement('li');
+    li.textContent = msg;
+    where.appendChild(li);
+  }
+}
+
+async function loadMessages() {
+  const response = await fetch('/racers');
+  let messages;
+  if (response.ok) {
+    messages = await response.json();
+  } else {
+    messages = ['ERROR: 404'];
+  }
+  const messageList = document.querySelector('#message-list');
+  messageList.textContent = '';
+  showMessages(messages, messageList);
+}
+
+function pageLoaded() {
+  loadMessages();
+}
+
+pageLoaded();
