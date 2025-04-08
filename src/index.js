@@ -1,19 +1,36 @@
-const accountType = document.querySelector('#account-type');
-const runnerCheckbox = document.querySelector('#runner-chk');
-const volunteerCheckbox = document.querySelector('#volunteer-chk');
+const el = {};
 
-runnerCheckbox.addEventListener('change', () => {
-  if (runnerCheckbox.checked) {
-    accountType.value = 'volunteers';
-    volunteerCheckbox.checked = false;
+function runnerSetup() {
+  if (el.runnerCheckbox.checked) {
+    el.accountType.value = 'runners';
+    el.volunteerCheckbox.checked = false;
   }
   console.log("runner checked");
-});
+}
 
-volunteerCheckbox.addEventListener('change', () => {
-  if (volunteerCheckbox.checked) {
-    accountType.value = 'runners';
-    runnerCheckbox.checked = false;
+function volunteerSetup() {
+  if (el.volunteerCheckbox.checked) {
+    el.accountType.value = 'volunteers';
+    el.runnerCheckbox.checked = false;
   }
   console.log("volunteer checked");
-})
+}
+
+function prepareHandlers() {
+  el.accountType = document.querySelector('#account-type');
+  el.runnerCheckbox = document.querySelector('#runner-chk');
+  el.volunteerCheckbox = document.querySelector('#volunteer-chk');
+  el.loginForm = document.querySelector('#login-form');
+}
+
+function addEventListeners() {
+  el.runnerCheckbox.addEventListener('change', runnerSetup);
+  el.volunteerCheckbox.addEventListener('change', volunteerSetup);
+}
+
+function init() {
+  prepareHandlers();
+  addEventListeners();
+}
+
+init();
