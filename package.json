@@ -10,7 +10,7 @@
     "dev": "nodemon svr.js",
     "test": "echo \"Error: no tests specidied\" && exit 1",
     "setup": "npm run setupdb",
-    "setupdb": "echo \"Error: setup is yet to be defined\" && exit 1"
+    "setupdb": "echo \"WIP: db setup script will be added here\" && exit 1"
   },
   "type": "module"
 }
