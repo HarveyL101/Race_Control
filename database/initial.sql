@@ -1,51 +1,51 @@
 -- Up
 
 -- **CREATE STATEMENTS** --
-DROP TABLE IF EXISTS Locations;
-CREATE TABLE Locations (
+DROP TABLE IF EXISTS locations;
+CREATE TABLE locations (
     location_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     city VARCHAR(50) NOT NULL,
     address VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS Races;
-CREATE TABLE Races (
+DROP TABLE IF EXISTS races;
+CREATE TABLE races (
     race_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     location_id INT NOT NULL,
     FOREIGN KEY (location_id) REFERENCES Locations(location_id)
 );
 
-DROP TABLE IF EXISTS Runners;
-CREATE TABLE Runners (
+DROP TABLE IF EXISTS runners;
+CREATE TABLE runners (
     runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(20) NOT NULL
 );
 
-DROP TABLE IF EXISTS Volunteers;
+DROP TABLE IF EXISTS volunteers;
 
-CREATE TABLE Volunteers (
+CREATE TABLE volunteers (
     volunteer_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(20) NOT NULL
 );
 
 -- simple db for making sure connection is functional
-DROP TABLE IF EXISTS Racers;
-CREATE TABLE Racers (
+DROP TABLE IF EXISTS racers;
+CREATE TABLE racers (
     racers_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(20) NOT NULL,
     surname VARCHAR(20) NOT NULL
 );
 
 -- **INSERT STATEMENTS** -- 
-INSERT INTO Runners (username, password) 
+INSERT INTO runners (username, password) 
 VALUES 
     ('adminR', 'adminPassword');
 
-INSERT INTO Racers (name, surname) 
+INSERT INTO racers (name, surname) 
 VALUES 
     ('John', 'Clements'),
     ('Rebecca', 'Gothard'),
