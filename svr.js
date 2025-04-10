@@ -11,6 +11,10 @@ const __dirname = path.dirname(__filename);
 // creating instance of express server
 const app = express();
 
+// serves files from /webpages, /src and /css
+app.use(express.static(path.resolve(__dirname, 'webpages')));
+app.use('/src', express.static(path.join(__dirname, 'src')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -18,10 +22,6 @@ app.use(express.json());
 // Middleware that logs the method and url of a request
 app.use(mb.showFile);
 
-// serves files from /webpages, /src and /css
-app.use(express.static(path.join(__dirname, './webpages')));
-app.use('/src', express.static(path.join(__dirname, 'src')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
 
 async function loadMessages() {
   const result = await mb.getMessages(req.params.table);
@@ -36,11 +36,10 @@ async function loadMessages() {
 }
 
 // Routes
-app.get('/', mb.getIndex);
-app.post('/login', mb.postLogin)
-app.get('/racers', (req, res) => {
-  res.json(mb.db.racers)
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/index.html'))
 });
+app.post('/login', mb.postLogin)
 
 // Handler for 404 error codes
 app.use((req, res) => {
