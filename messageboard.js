@@ -1,24 +1,13 @@
 import path from 'path';
 import { open } from 'sqlite';
-import sqlite3 from 'sqlite3';
 import { fileURLToPath } from 'url';
-import { connect } from './components/database/connect.js';
+import initCon from './database/setup.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const permittedTables = ['runner', 'volunteers'];
+const permittedTables = ['runners', 'volunteers'];
 
-async function initCon() {
-  try {
-    const db = await connect();
-    await dbInit(db);
-    return db;
-  } catch (error) {
-    console.log("Could not initialise and/ or connect to the database:", error.message);
-    throw error;
-  }
-}
 // global variable for one consistent connection, reduces resource exhaustion
 const dbCon = initCon();
 console.log(await dbCon);
@@ -40,13 +29,12 @@ export function showFile(req, res, next) {
   next();
 }
 
-
-
-async function getUser(req, res, table, username, password) {
+async function getUser(table, username, password) {
   const db = await dbCon;
   try {
+    console.log("Value passed to table: ", table);
     // validates parameter for security purposes
-    if (permittedTables.includes(table)) {
+    if (!permittedTables.includes(table)) {
       throw new Error("[403]Unauthorised Table Name");
     }
     const q = `SELECT username, password FROM ${table} WHERE username= ? AND password= ?`
@@ -67,7 +55,7 @@ async function checkUser(req, res, table, username, password) {
   if (username, password !== null) {
     try {
       // getUser only returns an exact match, otherwise user will be null
-      const user = await getUser(req, res, table, username, password);
+      const user = await getUser(table, username, password);
       return (user ? true : false);
     } catch (error) {
       console.log("[401]Error in checkUser:", error.message);
@@ -83,9 +71,10 @@ export async function postLogin(req, res) {
     
     // debugging log
     console.log("Form Data Received: ", req.body);
+    console.log("Account Type (raw):", accountType);
     
     // Validating the accountType
-    if (!['runners', 'volunteers'].includes(accountType)) {
+    if (!permittedTables.includes(accountType)) {
       res.send({ message: "Invalid accountType", data: req.body });
       console.log("Invalid accountType", req.body);
       return;
