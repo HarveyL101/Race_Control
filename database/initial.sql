@@ -1,40 +1,49 @@
 -- Up
 
 -- **CREATE STATEMENTS** --
-
+DROP TABLE IF EXISTS Locations;
 CREATE TABLE Locations (
-    location_id SERIAL PRIMARY KEY NOT NULL,
+    location_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     city VARCHAR(50) NOT NULL,
     address VARCHAR(255)
 );
 
+DROP TABLE IF EXISTS Races;
 CREATE TABLE Races (
-    race_id SERIAL PRIMARY KEY NOT NULL,
+    race_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     location_id INT NOT NULL,
     FOREIGN KEY (location_id) REFERENCES Locations(location_id)
 );
 
+DROP TABLE IF EXISTS Runners;
 CREATE TABLE Runners (
-    runner_id SERIAL PRIMARY KEY NOT NULL,
+    runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(20) NOT NULL
 );
 
+DROP TABLE IF EXISTS Volunteers;
+
 CREATE TABLE Volunteers (
-    volunteer_id SERIAL PRIMARY KEY NOT NULL,
+    volunteer_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(20) NOT NULL
 );
+
 -- simple db for making sure connection is functional
+DROP TABLE IF EXISTS Racers;
 CREATE TABLE Racers (
-    racers_id SERIAL PRIMARY KEY NOT NULL,
+    racers_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(20) NOT NULL,
     surname VARCHAR(20) NOT NULL
 );
 
 -- **INSERT STATEMENTS** -- 
+INSERT INTO Runners (username, password) 
+VALUES 
+    ('adminR', 'adminPassword');
 
 INSERT INTO Racers (name, surname) 
 VALUES 
@@ -70,9 +79,3 @@ VALUES
     ('Cassi', 'Hanby'),
     ('Booth', 'Rounding');
 
--- Down
-
-DROP TABLE Runners CASCADE;
-DROP TABLE Volunteers CASCADE;
-DROP TABLE Locations CASCADE;
-DROP TABLE Races CASCADE;
