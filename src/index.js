@@ -4,16 +4,18 @@ function runnerSetup() {
   if (el.runnerCheckbox.checked) {
     el.accountType.value = 'runners';
     el.volunteerCheckbox.checked = false;
+    console.log("accountType Value (raw): ", el.accountType.value);
   }
-  console.log("runner checked");
+  
 }
 
 function volunteerSetup() {
   if (el.volunteerCheckbox.checked) {
     el.accountType.value = 'volunteers';
     el.runnerCheckbox.checked = false;
+    console.log("accountType Value (raw): ", el.accountType.value);
   }
-  console.log("volunteer checked");
+  
 }
 
 function prepareHandlers() {
