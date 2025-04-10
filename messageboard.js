@@ -2,63 +2,12 @@ import path from 'path';
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 import { fileURLToPath } from 'url';
-import fs, { readFile, readFileSync } from 'fs';
+import { connect } from './components/database/connect.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const permittedTables = ['runner', 'volunteers'];
-
-async function dbInit(db) {
-  try {
-    const sql = fs.readFileSync(path.resolve(__dirname, 'database', 'initial.sql'), 'utf-8');
-    console.log("Executing SQL from initial.sql:\n", sql);
-
-    const statements = sql.split(';'); // Split SQL statements by semicolon
-    for (const statement of statements) {
-      if (statement.trim()) { // Skip empty statements
-        console.log("Executing statement:", statement.trim());
-        await db.exec(statement);
-      }
-    }
-
-    console.log("The database has been initialized.");
-  } catch (error) {
-    console.error("Could not initialize database. Error details:", error);
-    throw error;
-  }
-}
-
-/*
-// reads the contents of given sql file and executes them 
-async function dbInit (db) {
-  try {
-    const sql = await readFileSync(path.resolve(__dirname, 'database', 'initial.sql'), 'utf-8');
-    console.log("Executing SQL from initial.sql:\n", sql);
-    await db.exec(sql);
-    console.log("The database has been initialised");
-  } catch (error) {
-    console.log("Could not Intialise database:", error.message);
-    throw error;
-  }
-} */
-
-// function to open a db connection as needed
-async function connect() {
-  try {
-    const db = await open({
-      filename: path.resolve(__dirname, 'database', 'race_control.db'),
-      driver: sqlite3.Database,
-      // To provide additional info when querying/ debugging during development (Remove when development is complete)
-      verbose: true
-    });
-    console.log("DB Connection Established");
-    return db;
-  } catch (error) {
-    console.log("Failed to connect to the database:", error.message);
-    throw error;
-  }
-}
 
 async function initCon() {
   try {
@@ -73,6 +22,7 @@ async function initCon() {
 // global variable for one consistent connection, reduces resource exhaustion
 const dbCon = initCon();
 console.log(await dbCon);
+
 // example function to gain understanding of calling to DB
 export async function getMessages(table) {
   const db = await dbCon;

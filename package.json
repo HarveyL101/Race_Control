@@ -8,7 +8,9 @@
   "scripts": {
     "start": "node svr.js",
     "dev": "nodemon svr.js",
-    "test": "echo \"Error: no tests specidied\" && exit 1"
+    "test": "echo \"Error: no tests specidied\" && exit 1",
+    "setup": "npm run setupdb",
+    "setupdb": "echo \"Error: setup is yet to be defined\" && exit 1"
   },
   "type": "module"
 }
