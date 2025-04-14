@@ -1,5 +1,5 @@
 let time = 0,
-  timerInterval = 0,
+  timerInterval = null,
   runnersFinished = 0;
 
 const timer = document.querySelector('#timer'),
