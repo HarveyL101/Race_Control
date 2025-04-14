@@ -28,6 +28,9 @@ export function showFile(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
 }
+async function getRaces() {
+  const db = await dbCon
+}
 
 async function getUser(table, username, password) {
   const db = await dbCon;

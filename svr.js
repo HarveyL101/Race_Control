@@ -40,6 +40,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/index.html'))
 });
 app.post('/login', mb.postLogin)
+app.get('/volunter/timer.html', mb.getRaces)
 
 // Handler for 404 error codes
 app.use((req, res) => {
