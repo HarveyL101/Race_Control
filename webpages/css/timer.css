@@ -1,8 +1,16 @@
 #timer {
-    font-size: 150px;
+    font-size: 25vw;
     align-items: center;
     color: purple;
     text-align: center;
+}
+#input-section {
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+#input-section button {
+  color: blue;
 }
 p {
     color: purple;

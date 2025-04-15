@@ -5,7 +5,7 @@ let time = 0,
 const timer = document.querySelector('#timer'),
   startBtn = document.querySelector('#start-stop'),
   resetBtn = document.querySelector('#reset'),
-  leaderboard = document.querySelector('#leaderboard');
+  leaderboard = document.querySelector('#leaderboard-list');
 
 function startTimer() {
   console.log("startTimer has started");
@@ -53,20 +53,29 @@ function resetTimer() {
 
   timer.textContent = "00:00:00";
 }
+function getPositions() {
+  let payload = {}
+  const leaderboard = document.querySelector('#leaderboard');
+
+  for (let item of leaderboard) {
+
+  }
+}
 
 function leaderboardUpdate() {
   runnersFinished++;
   let time = timer.textContent;
 
-  console.log(time);
+  //console.log(time);
 
-  const newItem = document.createElement('li');
+  const li = document.createElement('li');
 
-  const newContent = document.createTextNode(`Position ${runnersFinished}: ${timer.textContent}`);
+  li.id = `runner-${runnersFinished}`;
+  li.textContent = `${timer.textContent}`;
 
-  newItem.appendChild(newContent);
+  leaderboard.appendChild(li);
 
-  leaderboard.appendChild(newItem);
+  console.log(`${li.id}: ${li.textContent}`);
 }
 
 function timerHandler() {
