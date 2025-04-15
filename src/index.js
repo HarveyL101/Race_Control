@@ -6,7 +6,6 @@ function runnerSetup() {
     el.volunteerCheckbox.checked = false;
     console.log("accountType Value (raw): ", el.accountType.value);
   }
-  
 }
 
 function volunteerSetup() {
@@ -15,7 +14,6 @@ function volunteerSetup() {
     el.runnerCheckbox.checked = false;
     console.log("accountType Value (raw): ", el.accountType.value);
   }
-  
 }
 
 function prepareHandlers() {
@@ -32,6 +30,12 @@ function addEventListeners() {
 
 function init() {
   prepareHandlers();
+
+  // Ensures boxes are `unchecked` on page load to avoid errors
+  el.runnerCheckbox.checked = false;
+  el.volunteerCheckbox.checked = false;
+
+  // adds event listeners after state is appropriately
   addEventListeners();
 }
 

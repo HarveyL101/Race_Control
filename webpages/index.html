@@ -24,12 +24,16 @@
     <section id="login-section">
       <form id="login-form" action="/login" method="POST">
         <div>
-          <label>Please enter a username:</label>
-          <input type="text" id="username" name="username" required>
+          <label>Please enter a username:
+            <input type="text" id="username" name="username" required>
+          </label>
+          
         </div>
         <div>
-          <label>Please enter a password:</label>
-          <input type="password" id="password" name="password" required>
+          <label>Please enter a password:
+            <input type="password" id="password" name="password" required>
+          </label>
+          
         </div>
         <input type="hidden" id="account-type" name="accountType" value="peepeepoopoo" onchange=update()>
         <button type="submit">Submit</button>

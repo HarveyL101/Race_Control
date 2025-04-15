@@ -87,7 +87,7 @@ function showMessages(messages, where) {
 }
 
 function pageLoaded() {
-  loadMessages();
+  showMessages();
 }
 
-pageLoaded();
+//pageLoaded();
