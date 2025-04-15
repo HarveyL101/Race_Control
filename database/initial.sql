@@ -10,12 +10,11 @@ CREATE TABLE locations (
 );
 
 INSERT INTO locations (name, city, postcode) 
-VALUES (
+VALUES 
   ('Abington Park', 'Northampton', 'NN3 3HX'),
   ('Upton Park', 'Northampton', 'NN5 4EQ'),
   ('Southsea Common', 'Portsmouth', 'PO5 3LR'),
-  ('Hyde Park', 'London', 'W2 2UH')
-);
+  ('Hyde Park', 'London', 'W2 2UH');
 
 DROP TABLE IF EXISTS races;
 CREATE TABLE races (
@@ -27,9 +26,12 @@ CREATE TABLE races (
     FOREIGN KEY (location_id) REFERENCES Locations(location_id)
 );
 INSERT INTO races (name, start_time, distance, location_id)
-VALUES (
+VALUES 
+    ('5k Fun Run', '09:00', 5.0, 1),
+    ('10k Charity Run', '10:00', 10.0, 2),
+    ('Half Marathon', '08:30', 21.1, 3),
+    ('Marathon', '07:00', 42.2, 4);
 
-)
 DROP TABLE IF EXISTS runners;
 CREATE TABLE runners (
     runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
