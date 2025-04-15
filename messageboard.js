@@ -2,6 +2,8 @@ import path from 'path';
 import { open } from 'sqlite';
 import { fileURLToPath } from 'url';
 import initCon from './database/setup.js';
+import session from 'express-session';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,14 +14,11 @@ const permittedTables = ['runners', 'volunteers'];
 const dbCon = initCon();
 console.log(await dbCon);
 
-// example function to gain understanding of calling to DB
-export async function getMessages(table) {
-  const db = await dbCon;
-  try {
-    return db.get('SELECT * FROM ?', table);
-  } catch (error) {
-    console.log("Error in getMessages");
-    res.status(500).send("Internal Server Error: getMessages");
+export function isAuthenticated(req, res, next) {
+  if (req.session && req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect('/');
   }
 }
 
@@ -97,10 +96,13 @@ export async function postLogin(req, res) {
     // Check if user exists in database
     if (await checkUser(req, res, selectedDb, username, password)) {
       console.log(`Successful login, welcome ${username}!`);
+      req.session.loggedIn = true;
+      req.session.username = username;
       res.redirect('/home.html');
     } else {
       console.log("Invalid username and/ or password");
-      res.status(401).send("Invalid Username or Password.");
+      //res.status(401).send("Invalid Username or Password.");
+      res.redirect('/');
       return;
     }
   } catch (error) {
