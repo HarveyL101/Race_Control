@@ -6,8 +6,8 @@ There are already companies which provide race timing (e.g. using RFID tags) but
 
 ## Core Features
 ### A user must be able to:
- * Start a race timer
- * Record the finish time of each runner in that race
+ * Start a race timer - x
+ * Record the finish time of each runner in that race - x
  * Submit results to a server
  * Clear race results from their device after the race
 
