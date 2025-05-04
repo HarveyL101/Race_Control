@@ -1,9 +1,100 @@
+// NUMBER PAD CLASS COMPONENTS
 class NumberPad extends HTMLElement {
   constructor() {
     super();
-    const shadowRoot = this.attachShadow({ mode: "open"})
+
+    this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    // prevents duplicate templates and other bugs previously experienced
+    if (!this.shadowRoot.hasChildNodes()) {
+      this.showNumPad();
+    }
+    // assigns preview field now that the shadowDOM has been rendered
+    this.previewField = this.shadowRoot.querySelector('#preview');
+    this.addEventListeners()
+  }
+
+  // Loops through the various NumberPad buttons to assign the listeners to allow handlePreview to function
+  addEventListeners() {
+    const numButtons = this.shadowRoot.querySelectorAll('.num-pad-btn');
+    numButtons.forEach(button => {
+      button.addEventListener('click', this.handlePreview.bind(this));
+    });
+  }
+
+  // Clears the shadowDOM of this custom element only
+  clearAll() {
+    this.shadowRoot.innerHTML = '';
+  }
+
+  get numPadContent() {
+    return document.querySelector('#number-pad-template').content.cloneNode(true);
+  }
+  // Adds template to the newly created ShadowDOM
+  showNumPad() {
+    this.clearAll();
+    this.shadowRoot.appendChild(this.numPadContent);
+  }
+  // Slices last element from the previewField's current values
+  deductPreview(event) {
+    if (this.previewField) {
+      this.previewField.textContent = this.previewField.textContent.slice(0, -1);
+    }
+  }
+  // WIP, needs to send the current previewField.value to the relevant position on leaderboard
+  submitPreview() {
+    console.log("Number Submitted!");
+  }
+
+  // Adding function, handles empty input fields as well
+  appendPreview(value) {
+    if (this.previewField) {
+      this.previewField.textContent += value;
+    } else {
+      this.previewField.textContent = value;
+    }
+  }
+
+  // Calls the necessary function depending on the element that called the listener (e.g. 'add', 'backspace', 'submit')
+  handlePreview(event) {
+    // Storing in a 'data-value' made it much easier to access values throughout this process
+    const value = event.currentTarget.getAttribute('data-value');
+
+    switch (value) {
+      case 'backspace':
+        this.deductPreview(event);
+        break;
+      case 'enter':
+        this.submitPreview();
+        break;
+      default:
+        this.appendPreview(value); 
+        break;
+    }
   }
 }
+
+// LEADERBOARD CLASS COMPONENTS
+class Leaderboard extends HTMLElement {
+  constructor() {
+    super(); 
+
+    const shadwRoot = this.attachShadow({ mode: "open" });
+  }
+  connectedCallback() {
+    if (this.shadowRoot.hasChildNodes) {
+
+    }
+  }
+  clearAll() {
+    this.shadowRoot.innerHTML = '';
+  }
+}
+customElements.define('number-pad', NumberPad);
+
+
 let time = 0,
   timerInterval = null,
   runnersFinished = 0;
@@ -55,14 +146,6 @@ function resetTimer() {
 
   timer.textContent = "00:00:00";
   console.log("resetTimer() executed");
-}
-function getPositions() {
-  let payload = {}
-  const leaderboard = document.querySelector('#leaderboard');
-
-  for (let item of leaderboard) {
-
-  }
 }
 
 function leaderboardUpdate() {

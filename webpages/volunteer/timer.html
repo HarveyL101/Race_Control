@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/timer.css">
+    <script defer src="/src/timer.js"></script>
     <title>Timer</title>
   </head>
 
@@ -32,58 +33,46 @@
           <label for="finish">
             <button id="finish" type="submit">End Race</button>
           </label>
-          <div>
-            <label for="leaderboard">Leaderboard</label>
+          <h3>Leaderboard</h3>
+          <p>*********************</p>
+          <div id="leaderboard">
             <ul id="leaderboard-list">
             </ul>
+            <p>*********************</p>
           </div>
-          
         </div>
       </form>
-      
     </div>
 
-    <template id="number-pad">
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-      <ul>
-        <li><button></button></li>
-      </ul>
-    </template>
-
-    <script defer src="/src/timer.js">
-      
-    </script>
+    <number-pad id="number-pad"></number-pad>
   </body>
+
+  <template id="number-pad-template">
+    <link rel="stylesheet" href="../css/timer.css">
+    <div id="number-pad-container">
+      <div id="preview-container">
+        <p id="preview">&nbsp;</p>
+      </div>
+      <div id="button-container">
+        <div class="num-pad">
+          <!-- First Row -->
+          <button class="num-pad-btn" data-value="1">1</button>
+          <button class="num-pad-btn" data-value="2">2</button>
+          <button class="num-pad-btn" data-value="3">3</button>
+          <!-- Second Row -->
+          <button class="num-pad-btn" data-value="4">4</button>
+          <button class="num-pad-btn" data-value="5">5</button>
+          <button class="num-pad-btn" data-value="6">6</button>
+          <!-- Third Row -->
+          <button class="num-pad-btn" data-value="7">7</button>
+          <button class="num-pad-btn" data-value="8">8</button>
+          <button class="num-pad-btn" data-value="9">9</button>
+          <!-- Fourth Row -->
+          <button class="num-pad-btn" data-value="backspace">Backspace</button>
+          <button class="num-pad-btn" data-value="0">0</button>
+          <button class="num-pad-btn" data-value="enter">Enter</button>
+        </div>
+      </div>
+    </div>
+  </template>
 </html>
