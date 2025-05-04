@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 // function to read initial.sql file and execute it to create the database
 async function dbInit (db) {
     try {
-      const sql = readFileSync(path.resolve(__dirname, 'initial.sql'), 'utf-8');
+      const sql = fs.readFileSync(path.resolve(__dirname, 'initial.sql'), 'utf-8');
       console.log("Executing SQL from initial.sql:\n", sql);
       await db.exec(sql);
       console.log("The database has been initialised");
