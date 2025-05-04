@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { open } from 'sqlite';
@@ -24,8 +24,6 @@ async function dbInit (db) {
   // function to open a db connection as needed
 async function connect() {
     try {
-        const dbPath = path.resolve(__dirname, 'initial.sql');
-        console.log(dbPath);
         const db = await open({
             filename: path.resolve(__dirname, 'race_control.db'),
             driver: sqlite3.Database,
@@ -41,6 +39,27 @@ async function connect() {
   }
 
 export default async function initCon() {
+  try {
+    const dbPath = path.resolve(__dirname, 'race_control.db');
+    const dbExists = fs.existsSync(dbPath);
+
+    const db = await connect();
+  
+    if(!dbExists) {
+      console.log("Database not found. Initialising schema...");
+      await dbInit(db);
+    } else {
+      console.log("Database found. Skipping schema initialisation");
+    }
+
+    return db;
+  } catch (error) {
+    console.log("Error while verifying database");
+    throw error;
+  }
+  
+
+  return db;
     try {
       const db = await connect();
       await dbInit(db);

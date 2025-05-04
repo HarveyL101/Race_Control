@@ -1,3 +1,9 @@
+class NumberPad extends HTMLElement {
+  constructor() {
+    super();
+    const shadowRoot = this.attachShadow({ mode: "open"})
+  }
+}
 let time = 0,
   timerInterval = null,
   runnersFinished = 0;
@@ -8,7 +14,6 @@ const timer = document.querySelector('#timer'),
   leaderboard = document.querySelector('#leaderboard-list');
 
 function startTimer() {
-  console.log("startTimer has started");
   startBtn.textContent = "Stop"
 
   timerInterval = setInterval(() => {
@@ -22,23 +27,20 @@ function startTimer() {
     timer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
   }, 1000);
   
-  console.log("startTimer has concluded");
+  console.log("startTimer() executed");
 }
 
 function stopTimer() {
-  console.log("stopTimer has started");
   startBtn.textContent = "Start"
 
   //stops timer from running and resets timerInterval to allow play-pause-play 
   clearInterval(timerInterval);
   timerInterval = null;
 
-  console.log("stopTimer has concluded");
+  console.log("stopTimer() executed");
 }
 
 function resetTimer() {
-  console.log("resetTimer() Called");
-
   timerInterval = null;
   time = 0;
   runnersFinished = 0;
@@ -52,6 +54,7 @@ function resetTimer() {
   }
 
   timer.textContent = "00:00:00";
+  console.log("resetTimer() executed");
 }
 function getPositions() {
   let payload = {}
@@ -64,12 +67,10 @@ function getPositions() {
 
 function leaderboardUpdate() {
   runnersFinished++;
-  let time = timer.textContent;
-
-  //console.log(time);
+  const time = timer.textContent;
 
   const li = document.createElement('li');
-
+  const idField = document.createElement('input');
   li.id = `runner-${runnersFinished}`;
   li.textContent = `${timer.textContent}`;
 
@@ -86,17 +87,3 @@ function timerHandler() {
     startTimer();
   }
 }
-
-function showMessages(messages, where) {
-  for (const msg of messages) {
-    const li = document.createElement('li');
-    li.textContent = msg;
-    where.appendChild(li);
-  }
-}
-
-function pageLoaded() {
-  showMessages();
-}
-
-//pageLoaded();
