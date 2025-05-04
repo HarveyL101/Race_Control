@@ -1,5 +1,4 @@
 import path from 'path';
-import { open } from 'sqlite';
 import { fileURLToPath } from 'url';
 import initCon from './database/setup.js';
 import session from 'express-session';
@@ -22,13 +21,31 @@ export function isAuthenticated(req, res, next) {
   }
 }
 
+export async function postRaceResults(req, res) {
+  const { race_id, runner_id, position, time } = req.body;
+
+  if (!race_id || !runner_id || !position || !time) {
+    return res.status(400).send("Error 400: Missing required fields");
+  }
+  const stmt = db.prepare(`
+    INSERT INTO race_results (race_id, runner_id, position, time)
+    VALUES (?, ?, ?, ?)
+    `);
+
+    stmt.run(race_id, runner_id, position, time, function(err) {
+      if (err) {
+        return res.status(500).send("Error 500: Internal Server Error")
+      }
+      res.json({ success: true, result_id: this.lastID });
+    });
+
+    stmt.finalise();
+}
+
 // useful middleware for showing file routes through the app
 export function showFile(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
-}
-async function getRaces() {
-  const db = await dbCon
 }
 
 async function getUser(table, username, password) {
@@ -73,12 +90,11 @@ export async function postLogin(req, res) {
     
     // debugging log
     console.log("Form Data Received: ", req.body);
-    console.log("Account Type (raw):", accountType);
     
     // Validating the accountType
     if (!permittedTables.includes(accountType)) {
-      res.send({ message: "Invalid accountType", data: req.body });
       console.log("Invalid accountType", req.body);
+      res.send({ message: "Invalid accountType", data: req.body });
       return;
     }
     // Validating the username/ password
@@ -101,7 +117,6 @@ export async function postLogin(req, res) {
       res.redirect('/home.html');
     } else {
       console.log("Invalid username and/ or password");
-      //res.status(401).send("Invalid Username or Password.");
       res.redirect('/');
       return;
     }
