@@ -1,8 +1,9 @@
 -- Up
 
 -- **CREATE STATEMENTS** --
-DROP TABLE IF EXISTS locations;
-CREATE TABLE locations (
+
+-- Race Locations Table --
+CREATE TABLE IF NOT EXISTS locations (
     location_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     city VARCHAR(50) NOT NULL,
@@ -16,8 +17,9 @@ VALUES
   ('Southsea Common', 'Portsmouth', 'PO5 3LR'),
   ('Hyde Park', 'London', 'W2 2UH');
 
-DROP TABLE IF EXISTS races;
-CREATE TABLE races (
+
+-- Races Table --
+CREATE TABLE IF NOT EXISTS races (
     race_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     start_time VARCHAR(5) NOT NULL,
@@ -25,6 +27,7 @@ CREATE TABLE races (
     location_id INT NOT NULL,
     FOREIGN KEY (location_id) REFERENCES Locations(location_id)
 );
+
 INSERT INTO races (name, start_time, distance, location_id)
 VALUES 
     ('5k Fun Run', '09:00', 5.0, 1),
@@ -32,8 +35,8 @@ VALUES
     ('Half Marathon', '08:30', 21.1, 3),
     ('Marathon', '07:00', 42.2, 4);
 
-DROP TABLE IF EXISTS runners;
-CREATE TABLE runners (
+-- Runners Table -- 
+CREATE TABLE IF NOT EXISTS runners (
     runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(20) NOT NULL
@@ -43,9 +46,8 @@ INSERT INTO runners (username, password)
 VALUES 
     ('adminR', 'adminPassword');
 
-DROP TABLE IF EXISTS volunteers;
-
-CREATE TABLE volunteers (
+-- Table For Volunteers/ Staff Details -- 
+CREATE TABLE IF NOT EXISTS volunteers (
     volunteer_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(20) NOT NULL
@@ -56,8 +58,7 @@ VALUES
   ('adminV', 'adminPassword');
 
 -- simple db for making sure connection is functional
-DROP TABLE IF EXISTS racers;
-CREATE TABLE racers (
+CREATE TABLE IF NOT EXISTS racers (
     racers_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(20) NOT NULL,
     surname VARCHAR(20) NOT NULL
@@ -97,4 +98,13 @@ VALUES
     ('Cassi', 'Hanby'),
     ('Booth', 'Rounding');
 
+
+CREATE TABLE IF NOT EXISTS race_results (
+    race_id INTEGER,
+    runner_id INTEGER,
+    position INTEGER,
+    time TEXT,
+    FOREIGN KEY (race_id) REFERENCES races(race_id),
+    FOREIGN KEY (runner_id) REFERENCES runners(runner_id)
+);
 -- **INSERT STATEMENTS** -- 
