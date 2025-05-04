@@ -12,34 +12,33 @@
       <h1>Login To Your Account!</h1>
     </header>
     
-    <section id="volunteer-runner">
+    <div id="volunteer-runner">
       <div>
         <h2>Are you a Volunteer or a Runner?</h2>
         <h4>(A user would also come under 'Runner')</h4>
         Volunteer:<input id="volunteer-chk" type="checkbox">
         Runner:<input id="runner-chk" type="checkbox">
       </div>
-    </section>
+    </div>
 
-    <section id="login-section">
+    <div id="login-container">
       <form id="login-form" action="/login" method="POST">
-        <div id="login-container">
           <label>Please enter a username:
             <input type="text" id="username" name="username" required>
           </label>
-          
-        </div>
-        <div>
           <label>Please enter a password:
             <input type="password" id="password" name="password" required>
           </label>
-          
-        </div>
         <input type="hidden" id="account-type" name="accountType" value="peepeepoopoo" onchange=update()>
         <button type="submit">Submit</button>
       </form>
+    </div>
       
-    </section>
+    </div>
     <script defer src="/src/index.js"></script>
   </body>
+
+  <template id="register-template">
+
+  </template>
 </html>

@@ -20,14 +20,8 @@ header h1 {
   color: purple;
 }
 
-#login-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
 
-#login-section div  {
+#login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,20 +33,10 @@ header h1 {
   background-color: #f9f9f9;
 }
 
-#login-section div div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#login-section p {
-  margin: 0;
-}
-
-#login-section input {
+#login-container input {
   flex: 1;
 }
-#login-section button {
+#login-container button {
   padding: 2px;
   margin: 5px;
 }
