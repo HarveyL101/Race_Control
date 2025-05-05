@@ -14,31 +14,32 @@
       <h1>This Is My Timer Page</h1>
     </header>
 
-    <section id="input-section">
+    <div id="input-section">
       <h2>Timer goes under here</h2>
       
       <div id="timer">00:00:00</div>
       <button id="start-stop" type="button" onclick=timerHandler()>Start</button>
       <button id="reset" type="button" onclick=resetTimer()>Reset</button>
+        
+      
       
       <p>bottom of section</p>
-    </section>
+    </div>
 
     <div id="leaderboard-container">
       <form id="leaderboard-form" action="/leaderboard" method="POST">
         <div id="leaderboard-container">
-          <label for="lap">
-            <button id="lap" type="button" onclick=leaderboardUpdate()>Runner Finished</button>
-          </label>
-          <label for="finish">
-            <button id="finish" type="submit">End Race</button>
-          </label>
           <h3>Leaderboard</h3>
+
+          <button id="lap" type="button" onclick=leaderboardUpdate()>Runner Finished</button>
+          <button id="finish" type="submit">End Race</button>
+          
           <p>*********************</p>
           <div id="leaderboard">
-            <ul id="leaderboard-list">
-            </ul>
+            <ul id="leaderboard-list"></ul>
+            <input type="submit" value="Submit Checkpoint">
             <p>*********************</p>
+            
           </div>
         </div>
       </form>
@@ -47,11 +48,17 @@
     <number-pad id="number-pad"></number-pad>
   </body>
 
+  <template id="leaderboard-template">
+    
+  </template>
+
+
   <template id="number-pad-template">
     <link rel="stylesheet" href="../css/timer.css">
     <div id="number-pad-container">
       <div id="preview-container">
         <p id="preview">&nbsp;</p>
+        <p><b>Enter a runners bib number, then press 'enter'</b></p>
       </div>
       <div id="button-container">
         <div class="num-pad">
