@@ -7,12 +7,14 @@ import sqlite3 from 'sqlite3';
 // Contains all the functionality to read and create the database from the SQL file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const DB_PATH = path.resolve(__dirname, 'RaceControl.db');
+const SQL_PATH = fs.readFileSync(path.resolve(__dirname, 'database.sql'), 'utf-8');
 
-// function to read initial.sql file and execute it to create the database
+// function to read database.sql file and execute it to create the database
 async function dbInit (db) {
     try {
-      const sql = fs.readFileSync(path.resolve(__dirname, 'initial.sql'), 'utf-8');
-      console.log("Executing SQL from initial.sql:\n", sql);
+      const sql = SQL_PATH;
+      console.log("Executing SQL from database.sql:\n", sql);
       await db.exec(sql);
       console.log("The database has been initialised");
     } catch (error) {
@@ -25,7 +27,7 @@ async function dbInit (db) {
 async function connect() {
     try {
         const db = await open({
-            filename: path.resolve(__dirname, 'race_control.db'),
+            filename: DB_PATH,
             driver: sqlite3.Database,
             // To provide additional info when querying/ debugging during development (Remove when development is complete)
             verbose: true
@@ -40,12 +42,10 @@ async function connect() {
 
 export default async function initCon() {
   try {
-    const dbPath = path.resolve(__dirname, 'race_control.db');
-    const dbExists = fs.existsSync(dbPath);
-
+    const shouldInit = !fs.existsSync(DB_PATH) || fs.statSync(DB_PATH).size === 0;
     const db = await connect();
   
-    if(!dbExists) {
+    if (shouldInit) {
       console.log("Database not found. Initialising schema...");
       await dbInit(db);
     } else {
@@ -53,19 +53,9 @@ export default async function initCon() {
     }
 
     return db;
-  } catch (error) {
-    console.log("Error while verifying database");
+
+  } catch(error) {
+    console.log("Error while verifying database: ", error.message);
     throw error;
   }
-  
-
-  return db;
-    try {
-      const db = await connect();
-      await dbInit(db);
-      return db;
-    } catch (error) {
-      console.log("Could not initialise and/ or connect to the database:", error.message);
-      throw error;
-    }
-  }
+}

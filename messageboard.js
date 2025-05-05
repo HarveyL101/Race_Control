@@ -10,8 +10,7 @@ const __dirname = path.dirname(__filename);
 const permittedTables = ['runners', 'volunteers'];
 
 // global variable for one consistent connection, reduces resource exhaustion
-const dbCon = initCon();
-console.log(await dbCon);
+const db = await initCon();
 
 export function isAuthenticated(req, res, next) {
   if (req.session && req.session.loggedIn) {
@@ -39,7 +38,11 @@ export async function postRaceResults(req, res) {
       res.json({ success: true, result_id: this.lastID });
     });
 
-    query.finalise();
+    query.finalize();
+}
+
+export async function getRaceResults(req, res) {
+  console.log("getRaceResults()");
 }
 
 // useful middleware for showing file routes through the app
@@ -49,7 +52,7 @@ export function showFile(req, res, next) {
 }
 
 async function getUser(table, username, password) {
-  const db = await dbCon;
+  const db = await db;
   try {
     console.log("Value passed to table: ", table);
     // validates parameter for security purposes
@@ -84,7 +87,7 @@ async function checkUser(req, res, table, username, password) {
 }
 
 export async function postLogin(req, res) {
-  const db = await dbCon;
+  const db = await db;
   try {
     const { accountType, username, password } = req.body;
     
