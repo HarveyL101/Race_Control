@@ -4,12 +4,12 @@
     color: purple;
     text-align: center;
 }
-#input-section {
+#stopwatch-container {
   display: block;
   justify-content: center;
   align-items: center;
 }
-#input-section button {
+#stopwatch-container button {
   color: blue;
 }
 p {

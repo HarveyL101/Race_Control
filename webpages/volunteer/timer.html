@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/timer.css">
-    <script defer src="/src/timer.js"></script>
+    <script type="module" defer src="/src/timer.js"></script>
     <title>Timer</title>
   </head>
 
@@ -14,24 +14,37 @@
       <h1>This Is My Timer Page</h1>
     </header>
 
-    <div id="input-section">
+    <stopwatch-panel></stopwatch-panel>
+
+    <leaderboard-panel></leaderboard-panel>
+
+    <number-pad></number-pad>
+  </body>
+
+  <template id="stopwatch-template">
+    <link rel="stylesheet" href="../css/timer.css">
+    <div id="stopwatch-wrapper">
       <h2>Timer goes under here</h2>
       
-      <div id="timer">00:00:00</div>
-      <button id="start-stop" type="button" onclick=timerHandler()>Start</button>
-      <button id="reset" type="button" onclick=resetTimer()>Reset</button>
+      <div id="stopwatch-container">
         
-      
-      
-      <p>bottom of section</p>
+        <p id="timer">00:00:00</p>
+        <button id="start-stop" type="button">Start</button>
+        <button id="reset" type="button">Reset</button>
+      </div>
     </div>
+  </template>
 
-    <div id="leaderboard-container">
-      <form id="leaderboard-form" action="/api/" method="POST">
+  <template id="leaderboard-template">
+    <link rel="stylesheet" href="../css/timer.css">
+    <div id="leaderboard-wrapper">
+
+      <form id="leaderboard-form" action="/api/race-results" method="POST">
+
         <div id="leaderboard-container">
           <h3>Leaderboard</h3>
 
-          <button id="lap" type="button" onclick=leaderboardUpdate()>Runner Finished</button>
+          <button id="lap" type="button">Runner Finished</button>
           <button id="finish" type="submit">End Race</button>
           
           
@@ -41,26 +54,25 @@
             <p>*********************</p>
             <button id="checkpoint-end">Finish Lap</button>
           </div>
+
         </div>
       </form>
     </div>
-
-    <number-pad id="number-pad"></number-pad>
-  </body>
-
-  <template id="leaderboard-template">
-    
   </template>
 
 
   <template id="number-pad-template">
     <link rel="stylesheet" href="../css/timer.css">
+
     <div id="number-pad-container">
+
       <div id="preview-container">
         <p id="preview">&nbsp;</p>
         <p><b>Enter a runners bib number, then press 'enter'</b></p>
       </div>
+
       <div id="button-container">
+
         <div class="num-pad">
           <!-- First Row -->
           <button class="num-pad-btn" data-value="1">1</button>
