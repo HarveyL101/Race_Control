@@ -39,12 +39,28 @@ VALUES
 CREATE TABLE IF NOT EXISTS runners (
     runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
-    password VARCHAR(20) NOT NULL
+    password VARCHAR(20) NOT NULL,
 );
 
 INSERT INTO runners (username, password) 
 VALUES 
-    ('adminR', 'adminPassword');
+    ('adminR', 'adminPassword'),
+    ('RichB', 'manHooRuns5'),
+    ('lwhates0', 'cA1''99#2`hTa&'),
+    ('cshane1', 'rT2\3S>i=.c|pS'),
+    ('lmagowan2', 'rC2(Q0sPZ'),
+    ('sthaller3', 'sG4_HjGRkA7H'),
+    ('mjefferys4', 'jM3''=ti@'),
+    ('kboydle5', 'uJ6@~u''ZjTZQg'),
+    ('dguerner6', 'vI1}S%h<q*'),
+    ('febenezer7', 'uE1`QYJsJ'),
+    ('mclay8', 'nO5<#p}upgw!'),
+    ('bhaddick9', 'vJ8!bT#"'),
+    ('ewraggsa', 'uN6$NNged3@8>Xbr'),
+    ('rchristofolb', 'wD2&o4MmO6O'),
+    ('aberrec', 'oE2&?\*B`5='),
+    ('mgheeraertd', 'kD7<vH<@/,q4?|fA'),
+    ('sduncansone', 'uP6)pZYu');
 
 -- Table For Volunteers/ Staff Details -- 
 CREATE TABLE IF NOT EXISTS volunteers (
@@ -56,55 +72,3 @@ CREATE TABLE IF NOT EXISTS volunteers (
 INSERT INTO volunteers (username, password) 
 VALUES 
   ('adminV', 'adminPassword');
-
--- simple db for making sure connection is functional
-CREATE TABLE IF NOT EXISTS racers (
-    racers_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name VARCHAR(20) NOT NULL,
-    surname VARCHAR(20) NOT NULL
-);
-
-INSERT INTO racers (name, surname) 
-VALUES 
-    ('John', 'Clements'),
-    ('Rebecca', 'Gothard'),
-    ('Barnebas', 'Overshott'),
-    ('Anett', 'Stormouth'),
-    ('Nicol', 'Breslane'),
-    ('Joellen', 'Cleghorn'),
-    ('Zsazsa', 'Hanby'),
-    ('Cristabel', 'Linnell'),
-    ('Lothario', 'Domoni'),
-    ('Palmer', 'Meineck'),
-    ('Dniren', 'Braham'),
-    ('Collete', 'Shickle'),
-    ('Ashely', 'Huikerby'),
-    ('Britte', 'Lamball'),
-    ('Letitia', 'Meek'),
-    ('Pamela', 'Meatcher'),
-    ('Elaina', 'Alfonso'),
-    ('Jecho', 'Kenwin'),
-    ('Carmelita', 'Dunford'),
-    ('Fanni', 'Borrington'),
-    ('Jocelyne', 'Davitashvili'),
-    ('Corette', 'Vanelli'),
-    ('Stacie', 'Worsalls'),
-    ('Brunhilde', 'Cocke'),
-    ('Luz', 'Jenson'),
-    ('Rosabella', 'Leeke'),
-    ('Rory', 'Harget'),
-    ('Danita', 'McGregor'),
-    ('Durward', 'McCowen'),
-    ('Cassi', 'Hanby'),
-    ('Booth', 'Rounding');
-
-
-CREATE TABLE IF NOT EXISTS race_results (
-    race_id INTEGER,
-    runner_id INTEGER,
-    position INTEGER,
-    time TEXT,
-    FOREIGN KEY (race_id) REFERENCES races(race_id),
-    FOREIGN KEY (runner_id) REFERENCES runners(runner_id)
-);
--- **INSERT STATEMENTS** -- 

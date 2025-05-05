@@ -32,7 +32,6 @@ app.use(express.json());
 // Middleware that logs the method and url of a request
 app.use(mb.showFile);
 
-
 // Routes
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/index.html'));
@@ -47,6 +46,7 @@ app.get('/volunteer/timer.html', mb.isAuthenticated, (req, res) => {
 
 // POST handler for the race-results displayed on the leaderboard
 app.post('/api/race-results', mb.postRaceResults);
+
 // Handler for 404 error codes
 app.use((req, res, next) => {
   res.status(404).send("Error Code 404: Page not found");

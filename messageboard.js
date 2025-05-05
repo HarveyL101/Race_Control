@@ -27,19 +27,19 @@ export async function postRaceResults(req, res) {
   if (!race_id || !runner_id || !position || !time) {
     return res.status(400).send("Error 400: Missing required fields");
   }
-  const stmt = db.prepare(`
+  const query = db.prepare(`
     INSERT INTO race_results (race_id, runner_id, position, time)
     VALUES (?, ?, ?, ?)
     `);
 
-    stmt.run(race_id, runner_id, position, time, function(err) {
+    query.run(race_id, runner_id, position, time, function(err) {
       if (err) {
         return res.status(500).send("Error 500: Internal Server Error")
       }
       res.json({ success: true, result_id: this.lastID });
     });
 
-    stmt.finalise();
+    query.finalise();
 }
 
 // useful middleware for showing file routes through the app
