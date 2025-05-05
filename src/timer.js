@@ -1,3 +1,4 @@
+// ********* CLASS DECLARATIONS *********
 // NUMBER PAD CLASS COMPONENTS
 class NumberPad extends HTMLElement {
   constructor() {
@@ -28,21 +29,24 @@ class NumberPad extends HTMLElement {
   clearAll() {
     this.shadowRoot.innerHTML = '';
   }
-
+  // Simple getter for the num-pad-template contents
   get numPadContent() {
     return document.querySelector('#number-pad-template').content.cloneNode(true);
   }
+
   // Adds template to the newly created ShadowDOM
   showNumPad() {
     this.clearAll();
     this.shadowRoot.appendChild(this.numPadContent);
   }
+
   // Slices last element from the previewField's current values
   deductPreview(event) {
     if (this.previewField) {
       this.previewField.textContent = this.previewField.textContent.slice(0, -1);
     }
   }
+
   // WIP, needs to send the current previewField.value to the relevant position on leaderboard
   submitPreview() {
     console.log("Number Submitted!");
@@ -82,27 +86,65 @@ class Leaderboard extends HTMLElement {
     super(); 
 
     const shadwRoot = this.attachShadow({ mode: "open" });
+    const data = [
+      {}
+    ];
   }
-  connectedCallback() {
-    if (this.shadowRoot.hasChildNodes) {
 
+  connectedCallback() {
+    if (!this.shadowRoot.hasChildNodes) {
+      this.showLeaderboard();
     }
+    console.log("Displaying: {Leaderboard}");
   }
+
   clearAll() {
     this.shadowRoot.innerHTML = '';
   }
+
+  get leaderboardContents() {
+    return document.querySelector('leaderboard-template').cloneNode(true);
+  }
+
+  showLeaderboard() {
+    this.clearAll();
+    this.shadowRoot.appendChild(this.leaderboardContents());
+  }
+
+  leaderboardUpdate() {
+    runnersFinished++;
+    const time = timer.textContent;
+  
+    const li = document.createElement('li');
+    const idField = document.createElement('input');
+   
+    idField.id = `runner-${runnersFinished}`;
+    idField.textContent = `${timer.textContent}`;
+  
+    li.appendChild(idField);
+    leaderboard.appendChild(li);
+  
+    console.log(`${idField.id}: ${idField.textContent}`);
+  }
 }
 customElements.define('number-pad', NumberPad);
+customElements.define('leader-board', Leaderboard);
 
+// ********* timer.js scripts *********
+let time = 0;
+let timerInterval = null;
+let runnersFinished = 0;
 
-let time = 0,
-  timerInterval = null,
-  runnersFinished = 0;
-
-const timer = document.querySelector('#timer'),
-  startBtn = document.querySelector('#start-stop'),
-  resetBtn = document.querySelector('#reset'),
-  leaderboard = document.querySelector('#leaderboard-list');
+const el = {
+  timer: document.querySelector('#timer'),
+  startBtn: document.querySelector('#start-stop'),
+  resetBtn: document.querySelector('#reset'),
+  leaderboard: document.querySelector('#leaderboard-list')
+}
+const timer = document.querySelector('#timer');
+const startBtn = document.querySelector('#start-stop');
+const resetBtn = document.querySelector('#reset');
+const leaderboard = document.querySelector('#leaderboard-list');
 
 function startTimer() {
   startBtn.textContent = "Stop"
@@ -146,21 +188,7 @@ function resetTimer() {
 
   timer.textContent = "00:00:00";
   console.log("resetTimer() executed");
-}
-
-function leaderboardUpdate() {
-  runnersFinished++;
-  const time = timer.textContent;
-
-  const li = document.createElement('li');
-  const idField = document.createElement('input');
-  li.id = `runner-${runnersFinished}`;
-  li.textContent = `${timer.textContent}`;
-
-  leaderboard.appendChild(li);
-
-  console.log(`${li.id}: ${li.textContent}`);
-}
+} 
 
 function timerHandler() {
   // if timer is running, stop it, otherwise start the timer again
