@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS races (
 );
 
 INSERT INTO races (name, start_time, distance, location_id)
-VALUES 
+VALUES
     ('5k Fun Run', '09:00', 5.0, 1),
     ('10k Charity Run', '10:00', 10.0, 2),
     ('Half Marathon', '08:30', 21.1, 3),
@@ -39,7 +39,7 @@ VALUES
 CREATE TABLE IF NOT EXISTS runners (
     runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
-    password VARCHAR(20) NOT NULL,
+    password VARCHAR(20) NOT NULL
 );
 
 INSERT INTO runners (username, password) 
@@ -71,4 +71,5 @@ CREATE TABLE IF NOT EXISTS volunteers (
 
 INSERT INTO volunteers (username, password) 
 VALUES 
-  ('adminV', 'adminPassword');
+  ('adminV', 'adminPassword'),
+  ('steveB', 'Password1');
