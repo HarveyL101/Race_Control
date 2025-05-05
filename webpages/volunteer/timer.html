@@ -27,19 +27,19 @@
     </div>
 
     <div id="leaderboard-container">
-      <form id="leaderboard-form" action="/leaderboard" method="POST">
+      <form id="leaderboard-form" action="/api/" method="POST">
         <div id="leaderboard-container">
           <h3>Leaderboard</h3>
 
           <button id="lap" type="button" onclick=leaderboardUpdate()>Runner Finished</button>
           <button id="finish" type="submit">End Race</button>
           
-          <p>*********************</p>
+          
           <div id="leaderboard">
-            <ul id="leaderboard-list"></ul>
-            <input type="submit" value="Submit Checkpoint">
             <p>*********************</p>
-            
+            <ul id="leaderboard-list"></ul>
+            <p>*********************</p>
+            <button id="checkpoint-end">Finish Lap</button>
           </div>
         </div>
       </form>

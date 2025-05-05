@@ -1,4 +1,5 @@
 // ********* CLASS DECLARATIONS *********
+
 // NUMBER PAD CLASS COMPONENTS
 class NumberPad extends HTMLElement {
   constructor() {
@@ -113,13 +114,18 @@ class Leaderboard extends HTMLElement {
 
   leaderboardUpdate() {
     runnersFinished++;
-    const time = timer.textContent;
-  
+    const time = el.timer.textContent || new Date().toISOString();
+    const position = runnersFinished;
+    
+    const runnerData = { position, runner_id, time };
+    runnersData.push(runnerData);
+
+    
     const li = document.createElement('li');
     const idField = document.createElement('input');
    
     idField.id = `runner-${runnersFinished}`;
-    idField.textContent = `${timer.textContent}`;
+    idField.textContent = `${el.timer.textContent}`;
   
     li.appendChild(idField);
     leaderboard.appendChild(li);
@@ -139,15 +145,11 @@ const el = {
   timer: document.querySelector('#timer'),
   startBtn: document.querySelector('#start-stop'),
   resetBtn: document.querySelector('#reset'),
-  leaderboard: document.querySelector('#leaderboard-list')
+  leaderboard: document.querySelector('#leaderboard-list'),
 }
-const timer = document.querySelector('#timer');
-const startBtn = document.querySelector('#start-stop');
-const resetBtn = document.querySelector('#reset');
-const leaderboard = document.querySelector('#leaderboard-list');
 
 function startTimer() {
-  startBtn.textContent = "Stop"
+  el.startBtn.textContent = "Stop"
 
   timerInterval = setInterval(() => {
     time++;
@@ -157,14 +159,14 @@ function startTimer() {
     const seconds = time % 60;
 
     //formats time values into appropriate format of 'HH:MM:SS'
-    timer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+    el.timer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
   }, 1000);
   
   console.log("startTimer() executed");
 }
 
 function stopTimer() {
-  startBtn.textContent = "Start"
+  el.startBtn.textContent = "Start"
 
   //stops timer from running and resets timerInterval to allow play-pause-play 
   clearInterval(timerInterval);
@@ -177,16 +179,16 @@ function resetTimer() {
   timerInterval = null;
   time = 0;
   runnersFinished = 0;
-  startBtn.textContent = "Start";
+  el.startBtn.textContent = "Start";
 
   //same as stopTimer() but resets time to base values
   clearInterval(timerInterval);
   
-  while(leaderboard.firstChild) {
-    leaderboard.removeChild(leaderboard.firstChild);
+  while(el.leaderboard.firstChild) {
+    el.leaderboard.removeChild(el.leaderboard.firstChild);
   }
 
-  timer.textContent = "00:00:00";
+  el.timer.textContent = "00:00:00";
   console.log("resetTimer() executed");
 } 
 
