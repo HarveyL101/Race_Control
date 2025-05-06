@@ -52,7 +52,6 @@ export function showFile(req, res, next) {
 }
 
 async function getUser(table, username, password) {
-  const db = await db;
   try {
     console.log("Value passed to table: ", table);
     // validates parameter for security purposes
@@ -87,7 +86,6 @@ async function checkUser(req, res, table, username, password) {
 }
 
 export async function postLogin(req, res) {
-  const db = await db;
   try {
     const { accountType, username, password } = req.body;
     
