@@ -51,14 +51,21 @@ export class NumberPad extends HTMLElement {
     
     get raceID() {
       const race_id = 101;
-      console.log(race_id);
+      console.log("race_id: ", race_id);
       return race_id;
     }
     
     get runnerID() {
-      const number = Number(this.shadowRoot.querySelector('#preview').textContent);
-      console.log(number);
-      return number;
+      const preview = this.shadowRoot.querySelector('#preview');
+
+      if (!preview || !preview.textContent) {
+        console.warn("Preview is either empty or not found");
+        return null;
+      }
+
+      const number = Number(preview.textContent.trim());
+      console.log("runner_id: ", number);
+      return isNaN(number) ? null : number;
     }
 
     get position() {
@@ -70,13 +77,20 @@ export class NumberPad extends HTMLElement {
     get time() {
 
       // Allows  access to the StopWatch shadowDOM
-      const stopwatch = document.querySelector.apply('number-pad');
-      const timer = stopwatch.shadowRoot.querySelector('#timer');
+      const stopwatch = document.querySelector('stop-watch');
+      
+      if (stopwatch) {
+        const currentTime = stopwatch.getCurrentTime();
+        console.log("current time from getCurrentTime(): ", currentTime);
 
-      console.log(timer.textContent);
+        return currentTime;
+      }
 
-      return timer.textContent;
+      console.warn("stopwatch not found/ recognised");
+
+      return "00:00:00"
     }
+
     createRaceResult(race_id, runner_id, position, time) {
       const newTime = new Date().toISOString();
       return {
@@ -92,7 +106,7 @@ export class NumberPad extends HTMLElement {
       const position = this.position;
       const time = this.time;
       
-      const result = createRaceResult(raceId, runner_id, position, time);
+      const result = this.createRaceResult(raceId, runner_id, position, time);
 
       return result;
     }
@@ -131,4 +145,4 @@ export class NumberPad extends HTMLElement {
             break;
         }
     }
-}  
+}

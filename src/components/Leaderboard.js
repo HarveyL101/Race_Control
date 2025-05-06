@@ -12,9 +12,8 @@ export class Leaderboard extends HTMLElement {
       if (!this.shadowRoot.hasChildNodes()) {
         this.showLeaderboard();
       }
-      console.log("Displaying: {Leaderboard}");
 
-      this.timer = this.shadowRoot.querySelector('#timer');
+      console.log("Displaying: {Leaderboard}");
     }
   
     clearAll() {
@@ -31,8 +30,14 @@ export class Leaderboard extends HTMLElement {
     }
   
     leaderboardUpdate() {
+      const stopwatch = document.querySelector('stop-watch');
+      const timer = stopwatch.shadowRoot.querySelector('#timer');
+      console.log(timer);
+
       runnersFinished++;
-      const time = this.timer.textContent || new Date().toISOString();
+      console.log("runnersFinished Incremented");
+
+      const time = timer.textContent || new Date().toISOString();
       const position = runnersFinished;
       
       const runnerData = { position, runner_id, time };
@@ -49,5 +54,12 @@ export class Leaderboard extends HTMLElement {
       leaderboard.appendChild(li);
     
       console.log(`${idField.id}: ${idField.textContent}`);
+    }
+
+    addEventListeners() {
+      const stopwatch = document.querySelector('stop-watch');
+      const timer = stopwatch.shadowRoot.querySelector('#timer');
+
+      timer.addEventListener('click', this.leaderboardUpdate.bind(this));
     }
   }

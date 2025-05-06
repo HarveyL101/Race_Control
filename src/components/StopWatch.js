@@ -55,6 +55,7 @@ export class StopWatch extends HTMLElement {
 
       return (`${hours}:${minutes}:${remainder}`);
     }
+
     startTimer() {
       this.startBtn.textContent = "Stop";
     
@@ -110,5 +111,10 @@ export class StopWatch extends HTMLElement {
 
       startBtn.addEventListener('click', this.timerHandler.bind(this));
       resetBtn.addEventListener('click', this.resetTimer.bind(this));
+    }
+
+    getCurrentTime() {
+
+      return this.timer ? this.timerElement.textContent : "00:00:00";
     }
   }
