@@ -1,17 +1,15 @@
-
-
-
+import { sharedState } from "./index.js";
 
 // STOPWATCH CLASS COMPONENTS
-export default class StopWatch extends HTMLElement {
+export class StopWatch extends HTMLElement {
     constructor() {
       super();
   
       this.attachShadow({ mode: 'open' });
 
-      this.time = 0;
-      this.timerInterval = null;
-      this.runnersFinished = 0;
+      this.time = sharedState.time;
+      this.timerInterval = sharedState.timerInterval;
+      this.runnersFinished = sharedState.runnersFinished;
     }
     connectedCallback() {
       if (!this.shadowRoot.hasChildNodes()) {
@@ -39,19 +37,36 @@ export default class StopWatch extends HTMLElement {
       this.clearAll();
       this.shadowRoot.appendChild(this.stopwatchContent);
     }
+    // Commented out but may be very useful when preparing rows for the database
+/*
+    parseTime(str) {
+      const newDate = new Date();
+      const [hours, minutes, seconds] = str.split(':').map(Number);
+      
+      newDate.setHours(hours, minutes, seconds, 0);
 
+      return newDate;
+    }
+*/
+    formatTime(seconds) {
+      const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
+      const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+      const remainder = String(Math.floor(seconds % 60)).padStart(2, '0');
+
+      return (`${hours}:${minutes}:${remainder}`);
+    }
     startTimer() {
       this.startBtn.textContent = "Stop";
     
       this.timerInterval = setInterval(() => {
         this.time++;
-    
-        const hours = Math.floor(this.time / 3600);
-        const minutes = Math.floor((this.time % 3600) / 60);
-        const seconds = this.time % 60;
-    
+        
         //formats time values into appropriate format of 'HH:MM:SS'
-        this.timer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+        const timeString = this.formatTime(this.time);
+    
+        console.log(`${timeString}`);
+
+        this.timer.textContent = timeString;
       }, 1000);
       
       console.log("startTimer() executed");

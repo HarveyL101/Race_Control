@@ -1,5 +1,7 @@
+import { sharedState } from "./index.js";
+
 // LEADERBOARD CLASS COMPONENTS
-export default class Leaderboard extends HTMLElement {
+export class Leaderboard extends HTMLElement {
     constructor() {
       super(); 
   
@@ -11,6 +13,8 @@ export default class Leaderboard extends HTMLElement {
         this.showLeaderboard();
       }
       console.log("Displaying: {Leaderboard}");
+
+      this.timer = this.shadowRoot.querySelector('#timer');
     }
   
     clearAll() {
@@ -28,7 +32,7 @@ export default class Leaderboard extends HTMLElement {
   
     leaderboardUpdate() {
       runnersFinished++;
-      const time = el.timer.textContent || new Date().toISOString();
+      const time = this.timer.textContent || new Date().toISOString();
       const position = runnersFinished;
       
       const runnerData = { position, runner_id, time };

@@ -1,5 +1,6 @@
+import { sharedState } from "./index.js";
 // NUMBER PAD CLASS COMPONENTS
-export default class NumberPad extends HTMLElement {
+export class NumberPad extends HTMLElement {
     constructor() {
       super();
   
@@ -10,9 +11,11 @@ export default class NumberPad extends HTMLElement {
       // prevents duplicate templates and other bugs previously experienced
       if (!this.shadowRoot.hasChildNodes()) {
         this.showNumPad();
+        console.log("Displaying: {NumberPad}")
       }
       // assigns preview field now that the shadowDOM has been rendered
       this.previewField = this.shadowRoot.querySelector('#preview');
+
       this.addEventListeners()
     }
   
@@ -45,10 +48,62 @@ export default class NumberPad extends HTMLElement {
         this.previewField.textContent = this.previewField.textContent.slice(0, -1);
       }
     }
-  
+    
+    get raceID() {
+      const race_id = 101;
+      console.log(race_id);
+      return race_id;
+    }
+    
+    get runnerID() {
+      const number = Number(this.shadowRoot.querySelector('#preview').textContent);
+      console.log(number);
+      return number;
+    }
+
+    get position() {
+      const position = sharedState.runnersFinished;
+
+      return position;
+    }
+
+    get time() {
+
+      // Allows  access to the StopWatch shadowDOM
+      const stopwatch = document.querySelector.apply('number-pad');
+      const timer = stopwatch.shadowRoot.querySelector('#timer');
+
+      console.log(timer.textContent);
+
+      return timer.textContent;
+    }
+    createRaceResult(race_id, runner_id, position, time) {
+      const newTime = new Date().toISOString();
+      return {
+        race_id: String(race_id),
+        runner_id: String(runner_id),
+        position: String(position),
+        time: time ? time : newTime
+      }
+    }
+    prepareSubmit() {
+      const raceId = this.raceID;
+      const runner_id = this.runnerID;
+      const position = this.position;
+      const time = this.time;
+      
+      const result = createRaceResult(raceId, runner_id, position, time);
+
+      return result;
+    }
+
     // WIP, needs to send the current previewField.value to the relevant position on leaderboard
-    submitPreview() {
-      console.log("Number Submitted!");
+    submitPreview(race_id, runner_id, position, time) {
+      const dataSet = [
+        {race_id: "101", runner_id: "118", position: "1", time: new Date()},
+      ];
+      dataSet.push(this.prepareSubmit());
+      console.log(dataSet);
     }
   
     // Adding function, handles empty input fields as well
