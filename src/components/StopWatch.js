@@ -1,4 +1,4 @@
-import { sharedState } from "./index.js";
+import { saveState, sharedState } from "./util.js";
 
 // STOPWATCH CLASS COMPONENTS
 export class StopWatch extends HTMLElement {
@@ -7,16 +7,12 @@ export class StopWatch extends HTMLElement {
   
       this.attachShadow({ mode: 'open' });
 
-      this.time = sharedState.time;
-      this.timerInterval = sharedState.timerInterval;
-      this.runnersFinished = sharedState.runnersFinished;
     }
     connectedCallback() {
       if (!this.shadowRoot.hasChildNodes()) {
         this.showStopwatch();
         console.log("Displaying: {StopWatch}");
       }
-
       
       this.startBtn = this.shadowRoot.querySelector('#start-stop');
       this.timer = this.shadowRoot.querySelector('#timer');
@@ -51,22 +47,20 @@ export class StopWatch extends HTMLElement {
     formatTime(seconds) {
       const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
       const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-      const remainder = String(Math.floor(seconds % 60)).padStart(2, '0');
+      const remainder = String(seconds % 60).padStart(2, '0');
 
       return (`${hours}:${minutes}:${remainder}`);
     }
 
     startTimer() {
       this.startBtn.textContent = "Stop";
-    
-      this.timerInterval = setInterval(() => {
-        this.time++;
+
+      sharedState.timerInterval = setInterval(() => {
+        sharedState.time++;
         
         //formats time values into appropriate format of 'HH:MM:SS'
-        const timeString = this.formatTime(this.time);
+        const timeString = this.formatTime(sharedState.time);
     
-        console.log(`${timeString}`);
-
         this.timer.textContent = timeString;
       }, 1000);
       
@@ -77,28 +71,35 @@ export class StopWatch extends HTMLElement {
       this.startBtn.textContent = "Start"
     
       //stops timer from running and resets this.timerInterval to allow play-pause-play 
-      clearInterval(this.timerInterval);
-      this.timerInterval = null;
+      clearInterval(sharedState.timerInterval);
+      sharedState.timerInterval = null;
     
       console.log("stopTimer() executed");
     }
 
     resetTimer() {
-      this.timerInterval = null;
-      this.time = 0;
-      this.runnersFinished = 0;
+      this.stopTimer();
+
+      // Ensuring values are reset to appropriate states
+      sharedState.time = 0;
+      sharedState.runnersFinished = 0;
       this.startBtn.textContent = "Start";
-    
-      //same as stopTimer() but resets time to base values
-      clearInterval(this.timerInterval);
-    
+      
+      saveState({ time: sharedState.time, runnersFinished: sharedState.runnersFinished });
+
+      // Removes all stored values from localStorage as well
+      if (localStorage.getItem("raceResults")) {
+        localStorage.removeItem("raceResults");
+        console.log("storage flushed!");
+      }
+      
       this.timer.textContent = "00:00:00";
       console.log("resetTimer() executed");
     } 
 
     timerHandler() {
       // if timer is running, stop it, otherwise start the timer again
-      if (this.timerInterval) {
+      if (sharedState.timerInterval) {
         this.stopTimer();
       } else {
         this.startTimer();

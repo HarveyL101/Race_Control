@@ -1,4 +1,4 @@
-import { sharedState } from "./index.js";
+import { sharedState, loadState } from "./util.js";
 
 // LEADERBOARD CLASS COMPONENTS
 export class Leaderboard extends HTMLElement {
@@ -12,7 +12,8 @@ export class Leaderboard extends HTMLElement {
       if (!this.shadowRoot.hasChildNodes()) {
         this.showLeaderboard();
       }
-
+      
+      loadState();
       console.log("Displaying: {Leaderboard}");
     }
   
@@ -28,22 +29,20 @@ export class Leaderboard extends HTMLElement {
       this.clearAll();
       this.shadowRoot.appendChild(this.leaderboardContent);
     }
-  
+
+    // Pull from local storage and display here?
     leaderboardUpdate() {
       const stopwatch = document.querySelector('stop-watch');
       const timer = stopwatch.shadowRoot.querySelector('#timer');
       console.log(timer);
 
-      runnersFinished++;
-      console.log("runnersFinished Incremented");
+      sharedState.runnersFinished++;
+      console.log("runnersFinished Incremented: ", sharedState.runnersFinished);
 
       const time = timer.textContent || new Date().toISOString();
       const position = runnersFinished;
-      
-      const runnerData = { position, runner_id, time };
-      runnersData.push(runnerData);
   
-      
+      // Creating the field to be added
       const li = document.createElement('li');
       const idField = document.createElement('input');
      
@@ -57,9 +56,8 @@ export class Leaderboard extends HTMLElement {
     }
 
     addEventListeners() {
-      const stopwatch = document.querySelector('stop-watch');
-      const timer = stopwatch.shadowRoot.querySelector('#timer');
+      const lap = stopwatch.shadowRoot.querySelector('#lap');
 
-      timer.addEventListener('click', this.leaderboardUpdate.bind(this));
+      lap.addEventListener('click', this.leaderboardUpdate.bind(this));
     }
   }

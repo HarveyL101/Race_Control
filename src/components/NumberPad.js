@@ -1,4 +1,5 @@
-import { sharedState } from "./index.js";
+import { sharedState, loadState } from "./util.js";
+
 // NUMBER PAD CLASS COMPONENTS
 export class NumberPad extends HTMLElement {
     constructor() {
@@ -17,6 +18,7 @@ export class NumberPad extends HTMLElement {
       this.previewField = this.shadowRoot.querySelector('#preview');
 
       this.addEventListeners()
+      loadState();
     }
   
     // Loops through the various NumberPad buttons to assign the listeners to allow handlePreview to function
@@ -48,14 +50,14 @@ export class NumberPad extends HTMLElement {
         this.previewField.textContent = this.previewField.textContent.slice(0, -1);
       }
     }
-    
-    get raceID() {
+    // placeholder value needs to be updated with an actual value
+    get RaceID() {
       const race_id = 101;
-      console.log("race_id: ", race_id);
+      
       return race_id;
     }
     
-    get runnerID() {
+    get RunnerID() {
       const preview = this.shadowRoot.querySelector('#preview');
 
       if (!preview || !preview.textContent) {
@@ -64,18 +66,17 @@ export class NumberPad extends HTMLElement {
       }
 
       const number = Number(preview.textContent.trim());
-      console.log("runner_id: ", number);
+
       return isNaN(number) ? null : number;
     }
 
-    get position() {
+    get Position() {
       const position = sharedState.runnersFinished;
 
       return position;
     }
 
-    get time() {
-
+    get Time() {
       // Allows  access to the StopWatch shadowDOM
       const stopwatch = document.querySelector('stop-watch');
       
@@ -84,11 +85,11 @@ export class NumberPad extends HTMLElement {
         console.log("current time from getCurrentTime(): ", currentTime);
 
         return currentTime;
+      } else {
+        console.warn("stopwatch not found/ recognised");
+
+        return "00:00:00";
       }
-
-      console.warn("stopwatch not found/ recognised");
-
-      return "00:00:00"
     }
 
     createRaceResult(race_id, runner_id, position, time) {
@@ -100,11 +101,20 @@ export class NumberPad extends HTMLElement {
         time: time ? time : newTime
       }
     }
+    // race_id, position and time currently not functional
     prepareSubmit() {
-      const raceId = this.raceID;
-      const runner_id = this.runnerID;
-      const position = this.position;
-      const time = this.time;
+      const raceId = this.RaceID;
+      const runner_id = this.RunnerID;
+      const position = this.Position;
+      const time = this.Time;
+
+      // 'register' log to account for each part of the raceResult entry
+      console.log(`
+        Race ID: ${raceId}\n
+        Runner ID: ${runner_id}\n
+        Position: ${position}\n
+        Time: ${time}\n
+      `);
       
       const result = this.createRaceResult(raceId, runner_id, position, time);
 
@@ -112,12 +122,20 @@ export class NumberPad extends HTMLElement {
     }
 
     // WIP, needs to send the current previewField.value to the relevant position on leaderboard
-    submitPreview(race_id, runner_id, position, time) {
-      const dataSet = [
-        {race_id: "101", runner_id: "118", position: "1", time: new Date()},
-      ];
-      dataSet.push(this.prepareSubmit());
-      console.log(dataSet);
+    submitRunner(race_id, runner_id, position, time) {
+      sharedState.runnersFinished++;
+      
+      const data = this.prepareSubmit();
+
+      // Get current values from localStorage or start with an empty array
+      const existingStorage = JSON.parse(localStorage.getItem("raceResults") || "[]");
+      
+      existingStorage.push(data);
+
+      // Store newly appended array
+      localStorage.setItem("raceResults", JSON.stringify(existingStorage));
+
+      console.log("Current array in localStorage: ", existingStorage);
     }
   
     // Adding function, handles empty input fields as well
@@ -138,7 +156,9 @@ export class NumberPad extends HTMLElement {
             this.deductPreview(event);
             break;
         case 'enter':
-            this.submitPreview();
+            this.submitRunner();
+            // Unicode for the No-Break Space (&nbsp) used in preview.textContent 
+            this.previewField.textContent = '\u00A0';
             break;
         default:
             this.appendPreview(value); 
