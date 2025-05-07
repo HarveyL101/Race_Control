@@ -33,6 +33,7 @@ export class NumberPad extends HTMLElement {
     clearAll() {
       this.shadowRoot.innerHTML = '';
     }
+
     // Simple getter for the num-pad-template contents
     get numPadContent() {
       return document.querySelector('#number-pad-template').content.cloneNode(true);
@@ -103,10 +104,10 @@ export class NumberPad extends HTMLElement {
     }
     // race_id, position and time currently not functional
     prepareSubmit() {
-      const raceId = this.RaceID;
-      const runner_id = this.RunnerID;
-      const position = this.Position;
-      const time = this.Time;
+      const raceId = this.RaceID; // placeholder
+      const runner_id = this.RunnerID; // runner_id working
+      const position = this.Position; // position working
+      const time = this.Time; // still not working
 
       // 'register' log to account for each part of the raceResult entry
       console.log(`
