@@ -30,10 +30,10 @@ CREATE TABLE IF NOT EXISTS races (
 
 INSERT INTO races (name, start_time, distance, location_id)
 VALUES
-    ('5k Fun Run', '09:00', 5.0, 1),
-    ('10k Charity Run', '10:00', 10.0, 2),
-    ('Half Marathon', '08:30', 21.1, 3),
-    ('Marathon', '07:00', 42.2, 4);
+    ('5k Fun Run', '09:00:00', 5.0, 1),
+    ('10k Charity Run', '10:00:00', 10.0, 2),
+    ('Half Marathon', '08:30:00', 21.1, 3),
+    ('Marathon', '07:00:00', 42.2, 4);
 
 -- Runners Table -- 
 CREATE TABLE IF NOT EXISTS runners (

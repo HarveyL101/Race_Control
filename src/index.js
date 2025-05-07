@@ -35,7 +35,7 @@ function init() {
   el.runnerCheckbox.checked = false;
   el.volunteerCheckbox.checked = false;
 
-  // adds event listeners after state is appropriately
+  // adds event listeners after state is appropriately set
   addEventListeners();
 }
 

@@ -7,4 +7,3 @@ customElements.define('number-pad', NumberPad);
 customElements.define('leaderboard-panel', Leaderboard);
 customElements.define('stopwatch-panel', StopWatch);
 
-
