@@ -14,9 +14,9 @@ const SQL_PATH = fs.readFileSync(path.resolve(__dirname, 'database.sql'), 'utf-8
 async function dbInit (db) {
     try {
       const sql = SQL_PATH;
-      console.log("Executing SQL from database.sql:\n", sql);
+      console.log("Executing SQL from database.sql");
       await db.exec(sql);
-      console.log("The database has been initialised");
+      console.log("database.sql schema has been initialised");
     } catch (error) {
       console.log("Could not Intialise database:", error.message);
       throw error;

@@ -35,6 +35,21 @@ VALUES
     ('Half Marathon', '08:30:00', 21.1, 3),
     ('Marathon', '07:00:00', 42.2, 4);
 
+-- Table for final results of a race when the number of runners falls to 1
+CREATE TABLE IF NOT EXISTS race_results (
+    race_id INTEGER PRIMARY KEY,
+    username VARCHAR(30) NOT NULL
+
+)
+-- Table for checkpoint results --
+CREATE TABLE IF NOT EXISTS lap_results (
+    lap_id INTEGER PRIMARY KEY NOT NULL,
+    race_id INTEGER NOT NULL,
+    runner_id INTEGER NOT NULL,
+    position INTEGER NOT NULL, 
+    time VARCHAR(8) NOT NULL
+    
+)
 -- Runners Table -- 
 CREATE TABLE IF NOT EXISTS runners (
     runner_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -73,3 +88,13 @@ INSERT INTO volunteers (username, password)
 VALUES 
   ('adminV', 'adminPassword'),
   ('steveB', 'Password1');
+
+/*
+View for displaying the race winner of a race using its ID, can then be manipulated by
+
+SELECT * FROM race_winner WHERE race_id = ?;
+*/
+CREATE VIEW race_winner AS 
+SELECT runner_id, MAX(lap_id) AS lap_count
+FROM lap_results
+GROUP BY runner_id;
