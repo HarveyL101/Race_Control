@@ -78,6 +78,10 @@ export class StopWatch extends HTMLElement {
     }
 
     resetTimer() {
+      const confirmed = confirm("Have you submitted your results? Your currently stored checkpoint data will be wiped.");
+
+      if (!confirmed) return;
+
       this.stopTimer();
 
       // Ensuring values are reset to appropriate states
@@ -115,7 +119,12 @@ export class StopWatch extends HTMLElement {
     }
 
     getCurrentTime() {
-
-      return this.timer ? this.timerElement.textContent : "00:00:00";
+      console.log(`getCurrentTime(): ${this.timer.textContent}`) 
+      if (this.timer) {
+        console.log(this.timer.textContent);
+       return this.timer.textContent;
+      } else {
+        return "00:00:00";
+      }
     }
   }

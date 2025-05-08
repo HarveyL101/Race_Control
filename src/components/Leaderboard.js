@@ -14,6 +14,10 @@ export class Leaderboard extends HTMLElement {
       }
       
       loadState();
+
+      this.leaderboard = this.shadowRoot.querySelector('#leaderboard-list');
+      this.lapBtn = this.shadowRoot.querySelector('#lap');
+
       console.log("Displaying: {Leaderboard}");
     }
   
@@ -32,15 +36,8 @@ export class Leaderboard extends HTMLElement {
 
     // Pull from local storage and display here?
     leaderboardUpdate() {
-      const stopwatch = document.querySelector('stop-watch');
-      const timer = stopwatch.shadowRoot.querySelector('#timer');
-      console.log(timer);
-
-      sharedState.runnersFinished++;
+      
       console.log("runnersFinished Incremented: ", sharedState.runnersFinished);
-
-      const time = timer.textContent || new Date().toISOString();
-      const position = runnersFinished;
   
       // Creating the field to be added
       const li = document.createElement('li');
@@ -50,14 +47,16 @@ export class Leaderboard extends HTMLElement {
       idField.textContent = `${el.timer.textContent}`;
     
       li.appendChild(idField);
-      leaderboard.appendChild(li);
+      this.leaderboard.appendChild(li);
     
       console.log(`${idField.id}: ${idField.textContent}`);
     }
 
-    addEventListeners() {
-      const lap = stopwatch.shadowRoot.querySelector('#lap');
+    editLeaderboard() {
+      console.log("Edit leaderboard");
+    }
 
-      lap.addEventListener('click', this.leaderboardUpdate.bind(this));
+    addEventListeners() {
+      this.lap.addEventListener('click', this.leaderboardUpdate.bind(this));
     }
   }

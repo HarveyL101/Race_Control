@@ -78,23 +78,16 @@ export class NumberPad extends HTMLElement {
     }
 
     get Time() {
-      // Allows  access to the StopWatch shadowDOM
-      const stopwatch = document.querySelector('stop-watch');
-      
-      if (stopwatch) {
-        const currentTime = stopwatch.getCurrentTime();
-        console.log("current time from getCurrentTime(): ", currentTime);
+      const stopwatch = document.querySelector('stopwatch-panel');
 
-        return currentTime;
-      } else {
-        console.warn("stopwatch not found/ recognised");
+      const result = stopwatch.getCurrentTime();
 
-        return "00:00:00";
-      }
+      return result;
     }
 
     createRaceResult(race_id, runner_id, position, time) {
       const newTime = new Date().toISOString();
+
       return {
         race_id: String(race_id),
         runner_id: String(runner_id),
@@ -104,9 +97,9 @@ export class NumberPad extends HTMLElement {
     }
     // race_id, position and time currently not functional
     prepareSubmit() {
-      const raceId = this.RaceID; // placeholder
-      const runner_id = this.RunnerID; // runner_id working
-      const position = this.Position; // position working
+      const raceId = Number(this.RaceID); // placeholder
+      const runner_id = Number(this.RunnerID); // runner_id working
+      const position = Number(this.Position); // position working
       const time = this.Time; // still not working
 
       // 'register' log to account for each part of the raceResult entry
@@ -136,7 +129,29 @@ export class NumberPad extends HTMLElement {
       // Store newly appended array
       localStorage.setItem("raceResults", JSON.stringify(existingStorage));
 
-      console.log("Current array in localStorage: ", existingStorage);
+      console.log("Current array in localStorage.raceResults: ", existingStorage);
+    }
+
+    async submitResults() {
+      const payload = JSON.parse(localStorage.getItem("raceResults"));
+      console.log(data);
+
+      try {
+        const response = await fetch('/api/race-results', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log("Result submitted: ", data);
+
+      } catch (error) {
+        console.log("Error submitting results");
+        res.status(500).send("Result unable to be submitted");
+      }
     }
   
     // Adding function, handles empty input fields as well
