@@ -31,18 +31,24 @@ export async function postRaceResults(req, res) {
     VALUES (?, ?, ?, ?)
     `);
 
-    query.run(race_id, runner_id, position, time, function(err) {
-      if (err) {
-        return res.status(500).send("Error 500: Internal Server Error")
-      }
-      res.json({ success: true, result_id: this.lastID });
-    });
+  query.run(race_id, runner_id, position, time, function(error) {
+    if (error) {
+      console.error("Error inserting into DB: ", error)
+      return res.status(500).send("Error 500: Internal Server Error")
+    }
+    res.status(201).json({ 
+      message: "Race result saved successfully",
+      id: this.runner_id
+    })
+  });
 
-    query.finalize();
+  query.finalize();
 }
 
 export async function getRaceResults(req, res) {
-  console.log("getRaceResults()");
+  const stored = localStorage.getItem('raceResults');
+
+  console.log("getRaceResults(): ", stored);
 }
 
 // useful middleware for showing file routes through the app

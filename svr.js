@@ -44,9 +44,10 @@ app.get('/volunteer/timer.html', mb.isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/volunteer/timer.html'));
 });
 
+// handlers for the current lap/ checkpoint being recorded
 // handlers for the race-results displayed on the leaderboard
-app.get('/api/race-results', mb.getRaceResults);
-app.post('/api/race-results', mb.postRaceResults);
+app.get('/api/GET-race-results', mb.getRaceResults);
+app.post('/api/POST-race-results', mb.postRaceResults);
 
 // Handler for 404 error codes
 app.use((req, res, next) => {
