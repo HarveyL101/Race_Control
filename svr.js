@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import * as mb from './messageboard.js';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+import { URL } from 'url';
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -13,8 +14,13 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 8080;
 
+function generateSessionId() {
+  const rand = "session" + "_" + Math.random().toString(16).slice(2);
+  return rand;
+}
 app.use(session({
-  secret: 'this-key-is-secret',
+  randId: generateSessionId(),
+  secret: 'n0_p33k1ng_(MM4OQuMZ7OmzrYk)',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
@@ -32,6 +38,22 @@ app.use(express.json());
 // Middleware that logs the method and url of a request
 app.use(mb.showFile);
 
+// Attempt at preventing open redirects
+app.get('/redirect', (req, res) => {
+  const inputURL = req.query.url;
+
+  try {
+    const parsed = new URL (inputURL, 'http://localhost:8080');
+
+    if (parsed.host !== 'localhost:8080') {
+      return res.status(400).send(`This redirect is unsupported: ${inputURL}`);
+    }
+
+    return res.redirect(parsed.pathname + parsed.search);
+  } catch (error) {
+    res.status(400).send(`Invalid url: ${inputURL}`);
+  }
+})
 // Routes for the /runner directory
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/index.html'));
