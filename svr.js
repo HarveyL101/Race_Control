@@ -18,6 +18,7 @@ function generateSessionId() {
   const rand = "session" + "_" + Math.random().toString(16).slice(2);
   return rand;
 }
+
 app.use(session({
   randId: generateSessionId(),
   secret: 'n0_p33k1ng_(MM4OQuMZ7OmzrYk)',
