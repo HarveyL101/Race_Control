@@ -32,15 +32,30 @@ app.use(express.json());
 // Middleware that logs the method and url of a request
 app.use(mb.showFile);
 
-// Routes
+// Routes for the /runner directory
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/index.html'));
 });
+app.get('/runner/home', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/runner/home.html'));
+})
+app.get('/runner/view', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/runner/view.html'));
+});
 
-app.post('/login', mb.postLogin);
+// Routes for the /volunteer directory
+app.get('/volunteer/home', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/volunteer/home.html'));
+});
+app.get('/volunteer/timer', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/volunteer/timer.html'));
+});
+
+
+app.post('/login', mb.login);
 
 // WIP => app.get('/home')
-app.get('/volunteer/timer.html', mb.isAuthenticated, (req, res) => {
+app.get('/volunteer/timer', mb.isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/volunteer/timer.html'));
 });
 

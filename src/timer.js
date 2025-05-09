@@ -1,6 +1,6 @@
-import { NumberPad } from "./components/NumberPad.js";
-import { Leaderboard } from "./components/Leaderboard.js";
-import { StopWatch } from "./components/StopWatch.js";
+import { NumberPad } from "./components/util.js";
+import { Leaderboard } from "./components/util.js";
+import { StopWatch } from "./components/util.js";
 
 customElements.define('number-pad', NumberPad);
 customElements.define('leaderboard-panel', Leaderboard);

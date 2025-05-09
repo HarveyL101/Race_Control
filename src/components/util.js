@@ -1,6 +1,7 @@
 export { NumberPad } from './NumberPad.js';
 export { Leaderboard } from './Leaderboard.js';
 export { StopWatch } from './StopWatch.js';
+export { RaceFinder } from './RaceFinder.js';
 
 export const sharedState = {
     time: 0,

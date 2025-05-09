@@ -12,6 +12,7 @@
   <body>
     <header>
       <h1>This Is My Timer Page</h1>
+      <button id="exit" ><a href="./home.html">Exit</a></button>
     </header>
 
     <stopwatch-panel></stopwatch-panel>
@@ -39,30 +40,31 @@
 
   <template id="leaderboard-template">
     <link rel="stylesheet" href="../css/timer.css">
+
     <div id="leaderboard-wrapper">
 
-      <form id="leaderboard-form" action="/api/race-results" method="POST">
-
         <div id="leaderboard-container">
-          <h3>Leaderboard</h3>
+          <form id="leaderboard-form" action="/api/race-results" method="POST">
+            <h3>Leaderboard</h3>
 
-          <button id="lap" type="button">Runner Finished</button>
-          <button id="finish" type="button">End Race</button>
-          
-          
-          <div id="leaderboard">
-            <p>*********************</p>
-            <ul id="leaderboard-list"></ul>
-            <p>*********************</p>
+            <button id="lap" type="button">Runner Finished</button>
+            <button id="finish" type="button">End Race</button>
+            
+            <div id="leaderboard">
+              <p>*********************</p>
+              <ul id="leaderboard-list"></ul>
+              <p>*********************</p>
+            </div>
             <div id="end-checkpoint-container">
               <button id="checkpoint-end" type="submit">Finish Lap</button>
             </div>
-          </div>
-
+          </form>
         </div>
-      </form>
+      
       <div id="end-race-container">
-        <form action="api/placeholder"></form>
+        <form action="api/placeholder">
+          <button type="submit">End Race</button>
+        </form>
       </div>
     </div>
   </template>
@@ -71,34 +73,38 @@
   <template id="number-pad-template">
     <link rel="stylesheet" href="../css/timer.css">
 
-    <div id="number-pad-container">
+    <div id="number-pad-wrapper">
 
-      <div id="preview-container">
-        <p id="preview">&nbsp;</p>
-        <p><b>Enter a runners bib number, then press 'enter'</b></p>
-      </div>
+      <div id="number-pad-container">
 
-      <div id="button-container">
-
-        <div class="num-pad">
-          <!-- First Row -->
-          <button class="num-pad-btn" data-value="1">1</button>
-          <button class="num-pad-btn" data-value="2">2</button>
-          <button class="num-pad-btn" data-value="3">3</button>
-          <!-- Second Row -->
-          <button class="num-pad-btn" data-value="4">4</button>
-          <button class="num-pad-btn" data-value="5">5</button>
-          <button class="num-pad-btn" data-value="6">6</button>
-          <!-- Third Row -->
-          <button class="num-pad-btn" data-value="7">7</button>
-          <button class="num-pad-btn" data-value="8">8</button>
-          <button class="num-pad-btn" data-value="9">9</button>
-          <!-- Fourth Row -->
-          <button class="num-pad-btn" data-value="backspace">Backspace</button>
-          <button class="num-pad-btn" data-value="0">0</button>
-          <button class="num-pad-btn" data-value="enter">Enter</button>
+        <div id="preview-container">
+          <p id="preview">&nbsp;</p>
+          <p><b>Enter a runners bib number, then press 'enter'</b></p>
+        </div>
+  
+        <div id="button-container">
+  
+          <div class="num-pad">
+            <!-- First Row -->
+            <button class="num-pad-btn" data-value="1">1</button>
+            <button class="num-pad-btn" data-value="2">2</button>
+            <button class="num-pad-btn" data-value="3">3</button>
+            <!-- Second Row -->
+            <button class="num-pad-btn" data-value="4">4</button>
+            <button class="num-pad-btn" data-value="5">5</button>
+            <button class="num-pad-btn" data-value="6">6</button>
+            <!-- Third Row -->
+            <button class="num-pad-btn" data-value="7">7</button>
+            <button class="num-pad-btn" data-value="8">8</button>
+            <button class="num-pad-btn" data-value="9">9</button>
+            <!-- Fourth Row -->
+            <button class="num-pad-btn" data-value="backspace">Backspace</button>
+            <button class="num-pad-btn" data-value="0">0</button>
+            <button class="num-pad-btn" data-value="enter">Enter</button>
+          </div>
         </div>
       </div>
     </div>
+    
   </template>
 </html>

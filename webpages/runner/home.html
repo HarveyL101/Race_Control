@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running App</title>
+    <link rel="stylesheet" href="../css/home.css">
+    <script defer src="/src/home.js"></script>
+  <!--<script><p>still need to add script</p></script>-->
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/runner/home">Home</a></li>
+          <li><a id="view-race-button" onclick='console.log("poo")'>View A Race</a></li>
+          <li><a href="/placeholder">Account</a></li>
+          <li><a href="/">Exit</a></li>
+        </ul>
+      </nav>
+      <h1>This is a header</h1>
+    </header>
+    <div id="custom-element-wrapper">
+        <button id="clear-button">Clear Container</button>
+        <div id="custom-element-container">
+
+        </div>
+    </div>
+    
+
+    <section id="race-section">
+      <div id="race-search">
+        <input type="search" name="search" id="search" size="30" maxlength="128">
+      </div>
+      <div id="race-listings">
+        <ul>
+        </ul>
+      </div>
+    </section>
+  </body>
+
+  <template id="race-finder-template">
+    <link rel="stylesheet" href="../css/home.css">
+    <div id="race-finder-wrapper">
+        <h2>Please provide an input to find your race!</h2>
+    </div>
+  </template>
+</html>

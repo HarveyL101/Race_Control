@@ -19,6 +19,19 @@ export function isAuthenticated(req, res, next) {
     res.redirect('/');
   }
 }
+export async function getCheckpointResults() {
+
+}
+
+export async function postCheckpointResults(req, res) {
+const { race_id, lap_number, runner_id, position } = req.body;
+}
+
+export async function getRaceResults() {
+  const stored = localStorage.getItem('raceResults');
+
+  console.log("getRaceResults(): ", stored);
+}
 
 export async function postRaceResults(req, res) {
   const { race_id, runner_id, position, time } = req.body;
@@ -45,13 +58,7 @@ export async function postRaceResults(req, res) {
   query.finalize();
 }
 
-export async function getRaceResults(req, res) {
-  const stored = localStorage.getItem('raceResults');
-
-  console.log("getRaceResults(): ", stored);
-}
-
-// useful middleware for showing file routes through the app
+// useful middleware for showing requested file routes in the console
 export function showFile(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
@@ -91,7 +98,7 @@ async function checkUser(req, res, table, username, password) {
   }
 }
 
-export async function postLogin(req, res) {
+export async function login(req, res) {
   try {
     const { accountType, username, password } = req.body;
     
@@ -114,14 +121,14 @@ export async function postLogin(req, res) {
     console.log("Account Type:" , accountType);
 
     // selects correct object of database
-    const selectedDb = accountType === 'runners' ? 'runners' : 'volunteers';
-  
+    const redirectURL = accountType === 'runners' ? 'runner' : 'volunteer';
+
     // Check if user exists in database
-    if (await checkUser(req, res, selectedDb, username, password)) {
+    if (await checkUser(req, res, accountType, username, password)) {
       console.log(`Successful login, welcome ${username}!`);
       req.session.loggedIn = true;
       req.session.username = username;
-      res.redirect('/home.html');
+      res.redirect(`/${redirectURL}/home`);
     } else {
       console.log("Invalid username and/ or password");
       res.redirect('/');

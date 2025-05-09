@@ -18,7 +18,7 @@ async function dbInit (db) {
       await db.exec(sql);
       console.log("database.sql schema has been initialised");
     } catch (error) {
-      console.log("Could not Intialise database:", error.message);
+      console.log("Could not Intialise database: \n");
       throw error;
     }
   }
