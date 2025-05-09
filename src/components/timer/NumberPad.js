@@ -1,4 +1,4 @@
-import { sharedState, loadState } from "./util.js";
+import { sharedState, loadState } from "../util.js";
 
 // NUMBER PAD CLASS COMPONENTS
 export class NumberPad extends HTMLElement {

@@ -1,4 +1,4 @@
-import { sharedState, loadState } from "./util.js";
+import { sharedState, loadState } from "../util.js";
 
 // LEADERBOARD CLASS COMPONENTS
 export class Leaderboard extends HTMLElement {

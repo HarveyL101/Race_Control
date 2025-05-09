@@ -1,4 +1,4 @@
-import { saveState, sharedState } from "./util.js";
+import { saveState, sharedState } from "../util.js";
 
 // STOPWATCH CLASS COMPONENTS
 export class StopWatch extends HTMLElement {
