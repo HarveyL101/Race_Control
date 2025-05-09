@@ -7,7 +7,7 @@
     <title>Race Control</title>
     <link rel="stylesheet" href="../css/home.css">
     <link rel="icon" href="/webpages/imgs/favicon.ico">
-    <script defer src="/src/home.js"></script>
+    <script type="module" defer src="/src/home.js"></script>
   </head>
 
   <body>
@@ -16,7 +16,7 @@
         <ul>
           <li><a href="/runner/home">Home</a></li>
           <li><a id="view-race-button">View A Race</a></li>
-          <li><a href="/placeholder">Account</a></li>
+          <li><a id="account-button">Account</a></li>
           <li><a href="/">Exit</a></li>
         </ul>
       </nav>
@@ -29,6 +29,8 @@
           <p>this is a test/ placeholder element</p>
           <p>this is a test/ placeholder element</p>
           <p>this is a test/ placeholder element</p>
+          <race-finder-panel id="race-finder"></race-finder-panel>
+          <account-panel id="account"></account-panel>
         </div>
     </div>
     
@@ -48,6 +50,23 @@
     <link rel="stylesheet" href="../css/home.css">
     <div id="race-finder-wrapper">
         <h2>Please provide an input to find your race!</h2>
+    </div>
+  </template>
+
+  <template id="account-template">
+    <div id="account-wrapper">
+      <h2>Account Details</h2>
+
+      <div id="account-container">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur quo ea sapiente quisquam, adipisci est, 
+          possimus dicta fugiat eum atque nesciunt, fuga ipsam itaque? Ea officia incidunt adipisci asperiores exercitationem?
+          Impedit vel corrupti nostrum possimus? Adipisci ratione corrupti, esse beatae minus deleniti architecto nemo, 
+          atque est optio cupiditate, facilis repellat expedita? Cumque totam possimus a consectetur quibusdam illum ad nam.
+          Cumque unde minus quia obcaecati? Ut quaerat ipsum sapiente at error blanditiis maiores reprehenderit, 
+          fuga animi nulla laudantium ullam eos natus! Incidunt aut blanditiis nisi, amet nobis natus consequuntur cumque!
+        </p>
+      </div>
     </div>
   </template>
 </html>

@@ -6,7 +6,7 @@
     <title>Login</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="icon" href="./imgs/favicon.ico">
-    <script defer src="/src/index.js"></script>
+    <script type="module" defer src="/src/index.js"></script>
   </head>
 
   <body>
@@ -20,39 +20,38 @@
         <h4>(A user would also come under 'Runner')</h4>
       </div>
 
-      <div id="custom-element-container">
-        <login-panel id="login-panel"></login-panel>
-        <register-panel id="register-panel"></register-panel>
-      </div>
-    </div>
-
-    
-      
+      <login-panel id="login-panel"></login-panel>
     </div>
     
   </body>
 
   <template id="login-template">
     <link rel="stylesheet" href="css/index.css">
+
     <div id="login-container">
       <form id="login-form" action="/login" method="POST">
-        Volunteer:<input id="volunteer-chk" type="checkbox">
-        Runner:<input id="runner-chk" type="checkbox">
-        <label>Please enter a username:
+        <div id="checkbox-section">
+          <p>Volunteer:<input type="checkbox" id="volunteer-chk" checked="false"></p>
+          <p>Runner:<input type="checkbox" id="runner-chk" checked="false"></p>
+        </div>
+        
+        <label for="username">Please enter a username:
           <input type="text" id="username" name="username" required>
         </label>
-        <label>Please enter a password:
+        <label for="password">Please enter a password:
           <input type="password" id="password" name="password" required>
         </label>
-        <input type="hidden" id="account-type" name="accountType" value="peepeepoopoo" onchange=update()>
+        <input type="hidden" id="account-type" name="accountType" value="placeholder">
         <button type="submit">Submit</button>
       </form>
     </div>
+
   </template>
 
+<!-- Testing if register can be simply included within login class
   <template id="register-template">
     <link rel="stylesheet" href="css/index.css">
-    <div id="register-container">
+    <div class="LR-container">
       <form id="register-form" action="/register" method="POST">
           <label>Please enter a username:
             <input type="text" id="username" name="username" required>
@@ -60,9 +59,10 @@
           <label>Please enter a password:
             <input type="password" id="password" name="password" required>
           </label>
-        <input type="hidden" id="account-type" name="accountType" value="peepeepoopoo" onchange=update()>
         <button type="submit">Submit</button>
       </form>
     </div>
   </template>
+-->
+  
 </html>
