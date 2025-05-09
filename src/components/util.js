@@ -1,9 +1,9 @@
-export { NumberPad } from './NumberPad.js';
-export { Leaderboard } from './Leaderboard.js';
-export { StopWatch } from './StopWatch.js';
+export { NumberPad } from './timer/NumberPad.js';
+export { Leaderboard } from './timer/Leaderboard.js';
+export { StopWatch } from './timer/StopWatch.js';
 export { RaceFinder } from './RaceFinder.js';
 export { Login } from './login/Login.js';
-export { Register } from './login/Register.js';
+export { Account } from './Account.js'
 
 export const sharedState = {
     time: 0,
@@ -11,6 +11,7 @@ export const sharedState = {
     runnersFinished: 0
 };
 
+// My method of keeping track of variables relevant to all three components in timer.html
 export function saveState({ time = sharedState.time, runnersFinished = sharedState.runnersFinished }) {
 
   localStorage.setItem("sharedState", JSON.stringify({ time, runnersFinished  }));
