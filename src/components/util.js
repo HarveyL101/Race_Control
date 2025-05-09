@@ -2,6 +2,8 @@ export { NumberPad } from './NumberPad.js';
 export { Leaderboard } from './Leaderboard.js';
 export { StopWatch } from './StopWatch.js';
 export { RaceFinder } from './RaceFinder.js';
+export { Login } from './login/Login.js';
+export { Register } from './login/Register.js';
 
 export const sharedState = {
     time: 0,

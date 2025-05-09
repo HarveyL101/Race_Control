@@ -1,3 +1,6 @@
+import { Login, Register } from './components/util.js';
+
+
 const el = {};
 
 function runnerSetup() {
@@ -38,5 +41,9 @@ function init() {
   // adds event listeners after state is appropriately set
   addEventListeners();
 }
+
+
+customElements.define('login-panel', Login);
+customElements.define('register-panel', Register);
 
 init();

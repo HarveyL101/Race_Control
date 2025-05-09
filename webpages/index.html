@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="icon" href="./imgs/favicon.ico">
+    <script defer src="/src/index.js"></script>
   </head>
 
   <body>
@@ -13,17 +14,46 @@
       <h1>Login To Your Account!</h1>
     </header>
     
-    <div id="volunteer-runner">
-      <div>
+    <div id="page-wrapper">
+      <div id="tooltip">
         <h2>Are you a Volunteer or a Runner?</h2>
         <h4>(A user would also come under 'Runner')</h4>
-        Volunteer:<input id="volunteer-chk" type="checkbox">
-        Runner:<input id="runner-chk" type="checkbox">
+      </div>
+
+      <div id="custom-element-container">
+        <login-panel id="login-panel"></login-panel>
+        <register-panel id="register-panel"></register-panel>
       </div>
     </div>
 
+    
+      
+    </div>
+    
+  </body>
+
+  <template id="login-template">
+    <link rel="stylesheet" href="css/index.css">
     <div id="login-container">
       <form id="login-form" action="/login" method="POST">
+        Volunteer:<input id="volunteer-chk" type="checkbox">
+        Runner:<input id="runner-chk" type="checkbox">
+        <label>Please enter a username:
+          <input type="text" id="username" name="username" required>
+        </label>
+        <label>Please enter a password:
+          <input type="password" id="password" name="password" required>
+        </label>
+        <input type="hidden" id="account-type" name="accountType" value="peepeepoopoo" onchange=update()>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </template>
+
+  <template id="register-template">
+    <link rel="stylesheet" href="css/index.css">
+    <div id="register-container">
+      <form id="register-form" action="/register" method="POST">
           <label>Please enter a username:
             <input type="text" id="username" name="username" required>
           </label>
@@ -34,12 +64,5 @@
         <button type="submit">Submit</button>
       </form>
     </div>
-      
-    </div>
-    <script defer src="/src/index.js"></script>
-  </body>
-
-  <template id="register-template">
-
   </template>
 </html>

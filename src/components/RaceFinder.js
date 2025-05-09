@@ -11,7 +11,7 @@ export class RaceFinder extends HTMLElement {
             console.log("Displaying {RaceFinder}");
         }
 
-
+        
     }
     clearAll() {
         this.shadowRoot.innerHTML = '';

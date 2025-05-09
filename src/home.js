@@ -1,17 +1,12 @@
-import { RaceFinder } from "./components/util.js";
-
 const el = {
     container: document.querySelector('#custom-element-container'),
-    viewBtn: document.querySelector('#view-race-button')
+    viewBtn: document.querySelector('#view-race-button'),
+    clearBtn: document.querySelector('#clear-button')
 };
 
 function clearContainer() {
-
-    while (el.container.hasChildNodes) {
-        el.container.removeChild();
-
-        console.log("Node Removed!");
-    }
+    el.container.innerHTML = '';
 }
 
-viewBtn.addEventlistener('click', RaceFinder.showRaceFinder);
+el.viewBtn.addEventListener('click', clearContainer);
+el.clearBtn.addEventListener('click', clearContainer);
