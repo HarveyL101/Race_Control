@@ -11,7 +11,7 @@
     "start": "node svr.js",
     "dev": "nodemon svr.js",
     "test": "echo \"Error: no tests specidied\" && exit 1",
-    "setup": "echo \"hiya\" && npm run setupdb",
+    "setup": "echo \"Running Database Setup Script...\n\" && npm run setupdb",
     "setupdb": "node database/setup.js"
   },
   "type": "module"
