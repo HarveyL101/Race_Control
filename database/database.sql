@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS runners (
 
 INSERT INTO runners (username, password) 
 VALUES 
-    ('adminR', 'adminPassword'),
+    ('dev', 'devP'),
     ('RichB', 'manHooRuns5'),
     ('lwhates0', 'cA1''99#2`hTa&'),
     ('cshane1', 'rT2\3S>i=.c|pS'),
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS volunteers (
 
 INSERT INTO volunteers (username, password) 
 VALUES 
-  ('adminV', 'adminPassword'),
+  ('dev', 'devP'),
   ('steveB', 'Password1');
 
 -- Table for final results of a race when the number of runners falls to 1
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS race_results (
 );
 -- Table for checkpoint results --
 CREATE TABLE IF NOT EXISTS lap_results (
-    lap_id INTEGER PRIMARY KEY NOT NULL,
+    lap_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     race_id INTEGER NOT NULL,
     lap_number INTEGER NOT NULL,
     runner_id INTEGER NOT NULL,
