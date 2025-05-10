@@ -33,7 +33,7 @@ export class Leaderboard extends HTMLElement {
       this.clearAll();
       this.shadowRoot.appendChild(this.leaderboardContent);
     }
-    
+
     // Pull from local storage and display here?
     leaderboardUpdate() {
       
@@ -41,9 +41,7 @@ export class Leaderboard extends HTMLElement {
   
       // Creating the field to be added
       const li = document.createElement('li');
-      const content = document.createElement('p');
       
-      //content.textContent = 
       idField.id = `runner-${runnersFinished}`;
       idField.textContent = `${el.timer.textContent}`;
     
