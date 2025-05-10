@@ -45,18 +45,37 @@
     <div id="leaderboard-wrapper">
 
         <div id="leaderboard-container">
-          <form id="leaderboard-form" action="/api/race-results" method="POST">
+          <form id="leaderboard-form" action="/api/checkpoint-results" method="post">
+
             <h3>Leaderboard</h3>
 
-            <button id="lap" type="button">Runner Finished</button>
-            <button id="finish" type="button">End Race</button>
-            
             <div id="leaderboard">
               <p>*********************</p>
               <ul id="leaderboard-list"></ul>
+              <h4>Leaderboard Table</h4>
+
+              <p id="table-header">Current Checkpoint results will be displayed here...</p>
+
+              <table border="1" id="leaderboard-table">
+                <thead>
+                  <tr id="header-row">
+                    <td>Position</td>
+                    <td>Runner ID</td>
+                    <td>Lap Time (HH:MM:SS)</td>
+                  </tr>
+                </thead>
+                <tbody id="table-body">
+                  <tr id="data-row">
+                    <td>Placeholder Data Row</td>
+                    <td>Placeholder Data Row</td>
+                    <td>Placeholder Data Row</td>
+                  </tr>
+                </tbody>
+
+              </table>
               <p>*********************</p>
             </div>
-            <div id="end-checkpoint-container">
+            <div id="submit-checkpoint">
               <button id="checkpoint-end" type="submit">Finish Lap</button>
             </div>
           </form>
