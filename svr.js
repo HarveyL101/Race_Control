@@ -83,6 +83,8 @@ app.get('/volunteer/timer', mb.isAuthenticated, (req, res) => {
 });
 
 // handlers for the current lap/ checkpoint being recorded
+app.get('/api/checkpoint-results', mb.getCheckpointResults);
+app.post('/api/checkpoint-results', mb.postCheckpointResults);
 // handlers for the race-results displayed on the leaderboard
 app.get('/api/race-results', mb.getRaceResults);
 app.post('/api/race-results', mb.postRaceResults);

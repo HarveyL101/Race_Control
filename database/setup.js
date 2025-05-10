@@ -23,8 +23,8 @@ async function dbInit (db) {
     }
   }
 
-  // function to open a db connection as needed
-async function connect() {
+// function to open a db connection as needed
+export async function connect() {
     try {
         const db = await open({
             filename: DB_PATH,
@@ -40,7 +40,7 @@ async function connect() {
     }
   }
 
-export default async function initCon() {
+async function initCon() {
   try {
     const shouldInit = !fs.existsSync(DB_PATH) || fs.statSync(DB_PATH).size === 0;
     const db = await connect();
@@ -59,3 +59,5 @@ export default async function initCon() {
     throw error;
   }
 }
+
+initCon();
