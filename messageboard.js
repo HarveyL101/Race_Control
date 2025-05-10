@@ -1,7 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import initCon from './database/setup.js';
-import session from 'express-session';
+import { connect } from './database/setup.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const permittedTables = ['runners', 'volunteers'];
 
 // global variable for one consistent connection, reduces resource exhaustion
-const db = await initCon();
+const db = await connect();
 
 export function isAuthenticated(req, res, next) {
   if (req.session && req.session.loggedIn) {
@@ -19,51 +18,83 @@ export function isAuthenticated(req, res, next) {
     res.redirect('/');
   }
 }
-export async function getCheckpointResults() {
 
+// LAP RELATED CODE
+// {
+export async function getLapResults(req, res) {
+  console.log("getLapResults()");
 }
 
-export async function postCheckpointResults(req, res) {
-const { race_id, lap_number, runner_id, position } = req.body;
-}
-
-export async function getRaceResults() {
-  const stored = localStorage.getItem('raceResults');
-
-  console.log("getRaceResults(): ", stored);
-}
-
-export async function postRaceResults(req, res) {
-  const { race_id, runner_id, position, time } = req.body;
-
-  if (!race_id || !runner_id || !position || !time) {
+export async function postLapResults(req, res) {
+  const { race_id, lap_number, runner_id, position, time } = req.body;
+  
+  if (!race_id || !lap_number || !runner_id || !position || !time) {
     return res.status(400).send("Error 400: Missing required fields");
   }
-  const query = db.prepare(`
-    INSERT INTO race_results (race_id, runner_id, position, time)
-    VALUES (?, ?, ?, ?)
+
+  try {
+    const transaction = await db.transaction(); // Begins transaction
+
+    const query = await transaction.prepare(`
+      INSERT INTO lap_results (race_id, lap_number, runner_id, position, time)
+      VALUES (?, ?, ?, ?, ?)
     `);
+  
+    await query.run(query, [race_id, lap_number, runner_id, position, time]);
 
-  query.run(race_id, runner_id, position, time, function(error) {
-    if (error) {
-      console.error("Error inserting into DB: ", error)
-      return res.status(500).send("Error 500: Internal Server Error")
-    }
-    res.status(201).json({ 
-      message: "Race result saved successfully",
-      id: this.runner_id
-    })
-  });
+    transaction.commit(); // Finalises transaction on successfull insert
+    res.status(201).json({ message: "Lap entry saved successfully" });
 
-  query.finalize();
+  } catch (error) {
+    console.log("Error inserting into DB: ", error);
+
+    await transaction.rollback();
+    return res.status(500).send("Error 500: Internal Server Error");
+  }
+  
 }
+// }
 
-// useful middleware for showing requested file routes in the console
+// RACE RELATED CODE
+// {
+  export async function getRaceResults() {
+    const stored = localStorage.getItem('raceResults');
+  
+    console.log("getRaceResults(): ", stored);
+  }
+  
+  export async function postRaceResults(req, res) {
+    const { race_id, runner_id, position, time } = req.body;
+  
+    if (!race_id || !runner_id || !position || !time) {
+      return res.status(400).send("Error 400: Missing required fields");
+    }
+
+    try {
+      const query = await db.prepare(`
+        INSERT INTO race_results (race_id, runner_id, position, time)
+        VALUES (?, ?, ?, ?)
+        `);
+    
+      const result = await query.run(query, [race_id, runner_id, position, time]);
+    
+      result.finalize();
+    } catch(error) {
+      console.error("Error inserting into DB: ", error)
+      return res.status(500).send("Error 500: Internal Server Error");
+    }
+  }
+// }
+
+
+// Prints the request type and url in the console (useful for debugging)
 export function showFile(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
 }
 
+// LOGIN RELATED CODE
+// {
 async function getUser(table, username, password) {
   try {
     console.log("Value passed to table: ", table);
@@ -79,12 +110,7 @@ async function getUser(table, username, password) {
   }
 }
 
-//needs debugging
 async function checkUser(req, res, table, username, password) {
-  // debug logs
-  console.log("Table:", table);
-  console.log("Username:", username);
-  console.log("Password:", password);
 
   if (username, password !== null) {
     try {
@@ -140,3 +166,4 @@ export async function login(req, res) {
     return;
   } 
 }
+// }
