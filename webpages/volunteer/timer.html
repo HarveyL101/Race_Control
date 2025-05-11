@@ -45,7 +45,7 @@
     <div id="leaderboard-wrapper">
 
         <div id="leaderboard-container">
-          <form id="leaderboard-form" action="/api/lap-results" method="post">
+          
 
             <h3>Leaderboard</h3>
 
@@ -76,17 +76,15 @@
               <p>*********************</p>
             </div>
             <div id="submit-lap">
-              <button id="lap-end" type="submit">Finish Lap</button>
+              <button id="refresh-button" type="button">Refresh Leaderboard</button>
+              <button id="lap-end" type="button">Finish Lap</button>
             </div>
-          </form>
         </div>
       
       <div id="end-race-container">
         <p>*******************************</p>
         <h4>New Section</h4>
-        <form action="api/placeholder">
-          <button type="submit">End Race</button>
-        </form>
+        <button id="" type="button">End Race</button>
       </div>
     </div>
   </template>

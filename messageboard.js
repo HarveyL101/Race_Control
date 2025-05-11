@@ -45,10 +45,11 @@ export async function getLapResults(req, res) {
 }
 
 export async function postLapResults(req, res) {
+  // required fields: race_id, lap_number, runner_id, position, time
   console.log("postLapResults()");
 
   const { race_id, lap_number, runner_id, position, time } = req.body;
-
+  
   if (!race_id || !lap_number || !runner_id || !position || !time) {
     return res.status(400).json({ 
       message: "Error 400: Missing required fields",

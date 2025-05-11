@@ -96,8 +96,8 @@ View for displaying the race winner of a race using its ID, can then be manipula
 */
 
 -- Shows all the races a runner has won
-SELECT * FROM winner_view WHERE race_id = ?;
-CREATE VIEW race_winner AS 
+-- Query Example: => SELECT * FROM winner_view WHERE race_id = ?;
+CREATE VIEW winner_view AS 
 SELECT 
     runner_id, 
     MAX(lap_id) AS lap_count
