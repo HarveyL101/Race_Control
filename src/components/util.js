@@ -8,7 +8,8 @@ export { Account } from './Account.js'
 export const sharedState = {
     time: 0,
     timerInterval: null,
-    runnersFinished: 0
+    runnersFinished: 0,
+    lapsFinished: 0
 };
 
 // My method of keeping track of variables relevant to all three components in timer.html
