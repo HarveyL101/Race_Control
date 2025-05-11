@@ -4,7 +4,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/timer.css">
+    <link rel="stylesheet" href="../css/timer.css">
     <link rel="icon" href="/webpages/imgs/favicon.ico">
     <script type="module" defer src="/src/timer.js"></script>
     <title>Timer</title>
@@ -45,7 +45,7 @@
     <div id="leaderboard-wrapper">
 
         <div id="leaderboard-container">
-          <form id="leaderboard-form" action="/api/checkpoint-results" method="post">
+          <form id="leaderboard-form" action="/api/lap-results" method="post">
 
             <h3>Leaderboard</h3>
 
@@ -60,7 +60,7 @@
                 <thead>
                   <tr id="header-row">
                     <td>Position</td>
-                    <td>Runner ID</td>
+                    <td>Runner</td>
                     <td>Lap Time (HH:MM:SS)</td>
                   </tr>
                 </thead>
@@ -75,13 +75,15 @@
               </table>
               <p>*********************</p>
             </div>
-            <div id="submit-checkpoint">
-              <button id="checkpoint-end" type="submit">Finish Lap</button>
+            <div id="submit-lap">
+              <button id="lap-end" type="submit">Finish Lap</button>
             </div>
           </form>
         </div>
       
       <div id="end-race-container">
+        <p>*******************************</p>
+        <h4>New Section</h4>
         <form action="api/placeholder">
           <button type="submit">End Race</button>
         </form>
