@@ -122,18 +122,18 @@ export class NumberPad extends HTMLElement {
       const data = this.prepareSubmit();
 
       // Get current values from localStorage or start with an empty array
-      const existingStorage = JSON.parse(localStorage.getItem("raceResults") || "[]");
+      const existingStorage = JSON.parse(localStorage.getItem("lapResults") || "[]");
       
       existingStorage.push(data);
 
       // Store newly appended array
-      localStorage.setItem("raceResults", JSON.stringify(existingStorage));
+      localStorage.setItem("lapResults", JSON.stringify(existingStorage));
 
-      console.log("Current array in localStorage.raceResults: ", existingStorage);
+      console.log("Current array in localStorage.lapResults: ", existingStorage);
     }
 
     async submitResults() {
-      const payload = JSON.parse(localStorage.getItem("raceResults"));
+      const payload = JSON.parse(localStorage.getItem("lapResults"));
       console.log(data);
 
       try {

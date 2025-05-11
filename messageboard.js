@@ -23,13 +23,37 @@ export function isAuthenticated(req, res, next) {
 // {
 export async function getLapResults(req, res) {
   console.log("getLapResults()");
+
+  try {
+    const query = await db.all(`
+      SELECT
+        lap_results.position, 
+        runners.username,
+        lap_results.time
+      FROM lap_results
+      JOIN runners ON lap_results.runner_id = runners.id
+      ORDER BY lap_results.position ASC
+    `);
+
+    console.log("getLapResults(): Success!");
+
+    return res.json(query);
+  } catch(error) {
+    console.log("getLapResults(): Failed", error);
+    return res.status(500).send("Error 500: Lap Results Not Found.");
+  }
 }
 
 export async function postLapResults(req, res) {
+  console.log("postLapResults()");
+
   const { race_id, lap_number, runner_id, position, time } = req.body;
-  
+
   if (!race_id || !lap_number || !runner_id || !position || !time) {
-    return res.status(400).send("Error 400: Missing required fields");
+    return res.status(400).json({ 
+      message: "Error 400: Missing required fields",
+      received: req.body
+    });
   }
 
   try {
@@ -40,24 +64,26 @@ export async function postLapResults(req, res) {
       VALUES (?, ?, ?, ?, ?)
     `);
   
-    await query.run(query, [race_id, lap_number, runner_id, position, time]);
+    await query.run(race_id, lap_number, runner_id, position, time);
 
     transaction.commit(); // Finalises transaction on successfull insert
-    res.status(201).json({ message: "Lap entry saved successfully" });
+    // Confirmation of success
+    return res.status(201).json({ 
+      message: "Lap entry saved successfully",
+      id: runner_id
+    });
 
   } catch (error) {
     console.log("Error inserting into DB: ", error);
-
     await transaction.rollback();
     return res.status(500).send("Error 500: Internal Server Error");
   }
-  
 }
 // }
 
 // RACE RELATED CODE
 // {
-  export async function getRaceResults() {
+  export async function getRaceResults(req, res) {
     const stored = localStorage.getItem('raceResults');
   
     console.log("getRaceResults(): ", stored);

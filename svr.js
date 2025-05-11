@@ -15,8 +15,8 @@ const app = express();
 const PORT = 8080;
 
 function generateSessionId() {
-  const rand = "session" + "_" + Math.random().toString(16).slice(2);
-  return rand;
+  return ("session" + "_" + Math.random().toString(16).slice(2));
+  
 }
 
 app.use(session({
@@ -83,8 +83,8 @@ app.get('/volunteer/timer', mb.isAuthenticated, (req, res) => {
 });
 
 // handlers for the current lap/ checkpoint being recorded
-app.get('/api/checkpoint-results', mb.getCheckpointResults);
-app.post('/api/checkpoint-results', mb.postCheckpointResults);
+app.get('/api/lap-results', mb.getLapResults);
+app.post('/api/lap-results', mb.postLapResults);
 // handlers for the race-results displayed on the leaderboard
 app.get('/api/race-results', mb.getRaceResults);
 app.post('/api/race-results', mb.postRaceResults);
