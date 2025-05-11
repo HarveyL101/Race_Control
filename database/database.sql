@@ -93,12 +93,25 @@ CREATE TABLE IF NOT EXISTS lap_results (
 );
 /*
 View for displaying the race winner of a race using its ID, can then be manipulated by
-
-SELECT * FROM race_winner WHERE race_id = ?;
 */
+
+-- Shows all the races a runner has won
+SELECT * FROM winner_view WHERE race_id = ?;
 CREATE VIEW race_winner AS 
-SELECT runner_id, MAX(lap_id) AS lap_count
+SELECT 
+    runner_id, 
+    MAX(lap_id) AS lap_count
 FROM lap_results
 GROUP BY runner_id;
 
+-- View to display leaderboard (WIP, focussing on core functionality atm)
+/* 
+CREATE VIEW leaderboard_view AS 
+SELECT
+    position,
+    runners.username,
+    time,
+FROM lap_results
+JOIN runners ON runners.username
+*/
 -- Could include a view that shows the runners personal stats by race?
