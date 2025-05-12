@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../css/findRace.css">
+        <link rel="icon" href="/webpages/imgs/favicon.ico">
+        <script type="module" defer src="/src/timer.js"></script>
+        <title>Find Race</title>
+      </head>
+
+    <body>
+        <h1>Placeholder</h1>
+
+        <div id="page-wrapper">
+            <div id="search-container">
+                <h3>Search Container</h3>
+                <form action="/api/find-race"></form>
+                <input type="search" name="" id="search-bar">
+            </div>
+
+            <div>
+                <!--Go with this option for race selection, race results can be pulled from db and appended to 'race-options'-->
+                <h3>Test</h3>
+                <input list="race-options" id="race_id" name="race_id">
+
+                <datalist id="race-options">
+                    <option value="Placeholder"></option>
+                    <option value="Placeholder"></option>
+                    <option value="Placeholder"></option>
+                    <option value="Placeholder"></option>
+                    <option value="Placeholder"></option>
+                </datalist>
+            </div>
+        </div>
+    </body>
+</html>

@@ -88,6 +88,9 @@ app.post('/api/lap-results', mb.postLapResults);
 // handlers for the race-results displayed on the leaderboard
 app.get('/api/race-results', mb.getRaceResults);
 app.post('/api/race-results', mb.postRaceResults);
+// handlers for searching for a race in find-race
+app.get('/api/find-race', mb.getRaces);
+app.post('/api/find-race', mb.postRace);
 
 // Handler for 404 error codes
 app.use((req, res, next) => {

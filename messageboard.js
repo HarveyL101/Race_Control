@@ -18,8 +18,18 @@ export function isAuthenticated(req, res, next) {
     res.redirect('/');
   }
 }
+// Handlers for '/api/find-race' endpoint
+// {
+export async function getRaces(req, res) {
+  console.log("getRaces()");
+}
 
-// LAP RELATED CODE
+export async function postRace(req, res) {
+  
+}
+// }
+
+// Handlers for '/api/lap-results' endpoint
 // {
 export async function getLapResults(req, res) {
   console.log("getLapResults()");
@@ -82,7 +92,7 @@ export async function postLapResults(req, res) {
 }
 // }
 
-// RACE RELATED CODE
+// Handlers for '/api/race-results' endpoint
 // {
   export async function getRaceResults(req, res) {
     const stored = localStorage.getItem('raceResults');
