@@ -9,7 +9,7 @@ export const sharedState = {
     time: 0,
     timerInterval: null,
     runnersFinished: 0,
-    lapsFinished: 0
+    lapsFinished: 1
 };
 
 // My method of keeping track of variables relevant to all three components in timer.html

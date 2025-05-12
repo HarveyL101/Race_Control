@@ -13,12 +13,13 @@ export class Leaderboard extends HTMLElement {
         this.showLeaderboard();
       }
       
-      loadState();
-
+      
       this.leaderboard = this.shadowRoot.querySelector('#table-body');
       this.lapBtn = this.shadowRoot.querySelector('#lap-end');
       this.refreshBtn = this.shadowRoot.querySelector('#refresh-button');
 
+      loadState();
+      this.addEventListeners();
       console.log("Displaying: {Leaderboard}");
     }
   
@@ -35,94 +36,14 @@ export class Leaderboard extends HTMLElement {
       this.shadowRoot.appendChild(this.leaderboardContent);
     }
 
-    // placeholder value needs to be updated with an actual value
-    get RaceID() {
-      const race_id = 101;
-      
-      return race_id;
-    }
-
-    get LapCount() { 
-      return sharedState.lapsFinished;
-    }
-    
-    get RunnerID() {
-      const preview = this.shadowRoot.querySelector('#preview');
-
-      if (!preview || !preview.textContent) {
-        console.warn("Preview is either empty or not found");
-        return null;
-      }
-
-      const number = Number(preview.textContent.trim());
-
-      return isNaN(number) ? null : number;
-    }
-
-    get Position() {
-      return sharedState.runnersFinished;
-    }
-
-    get Time() {
-      const stopwatch = document.querySelector('stopwatch-panel');
-
-      const result = stopwatch.getCurrentTime();
-
-      return result;
-    }
-
-    createLapResult(race_id, lapCount, runner_id, position, time) {
-      const newTime = new Date().toISOString();
-
-      return {
-        race_id: String(race_id),
-        lap_number: Number(lapCount),
-        runner_id: String(runner_id),
-        position: String(position),
-        time: time ? time : newTime
-      }
-    }
-    // race_id, position and time currently not functional
-    prepareSubmit() {
-      const raceId = Number(this.RaceID); // placeholder
-      const lapCount = Number(this.LapCount);
-      const runner_id = Number(this.RunnerID); // runner_id working
-      const position = Number(this.Position); // position working
-      const time = this.Time; // still not working
-
-      // 'register' log to account for each part of the raceResult entry
-      console.log(`
-        Race ID: ${raceId}\n
-        Lap Count: ${lapCount}\n
-        Runner ID: ${runner_id}\n
-        Position: ${position}\n
-        Time: ${time}\n
-      `);
-      
-      const result = this.createLapResult(raceId, lapCount, runner_id, position, time);
-
-      return result;
-    }
-
-    // WIP, needs to send the current previewField.value to the relevant position on leaderboard
-    submitRunner(race_id, runner_id, position, time) {
-      sharedState.runnersFinished++;
-      
-      const data = this.prepareSubmit();
-
-      // Get current values from localStorage or start with an empty array
-      const existingStorage = JSON.parse(localStorage.getItem("lapResults") || "[]");
-      
-      existingStorage.push(data);
-
-      // Store newly appended array
-      localStorage.setItem("lapResults", JSON.stringify(existingStorage));
-
-      console.log("Current array in localStorage.lapResults: ", existingStorage);
-    }
-
     async sendLapResults() {
+      sharedState.lapsFinished++;
+
       const payload = await JSON.parse(localStorage.getItem('lapResults'));
+      console.log(`
+        sendLapResults()\n
+        payload: ${payload}  
+      `);
 
       try {
         const response = await fetch('/api/lap-results', {
@@ -132,7 +53,7 @@ export class Leaderboard extends HTMLElement {
           },
           body: JSON.stringify(payload)
         });
-
+        
         if (response.ok) {
           // On Success - Clear localStorage
           localStorage.removeItem('lapResults');
@@ -179,7 +100,7 @@ export class Leaderboard extends HTMLElement {
 
     addEventListeners() {
       this.refreshBtn.addEventListener('click', this.refresh.bind(this));
-      this.lap.addEventListener('click', this.update.bind(this));
+      this.lapBtn.addEventListener('click', this.sendLapResults.bind(this));
 
       // being used as a test to see if db is being uploaded to correctly, 
       // (will later be found in the runner version of the timer)
