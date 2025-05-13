@@ -39,34 +39,30 @@ export class Leaderboard extends HTMLElement {
     async sendLapResults() {
       sharedState.lapsFinished++;
 
-      const payload = await JSON.parse(localStorage.getItem('lapResults'));
-      console.log(`
-        sendLapResults()\n
-        payload: ${payload}  
-      `);
-
       try {
-        const response = await fetch('/api/lap-results', {
+        const payload = await JSON.parse(localStorage.getItem('lapResults'));
+        console.log("payload to send: ", payload);
+
+        const response = await fetch('api/lap-results', {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(payload)
-        });
+        }); 
         
         if (response.ok) {
           // On Success - Clear localStorage
           localStorage.removeItem('lapResults');
           console.log("Local Storage Cleared, Lap Results Submitted.");
         } else {
-          console.log("Failed to post ap results", response.status);
+          console.warn("Failed to post lap results", response);
         }
         const result = await response.json();
-        console.log(result);
+        console.log("Response from server: ", result);
 
       } catch(error) {
-        console.log("Error fetching leaderboard results", error);
-        return console.warn("Error 500: Leaderboard Results Not Found.");
+        return console.warn("Error 500: Leaderboard Results Not Found: ", error);
       }
     }
 

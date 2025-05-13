@@ -58,35 +58,39 @@ export async function postLapResults(req, res) {
   // required fields: race_id, lap_number, runner_id, position, time
   console.log("postLapResults()");
 
-  const { race_id, lap_number, runner_id, position, time } = req.body;
+  const lapResults = req.body;
   
-  if (!race_id || !lap_number || !runner_id || !position || !time) {
+  if (!Array.isArray(lapResults) || lapResults.length === 0) {
     return res.status(400).json({ 
       message: "Error 400: Missing required fields",
-      received: req.body
+      received: lapResults
     });
   }
 
-  try {
-    const transaction = await db.transaction(); // Begins transaction
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION") // Begins transaction
 
-    const query = await transaction.prepare(`
+    const query = db.prepare(`
       INSERT INTO lap_results (race_id, lap_number, runner_id, position, time)
       VALUES (?, ?, ?, ?, ?)
     `);
   
-    await query.run(race_id, lap_number, runner_id, position, time);
+    query.run(race_id, lap_number, runner_id, position, time);
 
-    transaction.commit(); // Finalises transaction on successfull insert
+    db.run("COMMIT"); // Finalises transaction on successfull insert
     // Confirmation of success
     return res.status(201).json({ 
       message: "Lap entry saved successfully",
+      received: lapResults,
       id: runner_id
     });
+  })
+  try {
+    
 
   } catch (error) {
     console.log("Error inserting into DB: ", error);
-    await transaction.rollback();
+    db.run("ROLLBACK")
     return res.status(500).send("Error 500: Internal Server Error");
   }
 }
