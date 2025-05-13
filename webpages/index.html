@@ -10,18 +10,17 @@
   </head>
 
   <body>
-    <header>
-      <h1>Login To Your Account!</h1>
-    </header>
-    
     <div id="page-wrapper">
-      <div id="tooltip">
-        <h2>Are you a Volunteer or a Runner?</h2>
-        <h4>(A user would also come under 'Runner')</h4>
-      </div>
+      <header>
+        <h1>Login To Your Account!</h1>
+      </header>
 
       <login-panel id="login-panel"></login-panel>
+
     </div>
+    
+    
+    
     
   </body>
 
@@ -30,7 +29,14 @@
 
     <div id="login-container">
       <form id="login-form" action="/login" method="POST">
+
+        <div id="tooltip">
+          <h2>Are you a Volunteer or a Runner?</h2>
+          <h4>(A user would also come under 'Runner')</h4>
+        </div>
+
         <div id="checkbox-section">
+          
           <p>Volunteer:<input type="checkbox" id="volunteer-chk" checked="false"></p>
           <p>Runner:<input type="checkbox" id="runner-chk" checked="false"></p>
         </div>
@@ -43,6 +49,7 @@
         </label>
         <input type="hidden" id="account-type" name="accountType" value="placeholder">
         <button type="submit">Submit</button>
+        
       </form>
     </div>
 
