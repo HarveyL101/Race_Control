@@ -113,6 +113,14 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 
 -- VIEWS (WIP) -- 
+
+CREATE VIEW race_details AS 
+SELECT 
+    races.name AS race_name,
+    locations.name AS location_name,
+    locations.city,
+
+
 /*
 View for displaying the race winner of a race using its ID, can then be manipulated by
 

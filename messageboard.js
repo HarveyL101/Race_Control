@@ -100,7 +100,7 @@ export async function getLapResults(req, res) {
       SELECT
         lap_results.position, 
         runners.username,
-        lap_results.time
+        lap_results.time 
       FROM lap_results
       JOIN runners ON lap_results.runner_id = runners.id
       ORDER BY lap_results.position ASC

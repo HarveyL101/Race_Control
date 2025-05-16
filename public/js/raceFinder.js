@@ -22,7 +22,7 @@ export async function searchRaces() {
         <h3>${race.name}</h3>
         <p><bold>Date:</bold> ${race.date}</p>
         
-        <p><bold>Location:</bold> ${race.location}</p>
+        <p><bold>Location:</bold> ${race.location_id}</p>
       `;
       container.appendChild(newDiv);
     })
