@@ -15,61 +15,61 @@
         <h1>Login To Your Account!</h1>
       </header>
 
-      <login-panel id="login-panel"></login-panel>
+      <div id="custom-container">
+
+        <login-panel id="login-panel"></login-panel>
+        <register-panel id="register-panel" style="display: none;"></register-panel>
+
+        <h4 id="swapper-header">
+          <span id="swapper-text">Don't have an account?</span>
+          <a id="swapper-link">Register Here</a>
+        </h4>
+      </div>
 
     </div>
-    
-    
-    
-    
   </body>
 
   <template id="login-template">
     <link rel="stylesheet" href="css/index.css">
 
-    <div id="login-container">
-      <form id="login-form" action="/login" method="POST">
+    <div class="container">
+      <form class="form" id="login-form" action="/login" method="POST">
 
-        <div id="tooltip">
-          <h2>Are you a Volunteer or a Runner?</h2>
-          <h4>(A user would also come under 'Runner')</h4>
+        <div class="tooltip" id="login-tooltip">
+          <h2>Login Here!</h2>
         </div>
 
-        <div id="checkbox-section">
-          
-          <p>Volunteer:<input type="checkbox" id="volunteer-chk" checked="false"></p>
-          <p>Runner:<input type="checkbox" id="runner-chk" checked="false"></p>
-        </div>
-        
         <label for="username">Please enter a username:
-          <input type="text" id="username" name="username" required>
+          <input type="text" class="username" name="username" required>
         </label>
         <label for="password">Please enter a password:
-          <input type="password" id="password" name="password" required>
+          <input type="password" class="password" name="password" required>
         </label>
-        <input type="hidden" id="account-type" name="accountType" value="placeholder">
         <button type="submit">Submit</button>
-        
       </form>
     </div>
 
   </template>
 
-<!-- Testing if register can be simply included within login class
   <template id="register-template">
     <link rel="stylesheet" href="css/index.css">
-    <div class="LR-container">
-      <form id="register-form" action="/register" method="POST">
-          <label>Please enter a username:
-            <input type="text" id="username" name="username" required>
-          </label>
-          <label>Please enter a password:
-            <input type="password" id="password" name="password" required>
-          </label>
+    
+    <div class="container">
+      <form class="form" id="register-form" action="/register" method="POST">
+
+        <div class="tooltip" id="register-tooltip">
+          <h2>Register Here!</h2>
+        </div>
+
+        <label for="username">Please enter a username:
+          <input type="text" class="username" name="username" required>
+        </label>
+        <label for="password">Please enter a password:
+          <input type="password" class="password" name="password" required>
+        </label>
         <button type="submit">Submit</button>
       </form>
-    </div>
   </template>
--->
+
   
 </html>
