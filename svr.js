@@ -14,13 +14,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 8080;
 
-function generateSessionId() {
-  return ("session" + "_" + Math.random().toString(16).slice(2));
-  
-}
 
 app.use(session({
-  randId: generateSessionId(),
+  randId: mb.generateSessionId(),
   secret: 'n0_p33k1ng_(MM4OQuMZ7OmzrYk)',
   resave: false,
   saveUninitialized: true,
@@ -54,33 +50,33 @@ app.get('/redirect', (req, res) => {
   } catch (error) {
     res.status(400).send(`Invalid url: ${inputURL}`);
   }
-})
-// Routes for the /runner directory
+});
+
+// Routes for the /webpages directory
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'webpages/index.html'));
 });
-app.get('/runner/home', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/runner/home.html'));
-})
-app.get('/runner/view', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/runner/view.html'));
+
+app.get('/home', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/home.html'));
 });
 
-// Routes for the /volunteer directory
-app.get('/volunteer/home', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/volunteer/home.html'));
-});
-app.get('/volunteer/timer', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/volunteer/timer.html'));
+app.get('/placeholder', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'webpages/placeholder.html'));
 });
 
+
+// Some admin handlers
+app.post('/admin/give-admin', (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).send("Access denied, you cannot do this with your current priveleges");
+  }
+
+  // call giveAdmin() function (WIP)
+}) 
 
 app.post('/login', mb.login);
-
-// WIP => app.get('/home')
-app.get('/volunteer/timer', mb.isAuthenticated, (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/volunteer/timer.html'));
-});
+app.post('/register', mb.register);
 
 // handlers for the current lap/ checkpoint being recorded
 app.get('/api/lap-results', mb.getLapResults);
@@ -101,6 +97,10 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}, @http://localhost:${PORT}`);
 });
+
+setInterval(() => {
+  mb.sessionCleaner();
+}, 3600000) // One hour (in milliseconds)
 
 
 
