@@ -69,7 +69,20 @@ export function sessionCleaner() {
 // Handlers for '/api/find-race' endpoint
 // {
 export async function getRaces(req, res) {
-  console.log("getRaces()");
+  const query = req.query.q || '';
+
+  try {
+    const races = await db.all(`
+      SELECT *
+      FROM races
+      WHERE name LIKE ?`,
+    [`%${query}%`]
+    );
+
+    res.status(200).json({ races });
+  } catch (error) {
+    console.log("Internal Server Error: ", error);
+  }
 }
 
 export async function postRace(req, res) {

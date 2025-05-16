@@ -32,6 +32,7 @@ app.use(express.static(path.resolve(__dirname, 'views')));
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/imgs', express.static(path.join(__dirname, 'public/imgs')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
+app.use('/messageboard.js', express.static(path.join(__dirname, 'messageboard.js')));
 
 
 app.use(express.urlencoded({ extended: true }));

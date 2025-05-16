@@ -1,7 +1,6 @@
 export { NumberPad } from './timer/NumberPad.js';
 export { Leaderboard } from './timer/Leaderboard.js';
 export { StopWatch } from './timer/StopWatch.js';
-export { RaceFinder } from './RaceFinder.js';
 export { Login } from './login/Login.js';
 export { Account } from './Account.js'
 

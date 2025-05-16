@@ -5,44 +5,27 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="/css/findRace.css">
         <link rel="icon" href="/webpages/imgs/favicon.ico">
-        <script type="module" defer src="/js/timer.js"></script>
+        <script type="module" defer src="/js/raceFinder.js"></script>
         <title>Find Race</title>
       </head>
 
     <body>
-        <div class="page-header">
-            <h1>Placeholder</h1>
-            <p>please search </p>
-        </div>
-        
-
         <div id="page-wrapper">
-            
+            <div class="page-header">
+                <h1>Placeholder</h1>
+                <p>please search </p>
+            </div>
 
-            <div>
-                <!--Go with this option for race selection, race results can be pulled from db and appended to 'race-options'-->
-                <h3>Test</h3>
-                <input list="race-options" id="race_id" name="race_id">
+            <div id="search-container">
+                <h3>Search Container</h3>
+                
+                <input type="search" id="search-bar" placeholder="Search...">
+                <button type="submit" id="search-button">Search</button>
+            </div>
 
-                <datalist id="race-options">
-                    <option value="Placeholder"></option>
-                    <option value="Placeholder"></option>
-                    <option value="Placeholder"></option>
-                    <option value="Placeholder"></option>
-                    <option value="Placeholder"></option>
-                </datalist>
+            <div id="race-options">
+                <p>placeholder</p>
             </div>
         </div>
     </body>
-
-    <template id="search-panel">
-        <div id="search-container">
-            <h3>Search Container</h3>
-            <form action="/api/find-race">
-                <input type="search" name="search" id="search-bar">
-                <button type="submit">Search</button>
-            </form>
-            
-        </div>
-    </template>
 </html>

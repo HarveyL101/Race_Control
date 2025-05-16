@@ -4,7 +4,7 @@
 
 -- Race Locations Table --
 CREATE TABLE IF NOT EXISTS locations (
-    id INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
     city VARCHAR(50) NOT NULL,
     postcode VARCHAR(7)
@@ -20,25 +20,27 @@ VALUES
 
 -- Races Table --
 CREATE TABLE IF NOT EXISTS races (
-    id INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL,
+    date DATE NOT NULL,
     start_time VARCHAR(5) NOT NULL,
     distance FLOAT NOT NULL,
-    location_id INT,
+    location_id INT NOT NULL,
 
-    FOREIGN KEY (location_id) REFERENCES Locations(id)
+    FOREIGN KEY (location_id) REFERENCES locations(id)
 );
 
-INSERT INTO races (name, start_time, distance, id)
+INSERT INTO races (name, date, start_time, distance, location_id)
 VALUES
-    ('5k Fun Run', '09:00:00', 5.0, 1),
-    ('10k Charity Run', '10:00:00', 10.0, 2),
-    ('Half Marathon', '08:30:00', 21.1, 3),
-    ('Marathon', '07:00:00', 42.2, 4);
+    ('City Marathon', '2025-06-15', '08:00', 8.0, 1),
+    ('Spring Sprint', '2025-04-10', '09:30', 5.0, 2),
+    ('River Run', '2025-07-20', '07:00', 10.0, 1),
+    ('Beachside 10K', '2025-08-05', '06:45', 10.0, 3),
+    ('Downtown Dash', '2025-09-12', '08:15', 5.0, 2);
 
 -- Runners Table -- 
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(20) NOT NULL,
     is_admin INTEGER NOT NULL -- 0 and 1 will be used due to the lack of a native BOOLEAN data type in sqlite
@@ -68,7 +70,7 @@ VALUES
 
 -- Table for final results of a race when the number of runners falls to 1
 CREATE TABLE IF NOT EXISTS race_results (
-    id INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     race_id INTEGER NOT NULL,
     runner_id INTEGER NOT NULL,
     username VARCHAR(30) NOT NULL,
@@ -79,7 +81,7 @@ CREATE TABLE IF NOT EXISTS race_results (
 
 -- Table for checkpoint results --
 CREATE TABLE IF NOT EXISTS lap_results (
-    id INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     race_id INTEGER NOT NULL,
     lap_number INTEGER NOT NULL,
     runner_id INTEGER NOT NULL,
