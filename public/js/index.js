@@ -4,10 +4,24 @@ import { Register } from './components/login/Register.js';
 customElements.define('login-panel', Login);
 customElements.define('register-panel', Register);
 
+
 const swapper = {
     text: document.querySelector('#swapper-text'),
     link: document.querySelector('#swapper-link')
 };
+
+// error tooltip upon a failed login (WIP)
+async function provideError(e) {
+    const parent = document.querySelector('#page-header');
+    const element = document.createElement('div');
+
+    element.style.color = 'red';
+
+    parent.appendChild(element);
+
+    e.preventDefault();
+
+}
 
 function handleTemplate() {
     const login = document.querySelector('#login-panel');

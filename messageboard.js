@@ -20,8 +20,42 @@ export function parseCookies(req) {
   return cookies;
 }
 
-export function createSession(req, res) {
-  // create session and assign user to that id
+export async function sessionHandler(req, res, next) {
+  try {
+    const cookies = parseCookies(req);
+    const sessionID = cookies.session_id;
+
+    if (!sessionID) {
+      req.user = null;
+      return next();
+    }
+
+    const sessionExists = await db.get(`
+      SELECT *
+      FROM sessions
+      WHERE id= ? AND expires_at > CURRENT_TIMESTAMP`,
+    [sessionID]
+  );
+
+  if (!sessionExists) {
+    req.user = null;
+    return next();
+  }
+
+  const user = await db.get(`
+    SELECT *
+    FROM users
+    WHERE id= ?`,
+    [sessionExists.user_id]
+  );
+
+  req.user = user || null;
+  next();
+  } catch (error) {
+    console.log('Session not found: ', error);
+    req.user = null;
+    next();
+  }
 }
 
 export function sessionCleaner() {
@@ -139,9 +173,9 @@ export function showFile(req, res, next) {
 
 // LOGIN RELATED CODE
 // {
-async function isAdmin(username) {
+export async function isAdmin(username) {
   try { // checks if 'is_admin' === 1 or 0
-    const result = await db.run(`
+    const result = await db.get(`
       SELECT is_admin
       FROM users
       WHERE username= ?`,
@@ -155,15 +189,13 @@ async function isAdmin(username) {
   }
 }
 
-async function getUser(username) {
+async function getUser(username, password) {
   try {
-    console.log("Value passed to table: ", table);
-
-    const result = await db.run(`
-      SELECT username 
-      FROM user 
-      WHERE username= ?`, 
-      [username]
+    const result = await db.get(`
+      SELECT username, password 
+      FROM users 
+      WHERE username= ? AND password= ?`, 
+      [username, password]
     );
 
     return result;
@@ -173,10 +205,10 @@ async function getUser(username) {
   }
 }
 
-async function checkUser(username) {
+async function checkUser(req, res, username, password) {
   try {
     // getUser only returns an exact match, otherwise user will be null
-    const user = await getUser(username);
+    const user = await getUser(username, password);
 
     return (user ? true : false);
   } catch (error) {
@@ -186,46 +218,53 @@ async function checkUser(username) {
   
 }
 
-
-export function handleLogin() {
-  
-}
-
 export async function login(req, res) {
   try {
     const { username, password } = req.body;
+
+    // Validating the username/ password
+    if (!username || !password) {
+      return res.send({ message: "Invalid Username/ Password", data: req.body });
+    }
 
     const user = await checkUser(req, res, username, password);
 
     // debugging log
     console.log("Form Data Received: ", req.body);
 
-    // Validating the username/ password
-    if (!username || !password) {
-      alert("Invalid Username/ Password", req.body);
-      res.send({ message: "Invalid Username/ Password", data: req.body });
-      return;
-    }
-    // (debug) verifying accountType working as intended
-    console.log("Account Type:" , accountType);
-
     // Check if user exists in database
     if (user) {
       console.log(`Successful login, welcome ${username}!`);
-      req.session.loggedIn = true;
-      req.session.username = username;
-      req.session.isAdmin = isAdmin();
-      r
+      
+      // declarations of values to be passed
+      const sessionId = generateSessionId();
+      const userRow = await db.get(`SELECT id FROM users WHERE username= ?`, [username]);
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+      const userId = userRow.id;
+      
+      await db.run(`
+        INSERT INTO sessions (id, user_id, EXPIRES_AT)
+        VALUES (?, ?, ?)`,
+      [sessionId, userId, expiresAt]
+      );
+
+      res.setHeader('Set-Cookie', `session_id=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`);
+
       res.redirect(`/home`);
     } else {
-      alert("Invalid username and/ or password");
+      console.warn("Invalid username and/ or password");
       res.redirect('/');
       return;
     }
   } catch (error) {
     console.log("Error in login(): ", error);
-    res.status(500).send("Internal Server Error: login() ", error);
-    return;
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error
+    });
+    
   } 
 }
 
@@ -233,24 +272,41 @@ export async function register(req, res) {
   try {
     const { username, password } = req.body;
 
-    const user = await checkUser(username);
+    // Validating the username/ password
+    if (!username || !password) {
+      return res.send({ message: "Invalid Username/ Password", data: req.body });
+    }
 
-    if (!user) {
+    const userExists = await checkUser(username, password);
+
+    if (!userExists) {
       await db.run(`
-        INSERT INTO users (username, password)
-        VALUES (?, ?)`,
+        INSERT INTO users (username, password, is_admin)
+        VALUES (?, ?, 0)`,
         [username, password]
       );
 
-      res.status(201).send("Registry was successful.");
-    } else {
-      alert("Sorry! An account with this username already exists, please try again.");
-      res.status(409).send("An account with this username already exists :/");
+      // declarations of values to be passed
+      const sessionId = generateSessionId();
+      const userId = await db.get(`SELECT id FROM users WHERE username= ?`, [username]);
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+      
+      await db.run(`
+        INSERT INTO sessions (id, user_id, EXPIRES_AT)
+        VALUES (?, ?, ?)`,
+      [sessionId, userId, expiresAt]
+      );
 
-      return res.redirect('/');
+      res.setHeader('Set-Cookie', `session_id=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`);
+      
+      return res.redirect('/home');
+    } else {
+      console.log("Sorry! An account with this username already exists, please try again.");
+
+      res.redirect('/');
     }
   } catch (error) {
-    res.status(500).send("Internal Server Error: ", error);
+    console.log("Error(500): ", error);
 
     return res.redirect('/');
   }

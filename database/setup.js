@@ -48,8 +48,6 @@ async function initCon() {
     if (shouldInit) {
       console.log("Database not found. Initialising schema...");
       await dbInit(db);
-    } else {
-      console.log("Database found. Skipping schema initialisation");
     }
 
     return db;

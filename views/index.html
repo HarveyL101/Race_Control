@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
     <link rel="icon" href="./imgs/favicon.ico">
-    <script type="module" defer src="/src/index.js"></script>
+    <script type="module" defer src="/js/index.js"></script>
   </head>
 
   <body>
     <div id="page-wrapper">
-      <header>
-        <h1>Login To Your Account!</h1>
+      <header id="page-header">
+        <h1>Sign In/ Sign Up!</h1>
       </header>
 
       <div id="custom-container">
 
-        <login-panel id="login-panel"></login-panel>
-        <register-panel id="register-panel" style="display: none;"></register-panel>
+        <login-panel id="login-panel" style="display: none;"></login-panel>
+        <register-panel id="register-panel"></register-panel>
 
         <h4 id="swapper-header">
           <span id="swapper-text">Don't have an account?</span>
@@ -30,7 +30,7 @@
   </body>
 
   <template id="login-template">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
 
     <div class="container">
       <form class="form" id="login-form" action="/login" method="POST">
@@ -52,7 +52,7 @@
   </template>
 
   <template id="register-template">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
     
     <div class="container">
       <form class="form" id="register-form" action="/register" method="POST">

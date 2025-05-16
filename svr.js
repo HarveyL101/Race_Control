@@ -23,17 +23,20 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-// serves files from /webpages, /src and /css
-app.use(express.static(path.resolve(__dirname, 'webpages')));
-app.use('/src', express.static(path.join(__dirname, 'src')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
+// Middleware that logs the method and url of a request
+app.use(mb.showFile);
+app.use(mb.sessionHandler);
+
+// serves files from /views, /src and /css
+app.use(express.static(path.resolve(__dirname, 'views')));
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/imgs', express.static(path.join(__dirname, 'public/imgs')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
-
-// Middleware that logs the method and url of a request
-app.use(mb.showFile);
 
 // Attempt at preventing open redirects
 app.get('/redirect', (req, res) => {
@@ -54,26 +57,32 @@ app.get('/redirect', (req, res) => {
 
 // Routes for the /webpages directory
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/index.html'));
+  res.sendFile(path.resolve(__dirname, 'views/index.html'));
 });
 
 app.get('/home', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/home.html'));
+  if (!req.user) {
+    return res.status(401).send("Unauthorised");
+  }
+  res.sendFile(path.resolve(__dirname, 'views/home.html'));
 });
 
 app.get('/placeholder', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'webpages/placeholder.html'));
+  if (!req.user) {
+    return res.status(401).send("Unauthorised");
+  }
+  res.sendFile(path.resolve(__dirname, 'views/placeholder.html'));
 });
 
 
 // Some admin handlers
 app.post('/admin/give-admin', (req, res) => {
   if (!req.session.isAdmin) {
-    return res.status(403).send("Access denied, you cannot do this with your current priveleges");
+    return res.status(403).send("Access denied, you cannot do this with your current priveledges");
   }
 
   // call giveAdmin() function (WIP)
-}) 
+});
 
 app.post('/login', mb.login);
 app.post('/register', mb.register);
