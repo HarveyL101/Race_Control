@@ -1,23 +1,37 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { connect } from './database/setup.js';
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const permittedTables = ['runners', 'volunteers'];
 
 // global variable for one consistent connection, reduces resource exhaustion
 const db = await connect();
 
-export function isAuthenticated(req, res, next) {
-  if (req.session && req.session.loggedIn) {
-    next();
-  } else {
-    res.redirect('/');
-  }
+export function generateSessionId() {
+  return ("session" + "_" + Math.random().toString(16).slice(2));
 }
+
+export function parseCookies(req) {
+  const fetched = req.headers.cookie?.split("; ") || []; // Optional chaining to avoid premature error throws
+  const cookies = {};
+
+  fetched.forEach(cookie => {
+    const [name, value] = cookie.split("=");
+    cookies[name] = decodeURIComponent(value);
+  });
+
+  console.log(cookies);
+  return cookies;
+}
+
+export function createSession(req, res) {
+  // create session and assign user to that id
+}
+
+export function sessionCleaner() {
+  db.run(`
+    DELETE 
+    FROM sessions
+    WHERE EXPIRES_AT < CURRENT_TIMESTAMP;
+  `)
+}
+
 // Handlers for '/api/find-race' endpoint
 // {
 export async function getRaces(req, res) {
@@ -67,30 +81,20 @@ export async function postLapResults(req, res) {
     });
   }
 
-  db.serialize(() => {
-    db.run("BEGIN TRANSACTION") // Begins transaction
-
-    const query = db.prepare(`
+  try {
+    await db.run(`
       INSERT INTO lap_results (race_id, lap_number, runner_id, position, time)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-  
-    query.run(race_id, lap_number, runner_id, position, time);
-
-    db.run("COMMIT"); // Finalises transaction on successfull insert
+      VALUES (?, ?, ?, ?, ?)`,
+      [race_id, lap_number, runner_id, position, time]
+    );
     // Confirmation of success
     return res.status(201).json({ 
       message: "Lap entry saved successfully",
       received: lapResults,
       id: runner_id
     });
-  })
-  try {
-    
-
-  } catch (error) {
+  } catch(error) {
     console.log("Error inserting into DB: ", error);
-    db.run("ROLLBACK")
     return res.status(500).send("Error 500: Internal Server Error");
   }
 }
@@ -112,14 +116,13 @@ export async function postLapResults(req, res) {
     }
 
     try {
-      const query = await db.prepare(`
+      await db.run(`
         INSERT INTO race_results (race_id, runner_id, position, time)
-        VALUES (?, ?, ?, ?)
-        `);
-    
-      const result = await query.run(query, [race_id, runner_id, position, time]);
-    
-      result.finalize();
+        VALUES (?, ?, ?, ?)`,
+        [race_id, runner_id, position, time]
+      );
+
+      res.status(201).send("Status 201: Entry Insertion Successful!");
     } catch(error) {
       console.error("Error inserting into DB: ", error)
       return res.status(500).send("Error 500: Internal Server Error");
@@ -136,68 +139,86 @@ export function showFile(req, res, next) {
 
 // LOGIN RELATED CODE
 // {
-async function getUser(table, username, password) {
+async function isAdmin(username) {
+  try { // checks if 'is_admin' === 1 or 0
+    const result = await db.run(`
+      SELECT is_admin
+      FROM users
+      WHERE username= ?`,
+      [username]
+  );
+
+    return result;
+  } catch (error) {
+    console.log("Error 500: Internal Server Error", error)
+    return res.status(500).send("Error 500: Internal Server Error", error);
+  }
+}
+
+async function getUser(username) {
   try {
     console.log("Value passed to table: ", table);
-    // validates parameter for security purposes
-    if (!permittedTables.includes(table)) {
-      throw new Error("[403]Unauthorised Table Name");
-    }
-    const q = `SELECT username, password FROM ${table} WHERE username= ? AND password= ?`
-    return await db.get(q, [username, password]);
+
+    const result = await db.run(`
+      SELECT username 
+      FROM user 
+      WHERE username= ?`, 
+      [username]
+    );
+
+    return result;
   } catch (error) {
     console.log("[500]Error in getUser:", error.message);
     return;
   }
 }
 
-async function checkUser(req, res, table, username, password) {
+async function checkUser(username) {
+  try {
+    // getUser only returns an exact match, otherwise user will be null
+    const user = await getUser(username);
 
-  if (username, password !== null) {
-    try {
-      // getUser only returns an exact match, otherwise user will be null
-      const user = await getUser(table, username, password);
-      return (user ? true : false);
-    } catch (error) {
-      console.log("[401]Error in checkUser:", error.message);
-      return;
-    }
+    return (user ? true : false);
+  } catch (error) {
+    console.log("[401]Error in checkUser:", error.message);
+    return;
   }
+  
+}
+
+
+export function handleLogin() {
+  
 }
 
 export async function login(req, res) {
   try {
-    const { accountType, username, password } = req.body;
-    
+    const { username, password } = req.body;
+
+    const user = await checkUser(req, res, username, password);
+
     // debugging log
     console.log("Form Data Received: ", req.body);
-    
-    // Validating the accountType
-    if (!permittedTables.includes(accountType)) {
-      console.log("Invalid accountType", req.body);
-      res.send({ message: "Invalid accountType", data: req.body });
-      return;
-    }
+
     // Validating the username/ password
     if (!username || !password) {
-      console.log("Invalid Username/ Password", req.body);
+      alert("Invalid Username/ Password", req.body);
       res.send({ message: "Invalid Username/ Password", data: req.body });
       return;
     }
     // (debug) verifying accountType working as intended
     console.log("Account Type:" , accountType);
 
-    // selects correct object of database
-    const redirectURL = accountType === 'runners' ? 'runner' : 'volunteer';
-
     // Check if user exists in database
-    if (await checkUser(req, res, accountType, username, password)) {
+    if (user) {
       console.log(`Successful login, welcome ${username}!`);
       req.session.loggedIn = true;
       req.session.username = username;
-      res.redirect(`/${redirectURL}/home`);
+      req.session.isAdmin = isAdmin();
+      r
+      res.redirect(`/home`);
     } else {
-      console.log("Invalid username and/ or password");
+      alert("Invalid username and/ or password");
       res.redirect('/');
       return;
     }
@@ -206,5 +227,32 @@ export async function login(req, res) {
     res.status(500).send("Internal Server Error: postLogin");
     return;
   } 
+}
+
+export async function register(req, res) {
+  try {
+    const { username, password } = req.body;
+
+    const user = await checkUser(username);
+
+    if (!user) {
+      await db.run(`
+        INSERT INTO users (username, password)
+        VALUES (?, ?)`,
+        [username, password]
+      );
+
+      res.status(201).send("Registry was successful.");
+    } else {
+      alert("Sorry! An account with this username already exists, please try again.");
+      res.status(409).send("An account with this username already exists :/");
+
+      return res.redirect('/');
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error: ", error);
+
+    return res.redirect('/');
+  }
 }
 // }
