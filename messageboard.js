@@ -223,8 +223,8 @@ export async function login(req, res) {
       return;
     }
   } catch (error) {
-    console.log("Error in postLogin: ", error);
-    res.status(500).send("Internal Server Error: postLogin");
+    console.log("Error in login(): ", error);
+    res.status(500).send("Internal Server Error: login() ", error);
     return;
   } 
 }
