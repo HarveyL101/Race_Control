@@ -7,6 +7,8 @@ export async function searchRaces() {
     const response = await fetch(`/api/find-race?q=${encodeURIComponent(query)}`);
     const data = await response.json();
 
+    console.log(data);
+
     const container = document.querySelector('#race-options');
     container.innerHTML = '';
 
@@ -19,10 +21,10 @@ export async function searchRaces() {
       const newDiv = document.createElement('div');
       newDiv.className = 'race';
       newDiv.innerHTML = `
-        <h3>${race.name}</h3>
-        <p><bold>Date:</bold> ${race.date}</p>
-        
-        <p><bold>Location:</bold> ${race.location_id}</p>
+        <h4>${race.location}: ${race.race_name}</h4>
+        <p>Date: ${race.race_date}</p>
+        <p>Start Time: ${race.start_time}</p>
+        <p>Lap Distance: ${race.lap_distance}</p>
       `;
       container.appendChild(newDiv);
     })

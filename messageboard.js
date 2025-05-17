@@ -73,10 +73,17 @@ export async function getRaces(req, res) {
 
   try {
     const races = await db.all(`
-      SELECT *
-      FROM races
-      WHERE name LIKE ?`,
-    [`%${query}%`]
+      SELECT 
+        r.name AS race_name,
+        r.date AS race_date,
+        r.start_time AS start_time,
+        r.distance AS lap_distance,
+        l.name AS location
+      FROM 
+        races r
+      JOIN locations l ON r.location_id = l.id
+      WHERE r.name LIKE ? OR l.name LIKE ?`,
+    [`%${query}%`, `%${query}%`]
     );
 
     res.status(200).json({ races });

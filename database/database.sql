@@ -36,7 +36,27 @@ VALUES
     ('Spring Sprint', '2025-04-10', '09:30', 5.0, 2),
     ('River Run', '2025-07-20', '07:00', 10.0, 1),
     ('Beachside 10K', '2025-08-05', '06:45', 10.0, 3),
-    ('Downtown Dash', '2025-09-12', '08:15', 5.0, 2);
+    ('Downtown Dash', '2025-09-12', '08:15', 5.0, 2),
+    ('Harbor Hustle', '2025-10-03', '07:30', 6.0, 3),
+    ('Forest 5K', '2025-03-22', '08:00', 5.0, 1),
+    ('Twilight Trot', '2025-11-15', '17:45', 4.0, 2),
+    ('Sunrise Sprint', '2025-05-01', '06:00', 3.5, 4),
+    ('Capital Run', '2025-07-04', '09:00', 7.0, 4),
+    ('Seaside Stride', '2025-08-19', '08:30', 10.0, 3),
+    ('Park Pace', '2025-06-11', '09:15', 5.0, 1),
+    ('Hilltop Hustle', '2025-09-29', '07:00', 6.2, 2),
+    ('Autumn Dash', '2025-10-18', '08:45', 8.0, 1),
+    ('Midtown Mile', '2025-04-25', '10:00', 1.0, 2),
+    ('Greenway Gallop', '2025-05-30', '07:30', 7.5, 1),
+    ('Lakeside Loop', '2025-07-12', '08:00', 9.0, 3),
+    ('City Circuit', '2025-06-22', '08:00', 10.0, 4),
+    ('Riverside Rush', '2025-08-10', '06:45', 6.5, 3),
+    ('Night Run', '2025-11-01', '20:30', 5.0, 2),
+    ('Urban Ultra', '2025-12-05', '07:00', 15.0, 4),
+    ('Winter 10K', '2025-12-15', '09:00', 10.0, 1),
+    ('Metro Marathon', '2025-03-10', '07:30', 13.1, 4),
+    ('Civic Center Sprint', '2025-04-02', '08:00', 5.0, 2),
+    ('Frostbite Run', '2025-01-14', '08:30', 6.0, 1);
 
 -- Runners Table -- 
 CREATE TABLE IF NOT EXISTS users (
@@ -116,9 +136,14 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE VIEW race_details AS 
 SELECT 
-    races.name AS race_name,
-    locations.name AS location_name,
-    locations.city,
+    r.name AS race_name,
+    l.name AS location_name,
+    l.city AS city,
+    race.distance AS lap_distance
+FROM 
+    races r
+JOIN locations l ON r.location_id = l.id
+ORDER BY race_name ASC;
 
 
 /*
@@ -128,9 +153,9 @@ View for displaying the race winner of a race using its ID, can then be manipula
 -- Example query: SELECT * FROM race_winner WHERE race_id = ?;
 /*
 CREATE VIEW race_winner AS 
-SELECT 
-    runner_id, 
-    MAX(id) AS lap_count
+SELECT
+    runner_id AS winner, 
+    MAX(id) AS laps_ran
 FROM lap_results
 GROUP BY runner_id;
 
