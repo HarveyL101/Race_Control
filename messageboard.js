@@ -3,10 +3,6 @@ import { connect } from './database/setup.js';
 // global variable for one consistent connection, reduces resource exhaustion
 const db = await connect();
 
-export function generateSessionId() {
-  return ("session" + "_" + Math.random().toString(16).slice(2));
-}
-
 export function parseCookies(req) {
   const fetched = req.headers.cookie?.split("; ") || []; // Optional chaining to avoid premature error throws
   const cookies = {};
@@ -30,23 +26,23 @@ export async function sessionHandler(req, res, next) {
       return next();
     }
 
-    const sessionExists = await db.get(`
+    const session = await db.get(`
       SELECT *
       FROM sessions
       WHERE id= ? AND expires_at > CURRENT_TIMESTAMP`,
     [sessionID]
   );
 
-  if (!sessionExists) {
+  if (!session) {
     req.user = null;
     return next();
   }
 
   const user = await db.get(`
-    SELECT *
+    SELECT id, name
     FROM users
     WHERE id= ?`,
-    [sessionExists.user_id]
+    [session.user_id]
   );
 
   req.user = user || null;
@@ -68,7 +64,7 @@ export function sessionCleaner() {
 
 // Handlers for '/api/find-race' endpoint
 // {
-export async function getRaces(req, res) {
+export async function searchRaces(req, res) {
   const query = req.query.q || '';
 
   try {
@@ -94,10 +90,65 @@ export async function getRaces(req, res) {
   }
 }
 
-export async function postRace(req, res) {
-  
+// Handlers for '/api/load-race' endpoint
+// {
+export async function loadRace(req, res) {
+  const raceId = req.params.id;
+
+  try {
+    const raceDetails = await db.get(`
+      SELECT 
+        r.id AS race_id,
+        r.name AS race_name,
+        r.date AS race_date,
+        r.start_time AS start_time,
+        r.distance AS lap_distance,
+        l.name AS location
+      FROM 
+        races r
+      JOIN locations l ON r.location_id = l.id
+      WHERE r.id= ?`, 
+      [raceId]
+    );
+
+    return res.json({ raceDetails });
+  } catch (error) {
+    return res.status(500).json({
+      message: `Could not load race ID(#${raceId})`,
+      received: req.params
+    });
+
+  }
 }
 // }
+
+// Handlers for '/api/current-user' endpoint
+export async function getCurrentUser(req, res) {
+  const userId = req.session.userId;
+
+  console.log("Req.user: ", req.session.userId);
+
+  if (!userId) {
+    return res.status(404).json({ message: "User Not Found." });
+  }
+
+  try {
+    const user = await db.get(`
+      SELECT 
+        id,
+        username
+      FROM users
+      WHERE id= ?`, 
+      [userId]
+    );
+
+    return res.json({ id: user.id, username: user.username });
+  } catch(error) {
+    console.log("Failed to retrieve user details: ", error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+}
+
 
 // Handlers for '/api/lap-results' endpoint
 // {
@@ -258,22 +309,18 @@ export async function login(req, res) {
     if (user) {
       console.log(`Successful login, welcome ${username}!`);
       
-      // declarations of values to be passed
-      const sessionId = generateSessionId();
+      // returns desired values for session storage
       const userRow = await db.get(`SELECT id FROM users WHERE username= ?`, [username]);
-      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-      const userId = userRow.id;
-      
-      await db.run(`
-        INSERT INTO sessions (id, user_id, EXPIRES_AT)
-        VALUES (?, ?, ?)`,
-      [sessionId, userId, expiresAt]
-      );
+      req.session.userId = userRow.id;
+      req.session.username = userRow.username;
 
-      res.setHeader('Set-Cookie', `session_id=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`);
-
-      res.redirect(`/home`);
+      req.session.save(err => {
+        if (err) {
+          console.error("Session save error:", err);
+        }
+        res.redirect('/home');
+      });
     } else {
       console.warn("Invalid username and/ or password");
       res.redirect('/');
