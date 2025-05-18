@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/timer.css">
+    <link rel="icon" href="/imgs/favicon.ico">
+    <script type="module" defer src="/js/timer.js"></script>
+    <title>Timer</title>
+  </head>
+
+  <body>
+    <header>
+      <h1 id="page-header">This Is My Timer Page</h1>
+      <h4>Welcome!</h4>
+      <button id="exit" ><a href="./home.html">Exit</a></button>
+    </header>
+
+    <div id="details-container">
+      <p>details container here</p>
+    </div>
+
+    <stopwatch-panel></stopwatch-panel>
+    
+    <leaderboard-panel></leaderboard-panel>
+
+    
+  </body>
+
+  <template id="stopwatch-template">
+    <link rel="stylesheet" href="../css/timer.css">
+    <div id="stopwatch-wrapper">
+      
+      
+      <div id="stopwatch-container">
+        <h2>Press 'Start' to begin your lap!</h2>
+        <p id="timer">00:00:00</p>
+
+        <button id="start-stop" type="button">Start</button>
+        <button id="reset" type="button">Reset</button>
+        <button id="submit-lap" type="submit">Submit Lap</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="leaderboard-template">
+    <link rel="stylesheet" href="../css/timer.css">
+
+    <div id="leaderboard-wrapper">
+
+        <div id="leaderboard-container">
+          
+
+            <h3>Leaderboard</h3>
+
+            <div id="leaderboard">
+              <p>*********************</p>
+              <ul id="leaderboard-list"></ul>
+              <h4>Leaderboard Table</h4>
+
+              <p id="table-header">Current Checkpoint results will be displayed here...</p>
+
+              <table border="1" id="leaderboard-table">
+                <thead>
+                  <tr id="header-row">
+                    <td>Position</td>
+                    <td>Runner</td>
+                    <td>Lap Time (HH:MM:SS)</td>
+                  </tr>
+                </thead>
+                <tbody id="table-body">
+                  <tr id="data-row">
+                    <td>Placeholder Data Row</td>
+                    <td>Placeholder Data Row</td>
+                    <td>Placeholder Data Row</td>
+                  </tr>
+                </tbody>
+
+              </table>
+              <p>*********************</p>
+            </div>
+            <div id="submit-lap">
+              <button id="refresh-button" type="button">Refresh Leaderboard</button>
+              <button id="lap-end" type="button">Finish Lap</button>
+            </div>
+        </div>
+      
+      <div id="end-race-container">
+        <p>*******************************</p>
+        <h4>New Section</h4>
+        <button id="" type="button">End Race</button>
+      </div>
+    </div>
+  </template>
+</html>
