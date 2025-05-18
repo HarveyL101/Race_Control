@@ -16,10 +16,9 @@ const PORT = 8080;
 
 
 app.use(session({
-  randId: mb.generateSessionId(),
   secret: 'n0_p33k1ng_(MM4OQuMZ7OmzrYk)',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { secure: false }
 }));
 
@@ -62,14 +61,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-  if (!req.user) {
+  if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/home.html'));
 });
 
 app.get('/placeholder', (req, res) => {
-  if (!req.user) {
+  if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/placeholder.html'));
@@ -90,13 +89,18 @@ app.post('/register', mb.register);
 
 // handlers for the current lap/ checkpoint being recorded
 app.get('/api/lap-results', mb.getLapResults);
-app.post('/api/lap-results', mb.postLapResults);
+app.post('/api/lap-results/:id', mb.postLapResults);
 // handlers for the race-results displayed on the leaderboard
 app.get('/api/race-results', mb.getRaceResults);
 app.post('api/race-results', mb.postRaceResults);
-// handlers for searching for a race in find-race
-app.get('/api/find-race', mb.getRaces);
-app.post('/api/find-race', mb.postRace);
+// handlers for searching for a race in race-finder
+app.get('/api/find-race', mb.searchRaces);
+// app.post('/api/find-race', mb.postRace);
+
+// handlers for retrieving a users details
+app.get('/api/current-user', mb.getCurrentUser);
+// handlers for loading a selected race
+app.get('/api/load-race/:id', mb.loadRace)
 
 // Handler for 404 error codes
 app.use((req, res, next) => {
