@@ -7,7 +7,6 @@ export { Account } from './Account.js'
 export const sharedState = {
     time: 0,
     timerInterval: null,
-    runnersFinished: 0,
     lapsFinished: 1,
     isAdmin: null
 };
