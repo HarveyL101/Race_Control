@@ -13,18 +13,20 @@ const __dirname = path.dirname(__filename);
 // creating instance of express server
 const app = express();
 const PORT = 8080;
-
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 app.use(session({
   secret: 'n0_p33k1ng_(MM4OQuMZ7OmzrYk)',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false }
+  cookie: { 
+    secure: false,
+    maxAge: ONE_DAY
+   }
 }));
 
 // Middleware that logs the method and url of a request
 app.use(mb.showFile);
-app.use(mb.sessionHandler);
 
 // serves files from /views, /src and /css
 app.use(express.static(path.resolve(__dirname, 'views')));

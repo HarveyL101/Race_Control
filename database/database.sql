@@ -122,14 +122,6 @@ CREATE TABLE IF NOT EXISTS runner_status (
     FOREIGN KEY (runner_id) REFERENCES users(id) 
 );
 
-CREATE TABLE IF NOT EXISTS sessions (
-    id TEXT PRIMARY KEY,
-    user_id INT,
-    CREATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP,
-    EXPIRES_AT DATETIME
-);
-
-
 -- VIEWS (WIP) -- 
 
 CREATE VIEW race_details AS 

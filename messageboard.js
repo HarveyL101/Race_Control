@@ -3,65 +3,6 @@ import { connect } from './database/setup.js';
 // global variable for one consistent connection, reduces resource exhaustion
 const db = await connect();
 
-export function parseCookies(req) {
-  const fetched = req.headers.cookie?.split("; ") || []; // Optional chaining to avoid premature error throws
-  const cookies = {};
-
-  fetched.forEach(cookie => {
-    const [name, value] = cookie.split("=");
-    cookies[name] = decodeURIComponent(value);
-  });
-
-  console.log(cookies);
-  return cookies;
-}
-
-export async function sessionHandler(req, res, next) {
-  try {
-    const cookies = parseCookies(req);
-    const sessionID = cookies.session_id;
-
-    if (!sessionID) {
-      req.user = null;
-      return next();
-    }
-
-    const session = await db.get(`
-      SELECT *
-      FROM sessions
-      WHERE id= ? AND expires_at > CURRENT_TIMESTAMP`,
-    [sessionID]
-  );
-
-  if (!session) {
-    req.user = null;
-    return next();
-  }
-
-  const user = await db.get(`
-    SELECT id, name
-    FROM users
-    WHERE id= ?`,
-    [session.user_id]
-  );
-
-  req.user = user || null;
-  next();
-  } catch (error) {
-    console.log('Session not found: ', error);
-    req.user = null;
-    next();
-  }
-}
-
-export function sessionCleaner() {
-  db.run(`
-    DELETE 
-    FROM sessions
-    WHERE EXPIRES_AT < CURRENT_TIMESTAMP;
-  `)
-}
-
 // Handlers for '/api/find-race' endpoint
 // {
 export async function searchRaces(req, res) {
@@ -179,7 +120,7 @@ export async function postLapResults(req, res) {
   // required fields: race_id, lap_number, runner_id, position, time
   console.log("postLapResults()");
 
-  const lapResults = req.body;
+  const { } = req.body;
   
   if (!Array.isArray(lapResults) || lapResults.length === 0) {
     return res.status(400).json({ 
