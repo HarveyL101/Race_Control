@@ -10,7 +10,7 @@ const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
 
 const currentLap = sharedState.lapsFinished;
-const currentTime = document.querySelector('stopwatch-panel').getCurrentTime;
+const currentTime = document.querySelector('stopwatch-panel').getCurrentTime();
 
 console.log("Race ID received: ", raceId);
 
@@ -32,7 +32,9 @@ async function fetchCurrentUser() {
 }
 
 async function fetchRaceDetails() {
-    const response = await fetch(`/api/load-race/${raceId}`);
+    const response = await fetch(`/api/load-race/${raceId}`, {
+        credentials: 'include'
+    });
     const data = await response.json();
 
     return {
@@ -68,6 +70,7 @@ async function submitLap() {
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(payload)
         });
 

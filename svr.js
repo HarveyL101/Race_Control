@@ -100,7 +100,19 @@ app.get('/api/find-race', mb.searchRaces);
 // app.post('/api/find-race', mb.postRace);
 
 // handlers for retrieving a users details
-app.get('/api/current-user', mb.getCurrentUser);
+app.get('/api/current-user', (req, res) => {
+  if (req.session.userId) {
+    return res.json({
+      id: req.session.userId,
+      username: req.session.username
+    });
+
+  } else {
+    return res.status(401).json({ message: "Not Authenticated" });
+  }
+});
+
+// app.get('/api/current-user', mb.getCurrentUser);
 // handlers for loading a selected race
 app.get('/api/load-race/:id', mb.loadRace)
 

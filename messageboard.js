@@ -65,9 +65,9 @@ export async function loadRace(req, res) {
 
 // Handlers for '/api/current-user' endpoint
 export async function getCurrentUser(req, res) {
-  const userId = req.session.userId;
 
-  console.log("Req.user: ", req.session.userId);
+  console.log("Req.session.userId: ", req.session.userId);
+  console.log("Req.session.username: ", req.session.username);
 
   if (!userId) {
     return res.status(404).json({ message: "User Not Found." });
@@ -120,7 +120,7 @@ export async function postLapResults(req, res) {
   // required fields: race_id, lap_number, runner_id, position, time
   console.log("postLapResults()");
 
-  const { } = req.body;
+  const {  } = req.body;
   
   if (!Array.isArray(lapResults) || lapResults.length === 0) {
     return res.status(400).json({ 
@@ -274,7 +274,6 @@ export async function login(req, res) {
       message: "Internal Server Error",
       error: error
     });
-    
   } 
 }
 
