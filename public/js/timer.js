@@ -1,26 +1,16 @@
-import { Leaderboard, StopWatch } from "./components/util.js";
+import { Leaderboard, saveState, StopWatch } from "./components/util.js";
 import { sharedState } from "./components/util.js";
+
+const submitBtn = document.querySelector('#submit-lap');
 
 customElements.define('leaderboard-panel', Leaderboard);
 customElements.define('stopwatch-panel', StopWatch);
 
-let runnerInfo = {
-    id: null,
-    name: null
-};
-
-let raceInfo = {
-    id: null,
-    name: null,
-    date: null,
-    startTime: null,
-    lapDistance: null,
-    location: null
-};
-
 const params = new URLSearchParams(window.location.search);
-const raceId = params.get('race_id');
+const raceId = Number(params.get('race_id'));
+
 const currentLap = sharedState.lapsFinished;
+const currentTime = document.querySelector('stopwatch-panel').getCurrentTime;
 
 console.log("Race ID received: ", raceId);
 
@@ -29,15 +19,13 @@ async function fetchCurrentUser() {
         const response = await fetch('/api/current-user', {
             credentials: 'include'
         });
-        const data = await response.json();
 
-        console.log(data);
-    
-        // assignment of data to global object
-        runnerInfo.id = data.id;
-        runnerInfo.name = data.username;
-    
-        console.log("Runner Info: ", runnerInfo);
+        const data = await response.json();
+        
+        return {
+            id: data.id,
+            username: data.username
+        };
     } catch (error) {
         console.error("Failed to fetch user details: ", error);
     }
@@ -47,34 +35,34 @@ async function fetchRaceDetails() {
     const response = await fetch(`/api/load-race/${raceId}`);
     const data = await response.json();
 
-    const raceDetails = data.raceDetails;
-
-    // assignment of data to global object
-    raceInfo.id = raceDetails.race_id;
-    raceInfo.name = raceDetails.race_name;
-    raceInfo.date = raceDetails.race_date;
-    raceInfo.startTime = raceDetails.start_time;
-    raceInfo.lapDistance = raceDetails.lap_distance;
-    raceInfo.location = raceDetails.location;
-
-    console.log("Race Info: ", raceInfo);
+    return {
+        id: raceId,
+        name: data.race_name,
+        date: data.race_date,
+        startTime: data.start_time,
+        lapDistance: data.lap_distance,
+        location: data.location
+    };
 }
 
 async function submitLap() {
-
-    if (!raceInfo.id || !runnerInfo.id) {
-        alert("Missing race/ runner info");
-        return;
-    }
+    const runner = await fetchCurrentUser();
+    const race = await fetchRaceDetails();
 
     const payload = {
-        race_id: "placeholder",
-        lap_number: "placeholder",
-        runner_id: "placeholder",
-        time: "placeholder",
+        race_id: race.id,
+        lap_number: currentLap,
+        runner_id: runner.id,
+        time: currentTime,
     }
 
     try {
+        console.log("Payload to be sent: ", payload);
+
+        if (!payload.race_id || !payload.lap_number || !payload.runner_id || !payload.time) {
+            return alert("Missing Required Fields")
+        }
+
         const response = await fetch('/api/lap-results', {
             method: 'POST',
             headers: {
@@ -83,22 +71,23 @@ async function submitLap() {
             body: JSON.stringify(payload)
         });
 
-        const result = response.json();
-        sharedState.lapsFinished++;
-
         if (!response.ok) {
             alert(`Error: ${response.error || "Could not post your results"}`);
             return;
         }
 
+        const result = response.json();
+        
+        saveState({lapsFinished: ++currentLap});
+
+        return ("Lap results submitted successfully: ", result);
     } catch (error) {
         console.log("Could not post results: ", error);
     }
-
-
-
-    console.log(payload);
+    
 }
+
+submitBtn.addEventListener('click', submitLap);
 
 fetchCurrentUser();
 fetchRaceDetails();
