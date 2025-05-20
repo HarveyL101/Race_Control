@@ -9,10 +9,19 @@ customElements.define('stopwatch-panel', StopWatch);
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
 
-const currentLap = sharedState.lapsFinished;
-const currentTime = document.querySelector('stopwatch-panel').getCurrentTime();
+let currentLap = sharedState.lapsFinished;
+
 
 console.log("Race ID received: ", raceId);
+
+function currentTime() {
+    const currentTime = document.querySelector('stopwatch-panel');
+
+    const time = currentTime.getCurrentTime();
+
+    console.log(time);
+    return time;
+}
 
 async function fetchCurrentUser() {
     try {
@@ -47,6 +56,15 @@ async function fetchRaceDetails() {
     };
 }
 
+async function fetchCurrentLap() {
+    const response = await fetch('/api/current-lap', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+
+    return { currentLap: data.currentLap };
+}
+
 async function submitLap() {
     const runner = await fetchCurrentUser();
     const race = await fetchRaceDetails();
@@ -55,11 +73,11 @@ async function submitLap() {
         race_id: race.id,
         lap_number: currentLap,
         runner_id: runner.id,
-        time: currentTime,
+        time: currentTime(),
     }
 
     try {
-        console.log("Payload to be sent: ", payload);
+        console.log("Payload to be sent: ", JSON.stringify(payload));
 
         if (!payload.race_id || !payload.lap_number || !payload.runner_id || !payload.time) {
             return alert("Missing Required Fields")
@@ -75,7 +93,7 @@ async function submitLap() {
         });
 
         if (!response.ok) {
-            alert(`Error: ${response.error || "Could not post your results"}`);
+            alert(`Error: ${response.error}`);
             return;
         }
 
@@ -87,7 +105,6 @@ async function submitLap() {
     } catch (error) {
         console.log("Could not post results: ", error);
     }
-    
 }
 
 submitBtn.addEventListener('click', submitLap);
