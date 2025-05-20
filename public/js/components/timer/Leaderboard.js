@@ -1,5 +1,3 @@
-import { sharedState, loadState } from "../util.js";
-
 // LEADERBOARD CLASS COMPONENTS
 export class Leaderboard extends HTMLElement {
     constructor() {
@@ -18,7 +16,6 @@ export class Leaderboard extends HTMLElement {
       this.lapBtn = this.shadowRoot.querySelector('#lap-end');
       this.refreshBtn = this.shadowRoot.querySelector('#refresh-button');
 
-      loadState();
       this.addEventListeners();
       console.log("Displaying: {Leaderboard}");
     }
@@ -37,8 +34,6 @@ export class Leaderboard extends HTMLElement {
     }
 
     async sendLapResults() {
-      sharedState.lapsFinished++;
-
       try {
         const payload = await JSON.parse(localStorage.getItem('lapResults'));
         console.log("payload to send: ", payload);

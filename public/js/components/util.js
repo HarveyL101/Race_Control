@@ -6,12 +6,11 @@ export { Account } from './Account.js'
 
 export const sharedState = {
     time: 0,
-    timerInterval: null,
-    lapsFinished: 1
+    timerInterval: null
 };
 
 // My method of keeping track of variables relevant to all three components in timer.html
-export function saveState({ time = sharedState.time, runnersFinished = sharedState.runnersFinished, lapsFinished = sharedState.lapsFinished}) {
+export function saveState({ time = sharedState.time, timerInterval = sharedState.timerInterval }) {
 
   localStorage.setItem("sharedState", JSON.stringify({ time, runnersFinished, lapsFinished }));
 

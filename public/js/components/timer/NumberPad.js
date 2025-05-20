@@ -1,4 +1,3 @@
-import { sharedState, loadState } from "../util.js";
 
 // NUMBER PAD CLASS COMPONENTS
 export class NumberPad extends HTMLElement {
@@ -17,8 +16,7 @@ export class NumberPad extends HTMLElement {
       // assigns preview field now that the shadowDOM has been rendered
       this.previewField = this.shadowRoot.querySelector('#preview');
 
-      this.addEventListeners()
-      loadState();
+      this.addEventListeners();
     }
   
     // Loops through the various NumberPad buttons to assign the listeners to allow handlePreview to function
@@ -37,7 +35,7 @@ export class NumberPad extends HTMLElement {
     }
 
     get LapCount() { 
-      return sharedState.lapsFinished;
+      console.log("placeholder");
     }
     
     get RunnerID() {
@@ -58,7 +56,7 @@ export class NumberPad extends HTMLElement {
     }
 
     get Position() {
-      return sharedState.runnersFinished;
+      console.log("placeholder");
     }
 
     get Time() {
@@ -139,8 +137,6 @@ export class NumberPad extends HTMLElement {
 
     // WIP, needs to send the current previewField.value to the relevant position on leaderboard
     submitRunner() {
-      sharedState.runnersFinished++;
-      
       const data = this.prepareSubmit();
 
       // Get current values from localStorage or start with an empty array

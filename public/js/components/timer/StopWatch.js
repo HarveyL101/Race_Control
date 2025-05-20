@@ -1,4 +1,4 @@
-import { saveState, sharedState } from "../util.js";
+import { sharedState, saveState } from "../util.js";
 
 // STOPWATCH CLASS COMPONENTS
 export class StopWatch extends HTMLElement {
@@ -86,10 +86,9 @@ export class StopWatch extends HTMLElement {
 
       // Ensuring values are reset to appropriate states
       sharedState.time = 0;
-      sharedState.runnersFinished = 0;
       this.startBtn.textContent = "Start";
       
-      saveState({ time: sharedState.time, runnersFinished: sharedState.runnersFinished });
+      saveState({ time: sharedState.time });
 
       // Removes all stored values from localStorage as well
       if (localStorage.getItem("raceResults")) {
