@@ -3,6 +3,13 @@ import { connect } from './database/setup.js';
 // global variable for one consistent connection, reduces resource exhaustion
 const db = await connect();
 
+
+// Prints the request type and url in the console (useful for debugging)
+export function showFile(req, res, next) {
+  console.log(`Request: ${req.method} | ${req.url}`);
+  next();
+}
+
 // Handlers for '/api/find-race' endpoint
 // {
 export async function searchRaces(req, res) {
@@ -66,13 +73,6 @@ export async function loadRace(req, res) {
 // Handlers for '/api/current-user' endpoint
 export async function getCurrentUser(req, res) {
 
-  console.log("Req.session.userId: ", req.session.userId);
-  console.log("Req.session.username: ", req.session.username);
-
-  if (!userId) {
-    return res.status(404).json({ message: "User Not Found." });
-  }
-
   try {
     const user = await db.get(`
       SELECT 
@@ -83,13 +83,46 @@ export async function getCurrentUser(req, res) {
       [userId]
     );
 
-    return res.json({ id: user.id, username: user.username });
+    return res.json({ 
+      id: user.id, 
+      username: user.username
+    });
   } catch(error) {
     console.log("Failed to retrieve user details: ", error);
     return res.status(500).json({ message: "Server Error" });
   }
 }
 
+// Handlers for '/api/current-lap' endpoint
+// {
+export async function getCurrentLap(req, res) {
+  const runnerId = req.session.userId;
+  const raceId = req.params.raceId;
+
+  try {
+    const lapsFinished = await db.get(`
+      SELECT 
+        COUNT(*) AS laps_finished
+      FROM 
+        lap_results
+      WHERE 
+        race_id= ? AND runner_id= ?`,
+      [raceId, runnerId]
+    );
+
+    if(!lapsFinished) {
+      return 1;
+    }
+
+    return { lapsFinished };
+  } catch(error) {
+    return res.status(500).json({
+      message: "Could not find the current lap for this user",
+      id: runnerId
+    });
+  }
+}
+// }
 
 // Handlers for '/api/lap-results' endpoint
 // {
@@ -120,9 +153,9 @@ export async function postLapResults(req, res) {
   // required fields: race_id, lap_number, runner_id, position, time
   console.log("postLapResults()");
 
-  const {  } = req.body;
+  const { race_id, lap_number, runner_id, time } = req.body;
   
-  if (!Array.isArray(lapResults) || lapResults.length === 0) {
+  if (!race_id || !lap_number || !runner_id || !time) {
     return res.status(400).json({ 
       message: "Error 400: Missing required fields",
       received: lapResults
@@ -131,14 +164,14 @@ export async function postLapResults(req, res) {
 
   try {
     await db.run(`
-      INSERT INTO lap_results (race_id, lap_number, runner_id, position, time)
-      VALUES (?, ?, ?, ?, ?)`,
-      [race_id, lap_number, runner_id, position, time]
+      INSERT INTO lap_results (race_id, lap_number, runner_id, time)
+      VALUES (?, ?, ?, ?)`,
+      [race_id, lap_number, runner_id, time]
     );
     // Confirmation of success
     return res.status(201).json({ 
       message: "Lap entry saved successfully",
-      received: lapResults,
+      received: req.body,
       id: runner_id
     });
   } catch(error) {
@@ -179,11 +212,7 @@ export async function postLapResults(req, res) {
 // }
 
 
-// Prints the request type and url in the console (useful for debugging)
-export function showFile(req, res, next) {
-  console.log(`Request: ${req.method} | ${req.url}`);
-  next();
-}
+
 
 // LOGIN RELATED CODE
 // {
