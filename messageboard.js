@@ -5,7 +5,7 @@ const db = await connect();
 
 
 // Prints the request type and url in the console (useful for debugging)
-export function showFile(req, res, next) {
+export function showFileStream(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
 }

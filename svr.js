@@ -35,7 +35,7 @@ app.use(session({
 }));
 
 // Middleware that logs the method and url of a request (useful during development)
-app.use(mb.showFile);
+app.use(mb.showFileStream);
 
 // serves files from /views, /src and /css
 app.use(express.static(path.resolve(__dirname, 'views')));
