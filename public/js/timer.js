@@ -19,7 +19,8 @@ function currentTime() {
 
     const time = currentTime.getCurrentTime();
 
-    console.log(time);
+    console.log("current time: ", time);
+
     return time;
 }
 
@@ -30,6 +31,8 @@ async function fetchCurrentUser() {
         });
 
         const data = await response.json();
+
+        console.log("user details: ", data);
         
         return {
             id: data.id,
@@ -46,12 +49,14 @@ async function fetchRaceDetails() {
     });
     const data = await response.json();
 
+    console.log("race details: ", data);
     return {
         id: raceId,
         name: data.race_name,
         date: data.race_date,
         startTime: data.start_time,
         lapDistance: data.lap_distance,
+        interval: data.interval,
         location: data.location
     };
 }
@@ -62,16 +67,25 @@ async function fetchCurrentLap() {
     });
     const data = await response.json();
 
-    return { currentLap: data.currentLap };
+    console.log("current lap: ", data);
+
+    return {
+      currentLap: data.currentLap
+    };
 }
 
 async function submitLap() {
     const runner = await fetchCurrentUser();
     const race = await fetchRaceDetails();
+    const currentLap = await fetchCurrentLap();
+
+    if (!runner || !race || !currentLap) {
+      return alert("Missing Required fields: {runner, race, currentLap}");
+    }
 
     const payload = {
         race_id: race.id,
-        lap_number: currentLap,
+        lap_number: currentLap.currentLap,
         runner_id: runner.id,
         time: currentTime(),
     }
@@ -80,7 +94,7 @@ async function submitLap() {
         console.log("Payload to be sent: ", JSON.stringify(payload));
 
         if (!payload.race_id || !payload.lap_number || !payload.runner_id || !payload.time) {
-            return alert("Missing Required Fields")
+            return alert("Missing Required Fields");
         }
 
         const response = await fetch('/api/lap-results', {
@@ -93,13 +107,13 @@ async function submitLap() {
         });
 
         if (!response.ok) {
-            alert(`Error: ${response.error}`);
-            return;
+          const error = response.text();
+          return alert(error);
         }
 
         const result = response.json();
-        
-        saveState({lapsFinished: ++currentLap});
+
+        console.log(result);
 
         return ("Lap results submitted successfully: ", result);
     } catch (error) {
@@ -108,6 +122,3 @@ async function submitLap() {
 }
 
 submitBtn.addEventListener('click', submitLap);
-
-fetchCurrentUser();
-fetchRaceDetails();
