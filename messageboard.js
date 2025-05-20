@@ -10,6 +10,15 @@ export function showFileStream(req, res, next) {
   next();
 }
 
+export function isLoggedIn(req, res, next) {
+  if (req.session && req.session.userId) {
+    console.log("User: ", req.session.userId);
+    return next();
+  } else {
+    return res.redirect('/');
+  }
+}
+
 // Handlers for '/api/find-race' endpoint
 // {
 export async function searchRaces(req, res) {
@@ -51,7 +60,8 @@ export async function loadRace(req, res) {
         r.date AS race_date,
         r.start_time AS start_time,
         r.distance AS lap_distance,
-        l.name AS location
+        r.interval AS interval,
+        l.name AS location       
       FROM 
         races r
       JOIN locations l ON r.location_id = l.id
@@ -72,11 +82,12 @@ export async function loadRace(req, res) {
 
 // Handlers for '/api/current-user' endpoint
 export async function getCurrentUser(req, res) {
+  const userId = req.session.userId;
 
   try {
     const user = await db.get(`
       SELECT 
-        id,
+        id AS user_id,
         username
       FROM users
       WHERE id= ?`, 
@@ -84,7 +95,7 @@ export async function getCurrentUser(req, res) {
     );
 
     return res.json({ 
-      id: user.id, 
+      id: user.user_id, 
       username: user.username
     });
   } catch(error) {
@@ -100,7 +111,7 @@ export async function getCurrentLap(req, res) {
   const raceId = req.params.raceId;
 
   try {
-    const lapsFinished = await db.get(`
+    const data = await db.get(`
       SELECT 
         COUNT(*) AS laps_finished
       FROM 
@@ -110,11 +121,11 @@ export async function getCurrentLap(req, res) {
       [raceId, runnerId]
     );
 
-    if(!lapsFinished) {
+    if(!data.laps_finished || data.laps_finished === 0) {
       return 1;
     }
 
-    return { lapsFinished };
+    return res.json(data.laps_finished);
   } catch(error) {
     return res.status(500).json({
       message: "Could not find the current lap for this user",

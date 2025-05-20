@@ -66,19 +66,21 @@ app.get('/redirect', (req, res) => {
   }
 });
 
+
+
 // Routes for the /webpages directory
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'views/index.html'));
 });
 
-app.get('/home', (req, res) => {
+app.get('/home', mb.isLoggedIn, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/home.html'));
 });
 
-app.get('/placeholder', (req, res) => {
+app.get('/placeholder', mb.isLoggedIn, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
@@ -98,23 +100,23 @@ app.post('/login', mb.login);
 app.post('/register', mb.register);
 
 // handlers for the current lap/ checkpoint being recorded
-app.get('/api/lap-results', mb.getLapResults);
+app.get('/api/lap-results', mb.isLoggedIn, mb.getLapResults);
 app.post('/api/lap-results', mb.postLapResults);
 // handlers for the race-results displayed on the leaderboard
-app.get('/api/race-results', mb.getRaceResults);
+app.get('/api/race-results', mb.isLoggedIn, mb.getRaceResults);
 app.post('api/race-results', mb.postRaceResults);
 // handlers for searching for a race in race-finder
-app.get('/api/find-race', mb.searchRaces);
+app.get('/api/find-race', mb.isLoggedIn, mb.searchRaces);
 // app.post('/api/find-race', mb.postRace);
 
 // handlers for retrieving a users details
-app.get('/api/current-user', mb.getCurrentUser);
+app.get('/api/current-user', mb.isLoggedIn, mb.getCurrentUser);
 
 // handlers for loading a selected race
-app.get('/api/load-race/:id', mb.loadRace)
+app.get('/api/load-race/:id', mb.isLoggedIn, mb.loadRace);
 
 // handlers for retrieving the current lap of a runner in a race
-app.get('/api/current-lap', mb.getCurrentLap)
+app.get('/api/current-lap', mb.isLoggedIn, mb.getCurrentLap);
 // Handler for 404 error codes
 app.use((req, res, next) => {
   res.status(404).send("Error Code 404: Page not found");
