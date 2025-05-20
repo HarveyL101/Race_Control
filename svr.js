@@ -5,17 +5,26 @@ import * as mb from './messageboard.js';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import { URL } from 'url';
+import connectSqlite3 from 'connect-sqlite3';
+
+const SQLiteStore = connectSqlite3(session);
 
 
+// creating instance of express server, other global variables stored here
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename);
 
-// creating instance of express server
+
 const app = express();
 const PORT = 8080;
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
 app.use(session({
+  store: new SQLiteStore({
+    db: 'sessions.db',
+    dir: path.resolve(__dirname, 'database'),
+    createDirIfNotExists: true
+  }),
   secret: 'n0_p33k1ng_(MM4OQuMZ7OmzrYk)',
   resave: false,
   saveUninitialized: false,
@@ -25,7 +34,7 @@ app.use(session({
    }
 }));
 
-// Middleware that logs the method and url of a request
+// Middleware that logs the method and url of a request (useful during development)
 app.use(mb.showFile);
 
 // serves files from /views, /src and /css
@@ -82,7 +91,6 @@ app.post('/admin/give-admin', (req, res) => {
   if (!req.session.isAdmin) {
     return res.status(403).send("Access denied, you cannot do this with your current priveledges");
   }
-
   // call giveAdmin() function (WIP)
 });
 
@@ -91,7 +99,7 @@ app.post('/register', mb.register);
 
 // handlers for the current lap/ checkpoint being recorded
 app.get('/api/lap-results', mb.getLapResults);
-app.post('/api/lap-results/:id', mb.postLapResults);
+app.post('/api/lap-results', mb.postLapResults);
 // handlers for the race-results displayed on the leaderboard
 app.get('/api/race-results', mb.getRaceResults);
 app.post('api/race-results', mb.postRaceResults);
@@ -100,22 +108,13 @@ app.get('/api/find-race', mb.searchRaces);
 // app.post('/api/find-race', mb.postRace);
 
 // handlers for retrieving a users details
-app.get('/api/current-user', (req, res) => {
-  if (req.session.userId) {
-    return res.json({
-      id: req.session.userId,
-      username: req.session.username
-    });
+app.get('/api/current-user', mb.getCurrentUser);
 
-  } else {
-    return res.status(401).json({ message: "Not Authenticated" });
-  }
-});
-
-// app.get('/api/current-user', mb.getCurrentUser);
 // handlers for loading a selected race
 app.get('/api/load-race/:id', mb.loadRace)
 
+// handlers for retrieving the current lap of a runner in a race
+app.get('/api/current-lap', mb.getCurrentLap)
 // Handler for 404 error codes
 app.use((req, res, next) => {
   res.status(404).send("Error Code 404: Page not found");
