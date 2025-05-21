@@ -108,6 +108,7 @@ export async function getCurrentUser(req, res) {
 // {
 export async function getCurrentLap(req, res) {
   const { race_id, runner_id } = req.query
+  console.log("getCurrentLap: ", { race_id, runner_id });
 
   try {
     const data = await db.get(`
@@ -119,9 +120,10 @@ export async function getCurrentLap(req, res) {
         race_id= ? AND runner_id= ?`,
       [race_id, runner_id]
     );
+    
+    console.log("laps finished: ", data.laps_finished);
 
     const currentLap = data.laps_finished + 1;
-
     return res.json({ currentLap })
   } catch(error) {
     return res.status(500).json({

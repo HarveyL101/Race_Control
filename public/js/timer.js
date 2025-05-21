@@ -57,7 +57,7 @@ async function fetchRaceDetails() {
     };
 }
 
-async function fetchCurrentLap(runnerId) {
+async function fetchCurrentLap(raceId, runnerId) {
   try {
 
     if (!raceId || isNaN(raceId)) {
