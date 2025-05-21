@@ -1,5 +1,4 @@
-import { Leaderboard, saveState, StopWatch } from "./components/util.js";
-import { sharedState } from "./components/util.js";
+import { Leaderboard, StopWatch } from "./components/util.js";
 
 const submitBtn = document.querySelector('#submit-lap');
 
@@ -8,9 +7,6 @@ customElements.define('stopwatch-panel', StopWatch);
 
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
-
-let currentLap = sharedState.lapsFinished;
-
 
 console.log("Race ID received: ", raceId);
 
@@ -61,23 +57,41 @@ async function fetchRaceDetails() {
     };
 }
 
-async function fetchCurrentLap() {
-    const response = await fetch('/api/current-lap', {
-        credentials: 'include'
+async function fetchCurrentLap(runnerId) {
+  try {
+
+    if (!raceId || isNaN(raceId)) {
+      console.error("Invalid raceId detected: ", raceId);
+      alert("Invalid or missing raceId");
+    }
+    if(!runnerId || isNaN(runnerId)) {
+      console.error("Invalid runnerId detected: ", runnerId);
+      alert("Invalid or missing runnerId");
+    }
+
+    const response = await fetch(`/api/current-lap?race_id=${raceId}&runner_id=${runnerId}`, {
+      credentials: 'include'
     });
+
+    if (!response.ok) {
+      const msg = await response.text()
+      console.log("fetching current lap failed: ", response.status, msg);
+      return null;
+    }
+
     const data = await response.json();
+    console.log("data returned: ", data);
 
-    console.log("current lap: ", data);
-
-    return {
-      currentLap: data.currentLap
-    };
+    return { currentLap: data.currentLap };
+  } catch (error) {
+    console.log("Could not fetch current lap: ", error);
+  }   
 }
 
 async function submitLap() {
     const runner = await fetchCurrentUser();
     const race = await fetchRaceDetails();
-    const currentLap = await fetchCurrentLap();
+    const currentLap = await fetchCurrentLap(raceId, runner.id);
 
     if (!runner || !race || !currentLap) {
       return alert("Missing Required fields: {runner, race, currentLap}");
@@ -107,11 +121,11 @@ async function submitLap() {
         });
 
         if (!response.ok) {
-          const error = response.text();
+          const error = await response.text();
           return alert(error);
         }
 
-        const result = response.json();
+        const result = await response.json();
 
         console.log(result);
 

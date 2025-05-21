@@ -1,5 +1,6 @@
 const searchBar = document.querySelector('#search-bar');
-const searchBtn = document.querySelector('#search-button')
+const searchBtn = document.querySelector('#search-button');
+
 export async function searchRaces() {
   const query = searchBar.value;
 

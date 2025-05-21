@@ -107,8 +107,7 @@ export async function getCurrentUser(req, res) {
 // Handlers for '/api/current-lap' endpoint
 // {
 export async function getCurrentLap(req, res) {
-  const runnerId = req.session.userId;
-  const raceId = req.params.raceId;
+  const { race_id, runner_id } = req.query
 
   try {
     const data = await db.get(`
@@ -118,18 +117,16 @@ export async function getCurrentLap(req, res) {
         lap_results
       WHERE 
         race_id= ? AND runner_id= ?`,
-      [raceId, runnerId]
+      [race_id, runner_id]
     );
 
-    if(!data.laps_finished || data.laps_finished === 0) {
-      return 1;
-    }
+    const currentLap = data.laps_finished + 1;
 
-    return res.json(data.laps_finished);
+    return res.json({ currentLap })
   } catch(error) {
     return res.status(500).json({
       message: "Could not find the current lap for this user",
-      id: runnerId
+      id: runner_id
     });
   }
 }
@@ -161,7 +158,6 @@ export async function getLapResults(req, res) {
 }
 
 export async function postLapResults(req, res) {
-  // required fields: race_id, lap_number, runner_id, position, time
   console.log("postLapResults()");
 
   const { race_id, lap_number, runner_id, time } = req.body;
@@ -169,7 +165,7 @@ export async function postLapResults(req, res) {
   if (!race_id || !lap_number || !runner_id || !time) {
     return res.status(400).json({ 
       message: "Error 400: Missing required fields",
-      received: lapResults
+      received: req.body
     });
   }
 

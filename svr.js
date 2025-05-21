@@ -104,7 +104,7 @@ app.get('/api/lap-results', mb.isLoggedIn, mb.getLapResults);
 app.post('/api/lap-results', mb.postLapResults);
 // handlers for the race-results displayed on the leaderboard
 app.get('/api/race-results', mb.isLoggedIn, mb.getRaceResults);
-app.post('api/race-results', mb.postRaceResults);
+app.post('/api/race-results', mb.postRaceResults);
 // handlers for searching for a race in race-finder
 app.get('/api/find-race', mb.isLoggedIn, mb.searchRaces);
 // app.post('/api/find-race', mb.postRace);
@@ -117,7 +117,7 @@ app.get('/api/load-race/:id', mb.isLoggedIn, mb.loadRace);
 
 // handlers for retrieving the current lap of a runner in a race
 app.get('/api/current-lap', mb.isLoggedIn, mb.getCurrentLap);
-// Handler for 404 error codes
+// handler for 404 error codes
 app.use((req, res, next) => {
   res.status(404).send("Error Code 404: Page not found");
   next();
@@ -126,11 +126,3 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}, @http://localhost:${PORT}`);
 });
-
-setInterval(() => {
-  mb.sessionCleaner();
-}, 3600000) // One hour (in milliseconds)
-
-
-
-
