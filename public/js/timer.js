@@ -1,4 +1,5 @@
 import { Leaderboard, StopWatch } from "./components/util.js";
+import { fetchCurrentUser } from "./functions/functions.js";
 
 const submitBtn = document.querySelector('#submit-lap');
 
@@ -18,25 +19,6 @@ function currentTime() {
     console.log("current time: ", time);
 
     return time;
-}
-
-async function fetchCurrentUser() {
-    try {
-        const response = await fetch('/api/current-user', {
-            credentials: 'include'
-        });
-
-        const data = await response.json();
-
-        console.log("user details: ", data);
-        
-        return {
-            id: data.id,
-            username: data.username
-        };
-    } catch (error) {
-        console.error("Failed to fetch user details: ", error);
-    }
 }
 
 async function fetchRaceDetails() {
