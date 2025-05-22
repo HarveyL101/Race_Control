@@ -6,30 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Running App</title>
     <link rel="stylesheet" href="/css/home.css">
-  <!--<script><p>still need to add script</p></script>-->
+    <script type="module" defer src="/js/home.js"></script>
   </head>
 
   <body>
     <header>
-      <nav>
-        <ul>
-          <li><a href="./home.html">Home</a></li>
-          <li><a href="./race/race-finder.html">Find A Race</a></li>
-          <li><a href="./placeholder.html">Account</a></li>
-          <li><a href="./index.html">Exit</a></li>
-        </ul>
-      </nav>
-      <h1 id="welcome-msg">Welcome</h1>
+      <div id="title-container">
+        <h1 id="welcome-msg">Welcome</h1>
+      </div>
+      <div id="account-container">
+        <a href="./placeholder.html">
+          <img src="" alt="">
+        </a>
+      </div>
     </header>
 
-    <section id="race-section">
-      <div id="race-search">
-        <input type="search" name="search" id="search" size="30" maxlength="128">
+    <div id="display-container">
+      <div class="display-bubble" id="enter-race-bubble">
+        <a href="./race/race-finder.html">
+          <h3 class="bubble-title">Enter A Race</h3>
+          <img class="bubble-image" src="imgs/enter_race.png" alt="placeholder image">
+          <p>Running a race? Get set here!</p>
+        </a>
       </div>
-      <div id="race-listings">
-        <ul>
-        </ul>
+
+      <div class="display-bubble" id="view-race-bubble">
+        <a href="./placeholder.html">
+          <h3 class="bubble-title">View Race</h3>
+          <img class="bubble-image" src="imgs/view_race.png" alt="placeholder image">
+          <p>Not participating but still want to see results? Click here!</p>
+        </a>
       </div>
-    </section>
+
+      <div class="display-bubble" id="account-bubble">
+        <a href="./placeholder.html">
+          <h3 class="bubble-title">Account</h3>
+          <img class="bubble-image" src="imgs/account.png" alt="placeholder image">
+          <p>View your account details here!</p>
+        </a>
+      </div>
+
+      <div class="display-bubble" id="exit-bubble">
+        <a href="./index.html">
+          <h3 class="bubble-title">Exit?</h3>
+          <img class="bubble-image" src="imgs/exit.png" alt="placeholder image">
+          <p>Done for the day? See you soon!</p>
+        </a>
+      </div>
+    </div>
   </body>
 </html>
