@@ -1,4 +1,11 @@
 # Race Time - by up2118183
+
+## Assumptions
+All assumptions of logic and/ or  physical race organisation will be mentioned here.
+
+* Assumption 1:
+* Assumption 2:
+
 ## Key features
 Replace this text with an introduction to your key features.
 

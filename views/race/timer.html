@@ -12,10 +12,11 @@
 
   <body>
     <header>
-      <h1 id="page-header">This Is My Timer Page</h1>
-      <h4>Welcome!</h4>
-      <button id="exit" ><a href="../home.html">Exit</a></button>
-      <button id="submit-lap">Submit Lap</button>
+      <h1 id="page-header">Title</h1>
+      <h4 id="welcome-msg">Welcome message</h4>
+      <a href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
+      <a href="./race-finder.html"><img src="/imgs/back_button.png" alt="Back Button"></a>
+      
 
     </header>
 
@@ -40,6 +41,7 @@
         <p id="timer">00:00:00</p>
 
         <button id="start-stop" type="button">Start</button>
+        <button id="submit-lap">Submit Lap</button>
         <button id="reset" type="button">Reset</button>
         
       </div>
@@ -50,49 +52,29 @@
     <link rel="stylesheet" href="../css/timer.css">
 
     <div id="leaderboard-wrapper">
-
         <div id="leaderboard-container">
-          
+          <div id="leaderboard-header">
+            <h4>Leaderboard Table</h4>
+            <p>Your current results will be displayed here...</p>
+          </div>
 
-            <h3>Leaderboard</h3>
-
-            <div id="leaderboard">
-              <p>*********************</p>
-              <ul id="leaderboard-list"></ul>
-              <h4>Leaderboard Table</h4>
-
-              <p id="table-header">Current Checkpoint results will be displayed here...</p>
-
-              <table border="1" id="leaderboard-table">
-                <thead>
-                  <tr id="header-row">
-                    <td>Position</td>
-                    <td>Runner</td>
-                    <td>Lap Time (HH:MM:SS)</td>
-                  </tr>
-                </thead>
-                <tbody id="table-body">
-                  <tr id="data-row">
-                    <td>Placeholder Data Row</td>
-                    <td>Placeholder Data Row</td>
-                    <td>Placeholder Data Row</td>
-                  </tr>
-                </tbody>
-
-              </table>
-              <p>*********************</p>
-            </div>
-            <div id="submit-lap">
-              <button id="refresh-button" type="button">Refresh Leaderboard</button>
-              <button id="lap-end" type="button">Finish Lap</button>
-            </div>
+          <table border="1" id="leaderboard-table">
+            <thead>
+              <tr id="header-row">
+                <td>Lap Number</td>
+                <td>Lap Time (HH:MM:SS)</td>
+                <td>Time Remaining (Interval - Lap Time)</td>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr id="data-row">
+                <td>Placeholder Data Row</td>
+                <td>Placeholder Data Row</td>
+                <td>Placeholder Data Row</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      
-      <div id="end-race-container">
-        <p>*******************************</p>
-        <h4>New Section</h4>
-        <button id="" type="button">End Race</button>
       </div>
-    </div>
   </template>
 </html>
