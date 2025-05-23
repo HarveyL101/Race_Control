@@ -80,12 +80,27 @@ app.get('/home', mb.isLoggedIn, (req, res) => {
   res.sendFile(path.resolve(__dirname, 'views/home.html'));
 });
 
+app.get('/race-finder', mb.isLoggedIn, (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send("Unauthorised");
+  }
+  res.sendFile(path.resolve(__dirname, 'views/race/race-finder.html'));
+});
+
+app.get('/timer', mb.isLoggedIn, (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send("Unauthorised");
+  }
+  res.sendFile(path.resolve(__dirname, 'views/race/timer.html'));
+});
+
 app.get('/placeholder', mb.isLoggedIn, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/placeholder.html'));
 });
+
 
 
 // Some admin handlers
