@@ -11,9 +11,9 @@ export const sharedState = {
 // My method of keeping track of variables relevant to all three components in timer.html
 export function saveState({ time = sharedState.time, timerInterval = sharedState.timerInterval }) {
 
-  localStorage.setItem("sharedState", JSON.stringify({ time, runnersFinished, lapsFinished }));
+  localStorage.setItem("sharedState", JSON.stringify({ time }));
 
-  console.log("sharedState has been sent to local storage");
+  console.log("sharedState has been updated");
 }
 
 export function loadState() {
@@ -26,7 +26,6 @@ export function loadState() {
       // allocating values to their respective variables
       sharedState.time = parsed.time;
       sharedState.timerInterval = parsed.timerInterval;
-      sharedState.runnersFinished = parsed.runnersFinished;
 
       console.log(`
         sharedState current state: ${parsed}

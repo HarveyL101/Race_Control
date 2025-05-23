@@ -22,9 +22,9 @@ export async function searchRaces() {
       const newDiv = document.createElement('div');
       newDiv.className = 'race';
       newDiv.innerHTML = `
-        <a href="timer.html?race_id=${race.race_id}" class="race-link">
-          <h4>${race.location}: ${race.race_name} (#${race.race_id})</h4>
-          <p>Date: ${race.race_date}</p>
+        <a href="timer.html?race_id=${race.id}" class="race-link">
+          <h4>${race.location}: ${race.name} (#${race.id})</h4>
+          <p>Date: ${race.date}</p>
           <p>Start Time: ${race.start_time}</p>
           <p>Lap Distance: ${race.lap_distance}Km</p>
         </a>

@@ -90,12 +90,6 @@ export class Leaderboard extends HTMLElement {
     }
 
     addEventListeners() {
-      this.refreshBtn.addEventListener('click', this.refresh.bind(this));
-      this.lapBtn.addEventListener('click', this.sendLapResults.bind(this));
-
-      // being used as a test to see if db is being uploaded to correctly, 
-      // (will later be found in the runner version of the timer)
-      // below needs to be a getter, whereas above is a post
-      // this.refreshBtn.addEventListener('click', this.update.bind(this));      
+      console.log("placeholder");     
     }
   }

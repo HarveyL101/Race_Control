@@ -27,9 +27,9 @@ export async function searchRaces(req, res) {
   try {
     const races = await db.all(`
       SELECT 
-        r.id AS race_id,
-        r.name AS race_name,
-        r.date AS race_date,
+        r.id AS id,
+        r.name AS name,
+        r.date AS date,
         r.start_time AS start_time,
         r.distance AS lap_distance,
         l.name AS location
@@ -55,9 +55,9 @@ export async function loadRace(req, res) {
   try {
     const raceDetails = await db.get(`
       SELECT 
-        r.id AS race_id,
-        r.name AS race_name,
-        r.date AS race_date,
+        r.id AS id,
+        r.name AS name,
+        r.date AS date,
         r.start_time AS start_time,
         r.distance AS lap_distance,
         r.interval AS interval,
@@ -302,8 +302,7 @@ export async function login(req, res) {
       });
     } else {
       console.warn("Invalid username and/ or password");
-      res.redirect('/');
-      return;
+      return res.redirect('/');
     }
   } catch (error) {
     console.log("Error in login(): ", error);
@@ -324,38 +323,42 @@ export async function register(req, res) {
       return res.send({ message: "Invalid Username/ Password", data: req.body });
     }
 
-    const userExists = await checkUser(username, password);
+    const user = await checkUser(username, password);
 
-    if (!userExists) {
+    // debugging log
+    console.log("Form Data Received: ", req.body);
+
+    // Insert user details into db if not already present
+    if (!user) {
       await db.run(`
         INSERT INTO users (username, password, is_admin)
         VALUES (?, ?, 0)`,
         [username, password]
       );
 
-      // declarations of values to be passed
-      const sessionId = generateSessionId();
-      const userId = await db.get(`SELECT id FROM users WHERE username= ?`, [username]);
-      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+      // returns desired values for session storage
+      const userRow = await db.get(`SELECT id FROM users WHERE username= ?`, [username]);
       
-      await db.run(`
-        INSERT INTO sessions (id, user_id, EXPIRES_AT)
-        VALUES (?, ?, ?)`,
-      [sessionId, userId, expiresAt]
-      );
+      req.session.userId = userRow.id;
+      req.session.username = userRow.username;
 
-      res.setHeader('Set-Cookie', `session_id=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`);
-      
-      return res.redirect('/home');
+      req.session.save(err => {
+        if (err) {
+          console.log("Session save error: ", err);
+        }
+        res.redirect('/home');
+      });
     } else {
-      console.log("Sorry! An account with this username already exists, please try again.");
-
-      res.redirect('/');
+      console.warn("Sorry! An account with this username already exists, please try again.");
+      return res.redirect('/');
     }
   } catch (error) {
     console.log("Error(500): ", error);
 
-    return res.redirect('/');
+    return res.status(500).json ({
+      message: "Internal Server Error",
+      error: error
+    });
   }
 }
 // }
