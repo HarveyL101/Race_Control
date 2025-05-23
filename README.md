@@ -1,4 +1,4 @@
-# Race Time - by up2118183
+# Race Time (This documentation is currently a WIP, if not already apparent) - by up2118183
 
 ## Assumptions
 All assumptions of logic and/ or  physical race organisation will be mentioned here.
