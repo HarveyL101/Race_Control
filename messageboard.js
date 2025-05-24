@@ -53,7 +53,7 @@ export async function loadRace(req, res) {
   const raceId = req.params.id;
 
   try {
-    const raceDetails = await db.get(`
+    const race = await db.get(`
       SELECT 
         r.id AS id,
         r.name AS name,
@@ -69,13 +69,20 @@ export async function loadRace(req, res) {
       [raceId]
     );
 
-    return res.json({ raceDetails });
+    return res.json({
+      id: race.id,
+      name: race.name,
+      date: race.date,
+      start_time: race.start_time,
+      distance: race.lap_distance,
+      interval: race.interval,
+      location: race.location
+    });
   } catch (error) {
     return res.status(500).json({
       message: `Could not load race ID(#${raceId})`,
       received: req.params
     });
-
   }
 }
 // }
