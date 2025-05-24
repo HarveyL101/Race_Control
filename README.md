@@ -4,7 +4,9 @@
 ## Assumptions
 All assumptions of logic and/ or  physical race organisation will be mentioned here.
 
-* Assumption 1:
+* Assumption 1: 
+  * Each runner can at least access the internet at the beginning/ ending checkpoint.
+
 * Assumption 2:
 
 ## Key features
