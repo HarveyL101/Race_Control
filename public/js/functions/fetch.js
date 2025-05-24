@@ -4,10 +4,14 @@ export async function fetchCurrentUser() {
             credentials: 'include'
         });
 
+        if (!response.ok) {
+          const msg = await response.text()
+          console.log("fetching current lap failed: ", response.status, msg);
+          return null;
+        }
+
         const data = await response.json();
 
-        console.log("user details: ", data);
-        
         return {
             id: data.id,
             username: data.username
@@ -21,18 +25,16 @@ export async function fetchRaceDetails(race_id) {
     const response = await fetch(`/api/load-race/${race_id}`, {
         credentials: 'include'
     });
+
+    if (!response.ok) {
+      const msg = await response.text()
+      console.log("fetching current lap failed: ", response.status, msg);
+      return null;
+    }
+
     const data = await response.json();
 
-    console.log("race details: ", data);
-    return {
-        id: data.id,
-        name: data.name,
-        date: data.date,
-        startTime: data.start_time,
-        lapDistance: data.lap_distance,
-        interval: data.interval,
-        location: data.location
-    };
+    return data;
 }
 
 export async function fetchCurrentLap(raceId, runnerId) {
@@ -58,7 +60,6 @@ export async function fetchCurrentLap(raceId, runnerId) {
     }
 
     const data = await response.json();
-    console.log("data returned: ", data);
 
     return { currentLap: data.currentLap };
   } catch (error) {
