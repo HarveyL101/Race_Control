@@ -4,35 +4,30 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/timer.css">
+    <link rel="stylesheet" href="/css/race/timer.css">
     <link rel="icon" href="/imgs/favicon.ico">
-    <script type="module" defer src="/js/timer.js"></script>
+    <script type="module" defer src="/js/race/timer.js"></script>
     <title>Timer</title>
   </head>
 
   <body>
     <header>
-      <h1 id="page-header">Title</h1>
-      <h4 id="welcome-msg">Welcome message</h4>
-      <a href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
-      <a href="./race-finder.html"><img src="/imgs/back_button.png" alt="Back Button"></a>
+      <div id="header-left">
+        <h1 id="page-header">Here you can record your lap times for your race!</h1>
+        <h3 id="welcome-msg">Welcome!</h3>
+      </div>
       
-
+      <div id="header-right">
+        <a class="icon-buttons" href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
+        <a class="icon-buttons" href="./race-finder.html"><img src="/imgs/back_button.png" alt="Back Button"></a>
+      </div>
     </header>
 
-    <div id="details-container">
-      <p>details container here</p>
-    </div>
-
     <stopwatch-panel></stopwatch-panel>
-    
-    <leaderboard-panel></leaderboard-panel>
-
-    
   </body>
 
   <template id="stopwatch-template">
-    <link rel="stylesheet" href="../css/timer.css">
+    <link rel="stylesheet" href="/css/components/stopwatch.css">
     <div id="stopwatch-wrapper">
       
       
@@ -43,38 +38,7 @@
         <button id="start-stop" type="button">Start</button>
         <button id="submit-lap">Submit Lap</button>
         <button id="reset" type="button">Reset</button>
-        
       </div>
     </div>
-  </template>
-
-  <template id="leaderboard-template">
-    <link rel="stylesheet" href="../css/timer.css">
-
-    <div id="leaderboard-wrapper">
-        <div id="leaderboard-container">
-          <div id="leaderboard-header">
-            <h4>Leaderboard Table</h4>
-            <p>Your current results will be displayed here...</p>
-          </div>
-
-          <table border="1" id="leaderboard-table">
-            <thead>
-              <tr id="header-row">
-                <td>Lap Number</td>
-                <td>Lap Time (HH:MM:SS)</td>
-                <td>Time Remaining (Interval - Lap Time)</td>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-              <tr id="data-row">
-                <td>Placeholder Data Row</td>
-                <td>Placeholder Data Row</td>
-                <td>Placeholder Data Row</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
   </template>
 </html>
