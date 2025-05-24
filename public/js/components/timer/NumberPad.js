@@ -11,7 +11,6 @@ export class NumberPad extends HTMLElement {
       // prevents duplicate templates and other bugs previously experienced
       if (!this.shadowRoot.hasChildNodes()) {
         this.showNumPad();
-        console.log("Displaying: {NumberPad}")
       }
       // assigns preview field now that the shadowDOM has been rendered
       this.previewField = this.shadowRoot.querySelector('#preview');

@@ -15,7 +15,6 @@ export class StopWatch extends HTMLElement {
   connectedCallback() {
     if (!this.shadowRoot.hasChildNodes()) {
       this.showStopwatch();
-      console.log("Displaying: {StopWatch}");
     }
     
     this.startBtn = this.shadowRoot.querySelector('#start-stop');

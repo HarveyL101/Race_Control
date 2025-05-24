@@ -122,7 +122,6 @@ app.get('/api/race-results', mb.isLoggedIn, mb.getRaceResults);
 app.post('/api/race-results', mb.postRaceResults);
 // handlers for searching for a race in race-finder
 app.get('/api/find-race', mb.isLoggedIn, mb.searchRaces);
-// app.post('/api/find-race', mb.postRace);
 
 // handlers for retrieving a users details
 app.get('/api/current-user', mb.isLoggedIn, mb.getCurrentUser);

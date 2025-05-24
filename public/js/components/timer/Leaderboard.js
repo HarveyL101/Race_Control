@@ -15,9 +15,6 @@ export class Leaderboard extends HTMLElement {
       this.leaderboard = this.shadowRoot.querySelector('#table-body');
       this.lapBtn = this.shadowRoot.querySelector('#lap-end');
       this.refreshBtn = this.shadowRoot.querySelector('#refresh-button');
-
-      this.addEventListeners();
-      console.log("Displaying: {Leaderboard}");
     }
   
     clearAll() {
@@ -87,9 +84,5 @@ export class Leaderboard extends HTMLElement {
 
     editLeaderboard() {
       console.log("Edit leaderboard");
-    }
-
-    addEventListeners() {
-      console.log("placeholder");     
     }
   }
