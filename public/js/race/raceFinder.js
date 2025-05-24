@@ -22,12 +22,21 @@ export async function searchRaces() {
       const newDiv = document.createElement('div');
       newDiv.className = 'race';
       newDiv.innerHTML = `
-        <a href="timer.html?race_id=${race.id}" class="race-link">
-          <h4>${race.location}: ${race.name} (#${race.id})</h4>
-          <p>Date: ${race.date}</p>
-          <p>Start Time: ${race.start_time}</p>
-          <p>Lap Distance: ${race.lap_distance}Km</p>
-        </a>
+        <div class="race-card">
+          <div class="race-header">
+            <h3>${race.location}: ${race.name}</h3>
+            <p>Id: #${race.id}</p>
+          </div>
+          <div class="race-content">
+            <p>Date: ${race.date}</p>
+            <p>Start Time: ${race.start_time}</p>
+            <p>Lap Distance: ${race.lap_distance}Km</p>
+          </div>
+          <div class="race-links">
+            <a class="card-button" href="timer.html?race_id=${race.id}"><button>Run This Race</button></a>
+            <a class="card-button" href="viewer.html?race_id=${race.id}"><button>Spectate This Race</button></a>
+          </div>
+        </div>
       `;
       container.appendChild(newDiv);
     })
