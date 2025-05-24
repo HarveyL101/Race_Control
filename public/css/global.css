@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: grey;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  flex-direction: column  ;
+  align-items: center;
+  width: 100%;
+  background-color: whitesmoke;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  box-shadow: 0 0 15px black;
+  padding: 0.5rem 1rem;
+  top: 0;
+  left: 0;
+}
+
+h1, h2, h3, h4 {
+  color: purple;
+}
+
+p {
+  color: #333;
+}
+
+#title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+#nav-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px black;
+  padding: 0.5rem;
+  margin-left: auto;
+}
+
+.icon-buttons {
+  background-color: whitesmoke;
+  margin: 5px;
+  padding: 5px;
+  border: solid lightgrey 1px;
+  border-radius: 1rem;
+  transition: filter 0.5s ease;
+}
+
+.icon-buttons:hover {
+  filter: brightness(80%);
+}
+
+.icon-buttons img {
+  width: 50px;
+  height: 50px;
+}
+
+#account-container {
+  display: flex;
+  justify-content: end;
+  margin-left: 1rem;
+}
+
+#account-container a {
+  display: flex;
+  justify-content: end;
+  width: 100px;
+  height: auto;
+  transition: filter 0.5s ease;
+}
+
+#account-container a:hover {
+  filter: brightness(80%);
+}
+
+#account-container a img {
+  width: 80px;
+  height: 80px;
+}
+
+
+

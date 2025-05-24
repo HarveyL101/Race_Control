@@ -1,0 +1,35 @@
+body {
+  background-color: #dcdcdc;
+}
+
+p {
+  color: #333;
+}
+.palette {
+  background-color: #fafafa;
+}
+
+#p1 {
+  background-color: #f5f5f5;
+  border: solid #ffcb05 1px;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px black;
+  margin: 5px;
+  padding: 5px;
+}
+#p2 {
+  background-color: #f5f5f5;
+  border: solid #ffcb05 1px;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px black;
+  margin: 5px;
+  padding: 5px;
+}
+#p3 {
+  background-color: #f5f5f5;
+  border: solid #ffcb05 1px;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px black;
+  margin: 5px;
+  padding: 5px;
+}

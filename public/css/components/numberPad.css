@@ -1,0 +1,48 @@
+#number-pad-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+#number-pad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  border: solid black 3px;
+  width: 90%;
+  max-width: 900px;
+}
+
+#button-container {
+  padding: 6px;
+  width: 90%;
+  height: auto;
+}
+
+.num-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.num-pad-btn {
+  padding: 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  
+}
+#preview-container {
+  width: 90%;
+  padding-top: 6px;
+}
+#preview {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  text-align: right;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
