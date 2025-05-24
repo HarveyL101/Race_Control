@@ -24,17 +24,17 @@ export async function searchRaces() {
       newDiv.innerHTML = `
         <div class="race-card">
           <div class="race-header">
-            <h3>${race.location}: ${race.name}</h3>
-            <p>Id: #${race.id}</p>
+            <h3><b>${race.location}:</b> ${race.name}</h3>
+            <p><b>Id:</b> #${race.id}</p>
           </div>
           <div class="race-content">
-            <p>Date: ${race.date}</p>
-            <p>Start Time: ${race.start_time}</p>
-            <p>Lap Distance: ${race.lap_distance}Km</p>
+            <p><b>Date:</b> ${race.date}</p>
+            <p><b>Start Time:</b> ${race.start_time}</p>
+            <p><b>Lap Distance:</b> ${race.lap_distance}Km</p>
           </div>
           <div class="race-links">
-            <a class="card-button" href="timer.html?race_id=${race.id}"><button>Run This Race</button></a>
-            <a class="card-button" href="viewer.html?race_id=${race.id}"><button>Spectate This Race</button></a>
+            <a class="card-button" href="timer.html?race_id=${race.id}"><button><b>Run This Race</b></button></a>
+            <a class="card-button" href="viewer.html?race_id=${race.id}"><button><b>Spectate This Race</b></button></a>
           </div>
         </div>
       `;
@@ -49,4 +49,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     searchBar.addEventListener('input', searchRaces);
     searchBtn.addEventListener('click', searchRaces);
-})
+});

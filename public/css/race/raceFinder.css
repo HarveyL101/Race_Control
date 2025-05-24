@@ -101,7 +101,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: whitesmoke;
+  background-color: lightgrey;
   margin: 1rem;
   padding: 1rem;
   box-shadow: 0 2px 8px black;
@@ -142,13 +142,13 @@ header {
 .race-links {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 0.5rem;
 }
 
 .race-links button {
-  background-color: inherit;
-  border: solid lightgrey 1px;
+  background-color: whitesmoke;
+  box-shadow: 0 2px 8px black;
   width: 100%;
   height: 3rem;
   cursor: pointer;

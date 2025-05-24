@@ -144,25 +144,34 @@ export async function getCurrentLap(req, res) {
 // Handlers for '/api/lap-results' endpoint
 // {
 export async function getLapResults(req, res) {
-  console.log("getLapResults()");
+  const raceId = req.params.id;
 
   try {
-    const query = await db.all(`
-      SELECT
-        lap_results.position, 
-        runners.username,
-        lap_results.time 
-      FROM lap_results
-      JOIN runners ON lap_results.runner_id = runners.id
-      ORDER BY lap_results.position ASC
-    `);
+    const laps = await db.all(`
+      SELECT 
+        lr.lap_number,
+        u.username AS runner_username,
+        lr.time AS lap_time
+      FROM 
+        lap_results lr
+      JOIN
+        users u ON lr.runner_id = u.id
+      WHERE 
+        lr.race_id= ?
+      ORDER BY 
+        lr.lap_number ASC,
+        lr.time ASC`,
+      [raceId]
+    ); 
 
-    console.log("getLapResults(): Success!");
+    return res.json({ laps });
+  } catch (error) {
+    console.log("Could not fetch lap results for this race: ", error);
 
-    return res.json(query);
-  } catch(error) {
-    console.log("getLapResults(): Failed", error);
-    return res.status(500).send("Error 500: Lap Results Not Found.");
+    return res.status(500).json({
+      message: "Internal Server Error:",
+      received: req.body
+    });
   }
 }
 

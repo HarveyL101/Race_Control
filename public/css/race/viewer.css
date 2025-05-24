@@ -1,0 +1,20 @@
+.summary-toggle {
+  color: purple;
+}
+
+#leaderboard-wrapper {
+  background-color: whitesmoke;
+  margin: 3px;
+  padding: 3px;
+  display: block;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px black;
+}
+
+#leaderboard-container {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+}

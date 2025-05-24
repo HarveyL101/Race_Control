@@ -4,55 +4,46 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/race/viewer.css">
     <link rel="icon" href="/imgs/favicon.ico">
-    <script type="module" defer src="/js/timer.js"></script>
+    <script type="module" defer src="/js/race/viewer.js"></script>
     <title>Timer</title>
   </head>
 
   <body>
     <header>
-      <div id="header-left">
-        <h1 id="page-header">Here you can view the current runners still running this lap!</h1>
-        <h3 id="welcome-msg">Welcome!</h3>
+      <div id="nav-buttons">
+        <a class="icon-buttons" title="Visit Homepage" href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
+        <a class="icon-buttons" title="Go Back" href="/race-finder"><img src="/imgs/back_button.png" alt="Back Button"></a>
+        <a class="icon-buttons" title="View Account" href="../placeholder.html"><img src="/imgs/pfp.png" alt="Profile Picture"></a>
       </div>
-      
-      <div id="header-right">
-        <a class="icon-buttons" href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
-        <a class="icon-buttons" href="./race-finder.html"><img src="/imgs/back_button.png" alt="Back Button"></a>
+
+      <div id="title-container">
+        <h1 id="page-header">See here for the runners currently in the race!</h1>
+        <h3 id="welcome-msg">Welcome!</h3>
       </div>
     </header>
 
-    <leaderboard-panel></leaderboard-panel>
-  </body>
-
-  <template id="leaderboard-template">
-    <link rel="stylesheet" href="/css/components/leaderboard.css">
-
     <div id="leaderboard-wrapper">
-        <div id="leaderboard-container">
-          <div id="leaderboard-header">
+      <div id="leaderboard-container">
+        <div id="leaderboard-header">
+          <div id="header-text">
             <h2>Leaderboard Table</h2>
-            <p>Your current results will be displayed here...</p>
+            <p>The dropdown arrow expands/ collapses results!</p>
           </div>
+          <div id="header-button">
+            <button id="refresh-leaderboard">Refresh</button>
+          </div>
+        </div>
 
-          <table border="1" id="leaderboard-table">
-            <thead>
-              <tr id="header-row">
-                <td>Lap Number</td>
-                <td>Lap Time (HH:MM:SS)</td>
-                <td>Time Remaining (Interval - Lap Time)</td>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-              <tr id="data-row">
-                <td>Placeholder Data Row</td>
-                <td>Placeholder Data Row</td>
-                <td>Placeholder Data Row</td>
-              </tr>
-            </tbody>
-          </table>
+        <div id="leaderboard-content">
+          <p>future results will be displayed here...</p>
         </div>
       </div>
-  </template>
+    </div>
+    
+  </body>
+
+  
 </html>
