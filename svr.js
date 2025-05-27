@@ -37,7 +37,7 @@ app.use(session({
 // Middleware that logs the method and url of a request (useful during development)
 app.use(mb.showFileStream);
 
-// serves files from /views, /src and /css
+// serves files from within the /public directory
 app.use(express.static(path.resolve(__dirname, 'views')));
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/imgs', express.static(path.join(__dirname, 'public/imgs')));

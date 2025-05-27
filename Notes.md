@@ -8,19 +8,20 @@ There are already companies which provide race timing (e.g. using RFID tags) but
 ### A user must be able to:
  * Start a race timer - x
  * Record the finish time of each runner in that race - x
- * Submit results to a server
+ * Submit results to a server - x
  * Clear race results from their device after the race
 
 ### The mobile app must be able to:
  * Record race results on a phone that is in "airplane mode" - i.e. offline
  * Store data from one race at a time.
- * Provide timing for races up to 24 hours in length
+ * Provide timing for races up to 24 hours in length - x
  * Upload race results to a server (either live during the race and/or as a batch upload afterwards if data is recorded in "airplane mode")
 
 ### The server should:
- * Receive data from users
- * Display race results
- * Provide timely results (as data is uploaded or immediately after, so runners can see their official positions and times before they go home).
+ * Receive data from users - x
+ * Display race results - x
+ * Provide timely results - x
+  * (as data is uploaded or immediately after, so runners can see their official positions and times before they go home).
 
 ## Additional Considerations & Features
  * This app will be used outside in winter by older users with imperfect eyesight (and possibly rain on their glasses). It's likely to be cold so they'll have numb fingers or be wearing capacitive gloves. So, build your interface accordingly!
