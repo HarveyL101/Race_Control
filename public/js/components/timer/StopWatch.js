@@ -4,6 +4,9 @@ import { fetchCurrentUser, fetchRaceDetails, fetchCurrentLap  } from "/js/functi
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
 
+const runner = await fetchCurrentUser();
+const race = await fetchRaceDetails(raceId);
+
 // STOPWATCH CLASS COMPONENTS
 export class StopWatch extends HTMLElement {
   constructor() {
@@ -12,6 +15,7 @@ export class StopWatch extends HTMLElement {
     this.attachShadow({ mode: 'open' });
 
   }
+
   connectedCallback() {
     if (!this.shadowRoot.hasChildNodes()) {
       this.showStopwatch();
@@ -24,6 +28,7 @@ export class StopWatch extends HTMLElement {
     
     this.addEventListeners();
   }
+
   clearAll() {
     this.shadowRoot.innerHTML = '';
   }
@@ -37,6 +42,7 @@ export class StopWatch extends HTMLElement {
     this.shadowRoot.appendChild(this.stopwatchContent);
   }
 
+  //transforms time values into the format (HH:MM:SS), widely used in this app
   formatTime(seconds) {
     const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
     const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -51,7 +57,7 @@ export class StopWatch extends HTMLElement {
     sharedState.timerInterval = setInterval(() => {
       sharedState.time++;
       
-      //formats time values into appropriate format of 'HH:MM:SS'
+      
       const timeString = this.formatTime(sharedState.time);
   
       this.timer.textContent = timeString;
@@ -120,20 +126,27 @@ export class StopWatch extends HTMLElement {
     }
   }
 
-  async submitLap() {
-    const runner = await fetchCurrentUser();
-    const race = await fetchRaceDetails(raceId);
-    const currentLap = await fetchCurrentLap(raceId, runner.id);
+  saveLapOffline(payload) {
+    const stored = JSON.parse(localStorage.getItem('lap-results') || '[]');
+    stored.push(payload);
+    localStorage.setItem('lap-results', JSON.stringify(stored));
+  }
 
-    if (!runner || !race || !currentLap) {
-      return alert("Missing Required fields: {runner, race, currentLap}");
-    }
+  async submitLap() {
+    let currentLap = null;
+
+    if (runner && race) currentLap = await fetchCurrentLap(raceId, runner.id);
 
     const payload = {
       race_id: raceId,
-      lap_number: currentLap.currentLap,
-      runner_id: runner.id,
+      lap_number: currentLap?.currentLap || null,
+      runner_id: runner?.id || null,
       time: this.getCurrentTime()
+    }
+
+    if (!runner || !race || !currentLap) {
+      this.saveLapOffline(payload);
+      return alert("Failed to upload lap, result submitted to Local Storage!");
     }
 
     try {
@@ -165,13 +178,8 @@ export class StopWatch extends HTMLElement {
 
       return ("Lap results submitted successfully: ", result);
     } catch (error) {
-      console.log("Failed database submission, saving to localStorage: ", error);
-
-      const stored = JSON.parse(localStorage.getItem('lap-results') || '[]');
-      stored.push(payload);
-      localStorage.setItem('lap-results', JSON.stringify(payload));
-
       this.refresh();
+
 
       return alert("Failed to submit, your result is saved to localStorage to be submitted later");
     }
