@@ -6,27 +6,33 @@ customElements.define('stopwatch-panel', StopWatch);
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const stopwatch = document.querySelector('stopwatch-panel');
+const user = await fetchCurrentUser();
+const race = await fetchRaceDetails(raceId);
 
-  const title = document.querySelector('#page-header');
-  const welcomeMsg = document.querySelector('#welcome-msg');
-  const navLinks = document.querySelectorAll('icon-buttons');
+const stopwatch = document.querySelector('stopwatch-panel');
 
-  const user = await fetchCurrentUser();
-  const race = await fetchRaceDetails(raceId);
+const el = {
+  title: document.querySelector('#page-header'),
+  welcomeMsg: document.querySelector('#welcome-msg'),
+  homeBtn: document.querySelector('#home-button'),
+  backBtn: document.querySelector('#back-button')
+}
 
-  title.textContent = `Record your lap times for the ${race.name}!`;
-  welcomeMsg.textContent = `Good luck ${user.username}!`;
+el.title.textContent = `Record your lap times for the ${race.name}!`;
+el.welcomeMsg.textContent = `Good luck ${user.username}!`;
 
-  // flushes localStorage upon leaving the home page (via home button/ 'back' icon)
-  navLinks.addEventListener('click', () => {
-    localStorage.clear();
+// flushes localStorage upon leaving the home page (via home button/ 'back' icon)
+function flushLocalData() {
+  // simple logic thanks to pre-made .clear() function
+  confirm("Are you sure? any locally stored data will be lost.");
+  localStorage.clear();
 
-    console.log("localStorage Cleared.");
-  });
+  console.log("Local Storage has been wiped");
+}
 
-  window.addEventListener('online', () => {
-    stopwatch.submitLap();
-  });
+el.homeBtn.addEventListener('click', flushLocalData);
+el.backBtn.addEventListener('click', flushLocalData);
+
+window.addEventListener('online', () => {
+  stopwatch.submitLap();
 });

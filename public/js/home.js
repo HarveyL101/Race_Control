@@ -5,10 +5,7 @@ const el = {
   welcomeMsg: document.querySelector('#welcome-msg')
 };
 
+const user = await fetchCurrentUser();  
 
+el.title.textContent = `Welcome ${user.username}, We Hope You Enjoy Your Stay!`;
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const user = await fetchCurrentUser();  
-
-  el.title.textContent = `Welcome ${user.username}, We Hope You Enjoy Your Stay!`;
-});

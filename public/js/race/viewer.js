@@ -6,6 +6,9 @@ customElements.define('leaderboard-panel', Leaderboard);
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
 
+const user = await fetchCurrentUser();
+const race = await fetchRaceDetails(raceId);
+
 const el = {
   title: document.querySelector('#page-header'),
   welcomeMsg: document.querySelector('#welcome-msg'),
@@ -14,6 +17,9 @@ const el = {
 };
 
 console.log("Race Id received: ", raceId);
+
+el.title.textContent = `We hope you enjoy watching the ${race.name}!`;
+el.welcomeMsg.textContent = `Stay hydrated ${user.username}!`;
 
 async function display() {
   const race = await fetchRaceDetails(raceId);
@@ -82,17 +88,4 @@ async function display() {
   });
 }
 
-
-
-
-// ------------ EVENT LISTENERS ------------
-
-document.addEventListener('DOMContentLoaded', async () => {
-  const user = await fetchCurrentUser();
-  const race = await fetchRaceDetails(raceId);
-
-  el.title.textContent = `We hope you enjoy watching the ${race.name}!`;
-  el.welcomeMsg.textContent = `Stay hydrated ${user.username}!`;
-
-  el.refreshBtn.addEventListener('click', display);
-});
+el.refreshBtn.addEventListener('click', display);

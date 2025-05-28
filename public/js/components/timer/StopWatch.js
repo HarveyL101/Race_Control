@@ -4,9 +4,6 @@ import { fetchCurrentUser, fetchRaceDetails, fetchCurrentLap  } from "/js/functi
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
 
-const runner = await fetchCurrentUser();
-const race = await fetchRaceDetails(raceId);
-
 // STOPWATCH CLASS COMPONENTS
 export class StopWatch extends HTMLElement {
   constructor() {
@@ -20,12 +17,15 @@ export class StopWatch extends HTMLElement {
     if (!this.shadowRoot.hasChildNodes()) {
       this.showStopwatch();
     }
-    
-    this.startBtn = this.shadowRoot.querySelector('#start-stop');
     this.timer = this.shadowRoot.querySelector('#timer');
+    // info-buttons
+    this.infoBtn = this.shadowRoot.querySelector('#info-button');
+    this.uploadBtn = this.shadowRoot.querySelector('#upload-button');
+    //stopwatch buttons
+    this.startBtn = this.shadowRoot.querySelector('#start-stop');
+    this.submitBtn = this.shadowRoot.querySelector('#submit-lap');
     this.resetBtn = this.shadowRoot.querySelector('#reset');
-    
-    
+        
     this.addEventListeners();
   }
 
@@ -56,8 +56,7 @@ export class StopWatch extends HTMLElement {
 
     sharedState.timerInterval = setInterval(() => {
       sharedState.time++;
-      
-      
+
       const timeString = this.formatTime(sharedState.time);
   
       this.timer.textContent = timeString;
@@ -67,7 +66,7 @@ export class StopWatch extends HTMLElement {
   }
 
   stopTimer() {
-    this.startBtn.textContent = "Start"
+    this.startBtn.textContent = "Start";
   
     //stops timer from running and resets this.timerInterval to allow play-pause-play 
     clearInterval(sharedState.timerInterval);
@@ -107,11 +106,26 @@ export class StopWatch extends HTMLElement {
     this.timer.textContent = "00:00:00";
   }
 
+  showButtons() {
+    this.submitBtn.hidden = false;
+    this.resetBtn.hidden = false;
+  }
+  hideButtons() {
+    this.submitBtn.hidden = true;
+    this.resetBtn.hidden = true;
+  }
+
   timerHandler() {
     // if timer is running, stop it, otherwise start the timer again
+    // also hides relevant buttons to prevent accidents while running
     if (sharedState.timerInterval) {
+      
+
       this.stopTimer();
     } else {
+      this.submitBtn.hidden = true;
+      this.resetBtn.hidden = true;
+
       this.startTimer();
     }
   }
@@ -126,26 +140,86 @@ export class StopWatch extends HTMLElement {
     }
   }
 
-  saveLapOffline(payload) {
+  offlineSave(payload) {
     const stored = JSON.parse(localStorage.getItem('lap-results') || '[]');
     stored.push(payload);
     localStorage.setItem('lap-results', JSON.stringify(stored));
   }
 
+  async offlineUpload() {
+    const runner = await fetchCurrentUser();
+    const race = await fetchRaceDetails(raceId);
+
+    const stored = JSON.parse(localStorage.getItem('lap-results') || '[]');
+
+    if (!runner || !race) {
+      return alert("Could not fetch the current user and/ or lap")
+    }
+    if (!stored.length) {
+      return alert("You have no lap results left to submit, best of luck!");
+    }
+
+    let accepted = 0;
+    let rejected = 0;
+    const remainingData = [];
+
+    for (const entry of stored) {
+      const currentLap = await fetchCurrentLap(raceId, runner.id);
+
+      const payload = {
+        race_id: raceId,
+        lap_number: currentLap,
+        runner_id: runner.id,
+        time: entry.time
+      }
+
+      try {
+        console.log("payload: ", payload);
+        const response = await fetch('/api/lap-results', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          accepted++;
+        } else {
+          rejected++;
+          remainingData.push(entry);
+        }
+
+      } catch (error) {
+        failed++;
+        remainingData.push(entry);
+      }
+    }
+    localStorage.setItem('lap-results', JSON.stringify(remainingData));
+
+    alert(`Upload complete! View results \n Successful: ${accepted} \n Failed: ${rejected}`);
+    this.refresh();
+  }
+
   async submitLap() {
+    const runner = await fetchCurrentUser();
+    const race = await fetchRaceDetails(raceId);
     let currentLap = null;
 
     if (runner && race) currentLap = await fetchCurrentLap(raceId, runner.id);
 
     const payload = {
       race_id: raceId,
-      lap_number: currentLap?.currentLap || null,
+      lap_number: currentLap || null,
       runner_id: runner?.id || null,
       time: this.getCurrentTime()
     }
 
     if (!runner || !race || !currentLap) {
-      this.saveLapOffline(payload);
+      this.offlineSave(payload);
+      this.refresh();
+
       return alert("Failed to upload lap, result submitted to Local Storage!");
     }
 
@@ -184,14 +258,21 @@ export class StopWatch extends HTMLElement {
       return alert("Failed to submit, your result is saved to localStorage to be submitted later");
     }
   }
+
+  showInfo() {
+    alert(`
+      Some helpful information you may need :) \n\n
+      1. Please make sure to submit any previously saved lap results before submitting fresh results.\n
+      2. The button to the right of this icon will upload all of your laps currently stored offline (You will be told if a result is stored offline)\n
+      3. this is a placeholder\n
+    `);
+  }
   
   addEventListeners() {
-    const startBtn = this.shadowRoot.querySelector('#start-stop');
-    const submitBtn = this.shadowRoot.querySelector('#submit-lap');
-    const resetBtn = this.shadowRoot.querySelector('#reset');
-
-    startBtn.addEventListener('click', this.timerHandler.bind(this));
-    submitBtn.addEventListener('click', this.submitLap.bind(this));
-    resetBtn.addEventListener('click', this.resetTimer.bind(this));
+    this.infoBtn.addEventListener('click', this.showInfo.bind(this));
+    this.uploadBtn.addEventListener('click', this.offlineUpload.bind(this));
+    this.startBtn.addEventListener('click', this.timerHandler.bind(this));
+    this.submitBtn.addEventListener('click', this.submitLap.bind(this));
+    this.resetBtn.addEventListener('click', this.resetTimer.bind(this));
   }
 }

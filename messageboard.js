@@ -9,8 +9,19 @@ export function showFileStream(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
 }
+/* WIP
+// authentication for /api endpoints
+export function apiAuth(req, res, next) {
+  if (req.session && req.session.userId) {
+    console.log("User: ", req.session.userId);
+    return next();
+  } else {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+}
 
-export function isLoggedIn(req, res, next) {
+// authentication for HTML page routes
+export function htmlAuth(req, res, next) {
   if (req.session && req.session.userId) {
     console.log("User: ", req.session.userId);
     return next();
@@ -18,6 +29,8 @@ export function isLoggedIn(req, res, next) {
     return res.redirect('/');
   }
 }
+*/
+
 
 // Handlers for '/api/find-race' endpoint
 // {
@@ -90,19 +103,28 @@ export async function loadRace(req, res) {
 // Handlers for '/api/current-user' endpoint
 export async function getCurrentUser(req, res) {
   const userId = req.session.userId;
+  console.log(userId);
+
+  if (!userId) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
 
   try {
     const user = await db.get(`
       SELECT 
-        id AS user_id,
+        id,
         username
       FROM users
       WHERE id= ?`, 
       [userId]
     );
 
+    if (!user) {
+      return res.statuts(404).json({ error: "User not found in database" });
+    }
+
     return res.json({ 
-      id: user.user_id, 
+      id: user.id, 
       username: user.username
     });
   } catch(error) {
@@ -260,9 +282,12 @@ export async function isAdmin(username) {
 async function getUser(username, password) {
   try {
     const result = await db.get(`
-      SELECT username, password 
-      FROM users 
-      WHERE username= ? AND password= ?`, 
+      SELECT 
+        username, password 
+      FROM 
+        users 
+      WHERE 
+        username= ? AND password= ?`, 
       [username, password]
     );
 
@@ -283,7 +308,19 @@ async function checkUser(req, res, username, password) {
     console.log("[401]Error in checkUser:", error.message);
     return;
   }
-  
+}
+
+async function checkUsername(req, res, username) {
+  const usernameExists = await db.get(`
+    SELECT 
+      username
+    FROM 
+      users
+    WHERE username= ?`, 
+    [username]
+  );
+
+  return (usernameExists ? true : false);
 }
 
 export async function login(req, res) {
@@ -295,13 +332,13 @@ export async function login(req, res) {
       return res.send({ message: "Invalid Username/ Password", data: req.body });
     }
 
-    const user = await checkUser(req, res, username, password);
+    const isUser = await checkUser(req, res, username, password);
 
     // debugging log
     console.log("Form Data Received: ", req.body);
 
     // Check if user exists in database
-    if (user) {
+    if (isUser) {
       console.log(`Successful login, welcome ${username}!`);
       
       // returns desired values for session storage
@@ -339,13 +376,13 @@ export async function register(req, res) {
       return res.send({ message: "Invalid Username/ Password", data: req.body });
     }
 
-    const user = await checkUser(username, password);
+    const usernameTaken = await checkUsername(username);
 
     // debugging log
     console.log("Form Data Received: ", req.body);
 
     // Insert user details into db if not already present
-    if (!user) {
+    if (!usernameTaken) {
       await db.run(`
         INSERT INTO users (username, password, is_admin)
         VALUES (?, ?, 0)`,

@@ -37,8 +37,6 @@ function handleTemplate() {
     swapper.link.textContent = isLoginVisible ? "Login Here" : "Register Here";
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    handleTemplate();
+handleTemplate();
 
-    swapper.link.addEventListener('click', handleTemplate);
-});
+swapper.link.addEventListener('click', handleTemplate);

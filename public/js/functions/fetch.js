@@ -1,24 +1,24 @@
 export async function fetchCurrentUser() {
     try {
-        const response = await fetch('/api/current-user', {
-            credentials: 'include'
-        });
+      const response = await fetch('/api/current-user', {
+        credentials: 'include'
+      });
 
-        if (!response.ok) {
-          const msg = await response.text();
-          console.log("fetching current lap failed: ", response.status, msg);
-          return null;
-        }
+      if (!response.ok) {
+        const msg = await response.text();
+        console.log("fetching current lap failed: ", response.status, msg);
+        return null;
+      }
 
-        const data = await response.json();
+      const data = await response.json();
 
-        return {
-            id: data.id,
-            username: data.username
-        };
+      return {
+        id: data.id,
+        username: data.username
+      };
     } catch (error) {
-        console.error("Failed to fetch user details: ", error);
-        return;
+      console.error("Failed to fetch user details: ", error);
+      return;
     }
 }
 
@@ -38,7 +38,7 @@ export async function fetchLapDetails(race_id) {
     return data.laps;
   } catch (error) {
     console.error("Failed to fetch lap details: ", error);
-    return;
+    return null;
   }
   
 }
@@ -46,7 +46,7 @@ export async function fetchLapDetails(race_id) {
 export async function fetchRaceDetails(race_id) {
   try {
     const response = await fetch(`/api/load-race/${race_id}`, {
-        credentials: 'include'
+      credentials: 'include'
     });
 
     if (!response.ok) {
@@ -60,8 +60,8 @@ export async function fetchRaceDetails(race_id) {
     return data;
   } catch (error) {
     console.error("Could not fetch race details: ", error);
+    return null;
   }
-    
 }
 
 export async function fetchCurrentLap(raceId, runnerId) {
@@ -88,7 +88,7 @@ export async function fetchCurrentLap(raceId, runnerId) {
 
     const data = await response.json();
 
-    return { currentLap: data.currentLap };
+    return data.currentLap;
   } catch (error) {
     console.log("Could not fetch current lap: ", error);
   }   

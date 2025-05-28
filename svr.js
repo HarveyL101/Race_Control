@@ -43,7 +43,6 @@ app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/imgs', express.static(path.join(__dirname, 'public/imgs')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
 app.use('/views', express.static(path.join(__dirname, 'public/views')));
-app.use('/messageboard.js', express.static(path.join(__dirname, 'messageboard.js')));
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -69,40 +68,41 @@ app.get('/redirect', (req, res) => {
 
 
 
-// Routes for the /webpages directory
+// HTML route handlers 
+// {
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'views/index.html'));
 });
 
-app.get('/home', mb.isLoggedIn, (req, res) => {
+app.get('/home', (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/home.html'));
 });
 
-app.get('/race-finder', mb.isLoggedIn, (req, res) => {
+app.get('/race-finder', (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/race/race-finder.html'));
 });
 
-app.get('/timer', mb.isLoggedIn, (req, res) => {
+app.get('/timer', (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/race/timer.html'));
 });
 
-app.get('/placeholder', mb.isLoggedIn, (req, res) => {
+app.get('/placeholder', (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/placeholder.html'));
 });
 
-
+// }
 
 // Some admin handlers
 app.post('/admin/give-admin', (req, res) => {
@@ -112,27 +112,32 @@ app.post('/admin/give-admin', (req, res) => {
   // call giveAdmin() function (WIP)
 });
 
-app.post('/login', mb.login);
-app.post('/register', mb.register);
+// API handlers
+// {
+
+app.post('/api/login', mb.login);
+app.post('/api/register', mb.register);
 
 // handlers for the lap_results data
-app.get('/api/lap-results/:id', mb.isLoggedIn, mb.getLapResults);
-app.post('/api/lap-results', mb.isLoggedIn, mb.postLapResults);
+app.get('/api/lap-results/:id', mb.getLapResults);
+app.post('/api/lap-results', mb.postLapResults);
 
 // handlers for the race-results displayed on the leaderboard
-app.get('/api/race-results', mb.isLoggedIn, mb.getRaceResults);
+app.get('/api/race-results', mb.getRaceResults);
 app.post('/api/race-results', mb.postRaceResults);
 // handlers for searching for a race in race-finder
-app.get('/api/find-race', mb.isLoggedIn, mb.searchRaces);
+app.get('/api/find-race', mb.searchRaces);
 
 // handlers for retrieving a users details
-app.get('/api/current-user', mb.isLoggedIn, mb.getCurrentUser);
+app.get('/api/current-user', mb.getCurrentUser);
 
 // handlers for loading a selected race
-app.get('/api/load-race/:id', mb.isLoggedIn, mb.loadRace);
+app.get('/api/load-race/:id', mb.loadRace);
 
 // handlers for retrieving the current lap of a runner in a race
-app.get('/api/current-lap', mb.isLoggedIn, mb.getCurrentLap);
+app.get('/api/current-lap', mb.getCurrentLap);
+
+// }
 
 // handler for 404 error codes
 app.use((req, res, next) => {

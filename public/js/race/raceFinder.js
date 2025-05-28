@@ -1,6 +1,7 @@
 const searchBar = document.querySelector('#search-bar');
 const searchBtn = document.querySelector('#search-button');
 
+
 export async function searchRaces() {
   const query = searchBar.value;
 
@@ -45,8 +46,9 @@ export async function searchRaces() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    
-    searchBar.addEventListener('input', searchRaces);
-    searchBtn.addEventListener('click', searchRaces);
-});
+function addEventListeners() {
+  searchBar.addEventListener('input', searchRaces);
+  searchBtn.addEventListener('click', searchRaces);
+}
+
+addEventListeners();

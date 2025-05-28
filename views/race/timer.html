@@ -4,6 +4,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/race/timer.css">
     <link rel="icon" href="/imgs/favicon.ico">
     <script type="module" defer src="/js/race/timer.js"></script>
@@ -18,8 +19,8 @@
       </div>
       
       <div id="header-right">
-        <a class="icon-buttons" href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
-        <a class="icon-buttons" href="./race-finder.html"><img src="/imgs/back_button.png" alt="Back Button"></a>
+        <a class="icon-buttons" title="Visit Homepage" href="/home" id="home-button"><img src="/imgs/home.png" alt="Home Button"></a>
+        <a class="icon-buttons" title="Go Back" href="./race-finder.html" id="back-button"><img src="/imgs/back_button.png" alt="Back Button"></a>
       </div>
     </header>
 
@@ -27,17 +28,29 @@
   </body>
 
   <template id="stopwatch-template">
+    <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/components/stopwatch.css">
     <div id="stopwatch-wrapper">
       
       
       <div id="stopwatch-container">
-        <h2>Press 'Start' to begin your lap!</h2>
+        <div id="stopwatch-header">
+          <h2 id="header-message">Press 'Start' to begin your lap!</h2>
+
+          <div id="info-container">
+            <a class="information-buttons" title="Display Information" id="info-button"><img src="/imgs/info_button.png" alt="Info Button"></a>
+            <a class="information-buttons" title="Upload Lap Results" id="upload-button"><img src="/imgs/upload_button.png" alt="Upload Button"></a>
+          </div>
+        </div>
         <p id="timer">00:00:00</p>
 
-        <button id="start-stop" type="button">Start</button>
-        <button id="submit-lap">Submit Lap</button>
-        <button id="reset" type="button">Reset</button>
+        <details>
+          <summary id="stopwatch-summary"><b>Show/ Hide Buttons</b></summary>
+          <button id="start-stop" type="button">Start</button>
+          <button id="submit-lap">Submit Lap</button>
+          <button id="reset" type="button">Reset</button>
+        </details>
+        
       </div>
     </div>
   </template>
