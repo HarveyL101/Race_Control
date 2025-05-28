@@ -9,7 +9,7 @@ export function showFileStream(req, res, next) {
   console.log(`Request: ${req.method} | ${req.url}`);
   next();
 }
-/* WIP
+
 // authentication for /api endpoints
 export function apiAuth(req, res, next) {
   if (req.session && req.session.userId) {
@@ -29,8 +29,6 @@ export function htmlAuth(req, res, next) {
     return res.redirect('/');
   }
 }
-*/
-
 
 // Handlers for '/api/find-race' endpoint
 // {

@@ -70,36 +70,37 @@ app.get('/redirect', (req, res) => {
 
 // HTML route handlers 
 // {
-app.get('/', (req, res) => {
+
+app.get('/', mb.htmlAuth, (req, res) => {
   res.sendFile(path.resolve(__dirname, 'views/index.html'));
 });
 
-app.get('/home', (req, res) => {
+app.get('/home', mb.htmlAuth, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/home.html'));
 });
 
-app.get('/race-finder', (req, res) => {
+app.get('/account', mb.htmlAuth, (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send("Unauthorised");
+  }
+  res.sendFile(path.resolve(__dirname, 'views/account.html'));
+});
+
+app.get('/race-finder', mb.htmlAuth, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/race/race-finder.html'));
 });
 
-app.get('/timer', (req, res) => {
+app.get('/timer', mb.htmlAuth, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
   res.sendFile(path.resolve(__dirname, 'views/race/timer.html'));
-});
-
-app.get('/placeholder', (req, res) => {
-  if (!req.session.userId) {
-    return res.status(401).send("Unauthorised");
-  }
-  res.sendFile(path.resolve(__dirname, 'views/placeholder.html'));
 });
 
 // }
@@ -119,23 +120,23 @@ app.post('/api/login', mb.login);
 app.post('/api/register', mb.register);
 
 // handlers for the lap_results data
-app.get('/api/lap-results/:id', mb.getLapResults);
-app.post('/api/lap-results', mb.postLapResults);
+app.get('/api/lap-results/:id', mb.apiAuth, mb.getLapResults);
+app.post('/api/lap-results', mb.apiAuth, mb.postLapResults);
 
 // handlers for the race-results displayed on the leaderboard
-app.get('/api/race-results', mb.getRaceResults);
-app.post('/api/race-results', mb.postRaceResults);
+app.get('/api/race-results', mb.apiAuth, mb.getRaceResults);
+app.post('/api/race-results', mb.apiAuth, mb.postRaceResults);
 // handlers for searching for a race in race-finder
-app.get('/api/find-race', mb.searchRaces);
+app.get('/api/find-race', mb.apiAuth, mb.searchRaces);
 
 // handlers for retrieving a users details
 app.get('/api/current-user', mb.getCurrentUser);
 
 // handlers for loading a selected race
-app.get('/api/load-race/:id', mb.loadRace);
+app.get('/api/load-race/:id', mb.apiAuth, mb.loadRace);
 
 // handlers for retrieving the current lap of a runner in a race
-app.get('/api/current-lap', mb.getCurrentLap);
+app.get('/api/current-lap', mb.apiAuth, mb.getCurrentLap);
 
 // }
 

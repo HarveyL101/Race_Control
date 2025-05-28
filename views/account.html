@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running App</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/account.css">
+    <script type="module" defer src="/js/account.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <div id="header-left">
+        <h1 id="page-header">Welcome, We Hope You Enjoy Your Stay!</h1>
+        <h3 id="welcome-msg">Please see the items below for your next steps!</h3>
+      </div>
+      
+      <div id="header-right">
+        <a class="icon-buttons" title="Visit Homepage" href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
+        <a class="icon-buttons" title="Go Back" href="/home"><img src="/imgs/back_button.png" alt="Back Button"></a>
+        <a class="icon-buttons" title="View Account" href="./placeholder.html"><img src="/imgs/pfp.png" alt="Profile Picture"></a>
+      </div>
+    </header>
+
+    <div id="display-container">
+
+      <div class="display-bubble" id="enter-race-bubble">
+        <div class="bubble-header">
+          <h3 class="bubble-title"><b>Account Details</b></h3>
+          <img class="bubble-image" src="/imgs/pfp.png" alt="Profile Picture">
+          <h3 id="content-username">Username</h3>
+          <p id="content-user-id">Runner ID</p>
+        </div>
+        <div class="bubble-footer">
+          <form id="change-password-form" action="/api/change-password">
+            <label class="form-label" for="old-pword"><h3>Old Password</h3></label>
+            <input class="form-input" id="old-pword" type="text" placeholder="Old Password" name="old_password">
+
+            <label class="form-label" for="new-pword"><h3>New Password</h3></label>
+            <input class="form-input" id="new-pword" type="text" placeholder="New Password" name="new_password">
+
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <admin-portal></admin-portal>
+    </div>
+  </body>
+
+  <template id="admin-template">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/account.css">
+    
+    <div class="display-bubble" id="admin-bubble">
+      <div class="display-header">
+        <h3 class="bubble-title">Admin database access here</h3>
+        <p>Please use this portal to query the database</p>
+      </div>
+      <div class="bubble-content">
+        <input type="text">
+        <button type="submit">Run Query</button>
+      </div>
+    </div>
+  </template>
+</html>

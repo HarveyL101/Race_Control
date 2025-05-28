@@ -1,0 +1,105 @@
+#display-container {
+    background-color: lightgrey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.display-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 80%;
+    background-color: whitesmoke;
+    border: solid lightgrey 1px;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px black;
+    gap: 1rem;
+}
+
+.bubble-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid lightgrey 1px;
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    box-shadow: 0 0 15px black;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 75%;
+}
+
+.bubble-title {
+    font-size: x-large;
+    text-decoration: underline;
+}
+
+.bubble-header img {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+}
+
+.bubble-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: solid lightgrey 1px;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px black;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    gap: 1rem;
+    width: 75%;
+}
+
+.bubble-footer {
+    width: 60%;
+}
+
+.bubble-footer button {
+    background-color: whitesmoke;
+    box-shadow: 0 2px 8px black;
+    width: 100%;
+    height: 3rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    transition: background-color 0.5s ease;
+}
+
+.bubble-footer button:hover {
+    background-color: steelblue;
+}
+
+#change-password-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid lightgrey 1px;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px black;
+    width: 100%;
+    gap: 1rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.form-label {
+    text-decoration: underline;
+}
+
+.form-input {
+    border: solid black 1px;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px black;
+    width: 60%;
+    font-size: 1.2rem;
+    padding: 1rem;
+}
+

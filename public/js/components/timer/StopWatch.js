@@ -62,7 +62,7 @@ export class StopWatch extends HTMLElement {
       this.timer.textContent = timeString;
     }, 1000);
     
-    console.log("startTimer() executed");
+    console.log("Timer Started.");
   }
 
   stopTimer() {
@@ -72,7 +72,7 @@ export class StopWatch extends HTMLElement {
     clearInterval(sharedState.timerInterval);
     sharedState.timerInterval = null;
   
-    console.log("stopTimer() executed");
+    console.log("Timer Stopped.");
   }
 
   resetTimer() {
@@ -94,7 +94,7 @@ export class StopWatch extends HTMLElement {
     }
     
     this.timer.textContent = "00:00:00";
-    console.log("resetTimer() executed");
+    console.log("Timer Reset.");
   } 
 
   refresh() {
@@ -106,6 +106,7 @@ export class StopWatch extends HTMLElement {
     this.timer.textContent = "00:00:00";
   }
 
+  // hides submit buttons to avoid premature submission while running
   showButtons() {
     this.submitBtn.hidden = false;
     this.resetBtn.hidden = false;
@@ -119,27 +120,23 @@ export class StopWatch extends HTMLElement {
     // if timer is running, stop it, otherwise start the timer again
     // also hides relevant buttons to prevent accidents while running
     if (sharedState.timerInterval) {
-      
-
+      this.showButtons();
       this.stopTimer();
     } else {
-      this.submitBtn.hidden = true;
-      this.resetBtn.hidden = true;
-
+      this.hideButtons();
       this.startTimer();
     }
   }
 
   getCurrentTime() {
-    console.log(`getCurrentTime(): ${this.timer.textContent}`) 
     if (this.timer) {
-      console.log(this.timer.textContent);
       return this.timer.textContent;
     } else {
       return null;
     }
   }
 
+  // saves any result to localStorage on a failed upload
   offlineSave(payload) {
     const stored = JSON.parse(localStorage.getItem('lap-results') || '[]');
     stored.push(payload);
@@ -153,7 +150,7 @@ export class StopWatch extends HTMLElement {
     const stored = JSON.parse(localStorage.getItem('lap-results') || '[]');
 
     if (!runner || !race) {
-      return alert("Could not fetch the current user and/ or lap")
+      return alert("Please ensure you are connected to the internet and try again")
     }
     if (!stored.length) {
       return alert("You have no lap results left to submit, best of luck!");
@@ -216,6 +213,7 @@ export class StopWatch extends HTMLElement {
       time: this.getCurrentTime()
     }
 
+    
     if (!runner || !race || !currentLap) {
       this.offlineSave(payload);
       this.refresh();
@@ -261,7 +259,7 @@ export class StopWatch extends HTMLElement {
 
   showInfo() {
     alert(`
-      Some helpful information you may need :) \n\n
+      Some helpful information you may need :) \n
       1. Please make sure to submit any previously saved lap results before submitting fresh results.\n
       2. The button to the right of this icon will upload all of your laps currently stored offline (You will be told if a result is stored offline)\n
       3. this is a placeholder\n

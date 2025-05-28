@@ -3,60 +3,30 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: grey;
   margin: 0;
   padding: 0;
-  background-color: grey;
-}
-
-h1, h2, h3 {
-    color: purple;
-}
-
-header {
-  width: 100%;
-  background-color: white;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  box-shadow: 0 0 15px black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  position: relative;
-  top: 0;
-  left: 0;
-}
-
-#title-container {
-  justify-content: start;
-}
-#account-container {
-  justify-content: end;
-}
-
-#account-container img {
-  width: 50px;
-  height: auto;
-  transition: filter 0.3s ease;
-}
-
-#account-container img:hover {
-  filter: brightness(80%);
 }
 
 .page-wrapper {
-  width: 95%;
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   margin: 40px auto;
   padding: 20px;
 }
 
 .page-header {
   background-color: white;
+  width: 100%;
   padding: 20px;
   box-shadow: 0 0 15px black;
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-radius: 1rem;
 }
 
 /*--------------------------------------------*/
@@ -68,6 +38,7 @@ header {
   box-shadow: 0 2px 8px black;
   margin-bottom: 20px;
   border-radius: 8px;
+  width: 90%;
 }
 
 #search-field {
@@ -106,7 +77,21 @@ header {
   padding: 1rem;
   box-shadow: 0 2px 8px black;
   border-radius: 1rem;
-  width: 100%;
+  width: 90%;
+}
+
+#race-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  height: auto;
+}
+
+.race {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 90%;
 }
 
 .race-card {
@@ -119,6 +104,8 @@ header {
   border-radius: 8px;
   transition: filter 0.5s ease;
   box-shadow: 0 2px 8px black;
+  margin: 0.5rem;
+  padding: 0.5rem;
 }
 
 .race-card:hover {
@@ -146,6 +133,10 @@ header {
   gap: 0.5rem;
 }
 
+.card-button {
+  width: 50%;
+  height: auto;
+}
 .race-links button {
   background-color: whitesmoke;
   box-shadow: 0 2px 8px black;

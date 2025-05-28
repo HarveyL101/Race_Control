@@ -1,6 +1,7 @@
 export { NumberPad } from './timer/NumberPad.js';
 export { StopWatch } from './timer/StopWatch.js';
 export { Login } from './login/Login.js';
+export { Admin } from './account/admin.js'
 
 export const sharedState = {
     time: 0,

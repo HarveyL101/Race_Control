@@ -1,5 +1,6 @@
-import { StopWatch } from "../components/util.js";
-import { fetchCurrentUser, fetchRaceDetails } from "../functions/fetch.js";
+import { StopWatch } from "/js/components/util.js";
+import { fetchCurrentUser, fetchRaceDetails } from "/js/functions/fetch.js";
+import { flushLocalData } from "/js/components/util.js";
 
 customElements.define('stopwatch-panel', StopWatch);
 
@@ -19,16 +20,7 @@ const el = {
 }
 
 el.title.textContent = `Record your lap times for the ${race.name}!`;
-el.welcomeMsg.textContent = `Good luck ${user.username}!`;
-
-// flushes localStorage upon leaving the home page (via home button/ 'back' icon)
-function flushLocalData() {
-  // simple logic thanks to pre-made .clear() function
-  confirm("Are you sure? any locally stored data will be lost.");
-  localStorage.clear();
-
-  console.log("Local Storage has been wiped");
-}
+el.welcomeMsg.textContent = `Good luck ${user.username}, remember to stay hydrated!`;
 
 el.homeBtn.addEventListener('click', flushLocalData);
 el.backBtn.addEventListener('click', flushLocalData);

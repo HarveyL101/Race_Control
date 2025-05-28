@@ -1,7 +1,4 @@
-import { Leaderboard } from "/js/components/util.js";
 import { fetchCurrentUser, fetchRaceDetails, fetchLapDetails } from "/js/functions/fetch.js";
-
-customElements.define('leaderboard-panel', Leaderboard);
 
 const params = new URLSearchParams(window.location.search);
 const raceId = Number(params.get('race_id'));
@@ -58,29 +55,30 @@ async function display() {
 
     newDiv.innerHTML = `
       <details ${isOpen ? 'open' : ''}>
-          <summary class="summary-toggle">Lap ${lap_number}</summary>
-        <h3>Lap ${lap_number} Results:</h3>
-        <p><b>(Any missing results may not yet be uploaded)</b></p>
-        <table border="1" class="lap-table">
-          <thead class="table-header">
-            <tr class="header-row">
-              <td><b>Position</b></td>
-              <td><b>Runner</b></td>
-              <td><b>Lap Time (HH:MM:SS)</b></td>
-            </tr>
-          </thead>
-          <tbody class="table-body">
-            ${results.map((item, index) => `
-              <tr class="data-row">
-                <td>${index + 1}</td>
-                <td>${item.runner_username}</td>
-                <td>${item.lap_time}</td>
+      <summary class="summary-toggle">Lap ${lap_number}</summary>
+        <div class="lap-container">
+          <h3>Lap ${lap_number} Results:</h3>
+          <p><b>(Any missing results may not yet be uploaded)</b></p>
+          <table border="1" class="lap-table">
+            <thead class="table-header">
+              <tr class="header-row">
+                <td><b>Position</b></td>
+                <td><b>Runner</b></td>
+                <td><b>Lap Time (HH:MM:SS)</b></td>
               </tr>
-            `).join('')}
-            
-          </tbody> 
-        </table>
-      </details>
+            </thead>
+            <tbody class="table-body">
+              ${results.map((item, index) => `
+                <tr class="data-row">
+                  <td>${index + 1}</td>
+                  <td>${item.runner_username}</td>
+                  <td>${item.lap_time}</td>
+                </tr>
+              `).join('')}
+            </tbody> 
+          </table>
+        </div>
+    </details>
     `;
 
     
