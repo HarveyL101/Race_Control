@@ -5,12 +5,10 @@ export class Admin extends HTMLElement {
         this.attachShadow({ mode: 'open' });
     }
 
-    connectedtCallback() {
-        if (!this.shadowRoot.hasChildNodes) {
+    connectedCallback() {
+        if (!this.shadowRoot.hasChildNodes()) {
             this.showAdmin();
         }
-
-        this.addEventListeners();
     }
 
     clearAll() {

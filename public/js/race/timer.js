@@ -1,6 +1,5 @@
-import { StopWatch } from "/js/components/util.js";
+import { StopWatch, flushLocalData } from "/js/components/util.js";
 import { fetchCurrentUser, fetchRaceDetails } from "/js/functions/fetch.js";
-import { flushLocalData } from "/js/components/util.js";
 
 customElements.define('stopwatch-panel', StopWatch);
 
@@ -17,14 +16,14 @@ const el = {
   welcomeMsg: document.querySelector('#welcome-msg'),
   homeBtn: document.querySelector('#home-button'),
   backBtn: document.querySelector('#back-button')
-}
+};
 
 el.title.textContent = `Record your lap times for the ${race.name}!`;
 el.welcomeMsg.textContent = `Good luck ${user.username}, remember to stay hydrated!`;
 
-el.homeBtn.addEventListener('click', flushLocalData);
-el.backBtn.addEventListener('click', flushLocalData);
-
 window.addEventListener('online', () => {
   stopwatch.submitLap();
 });
+
+el.homeBtn.addEventListener('click', flushLocalData);
+el.backBtn.addEventListener('click', flushLocalData);

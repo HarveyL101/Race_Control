@@ -20,11 +20,13 @@
       <div id="header-right">
         <a class="icon-buttons" title="Visit Homepage" href="/home"><img src="/imgs/home.png" alt="Home Button"></a>
         <a class="icon-buttons" title="Go Back" href="/home"><img src="/imgs/back_button.png" alt="Back Button"></a>
-        <a class="icon-buttons" title="View Account" href="./placeholder.html"><img src="/imgs/pfp.png" alt="Profile Picture"></a>
+        <a class="icon-buttons" title="View Account" href="/account"><img src="/imgs/pfp.png" alt="Profile Picture"></a>
       </div>
     </header>
 
     <div id="display-container">
+
+      <admin-panel id="admin-panel"></admin-panel>
 
       <div class="display-bubble" id="enter-race-bubble">
         <div class="bubble-header">
@@ -35,33 +37,42 @@
         </div>
         <div class="bubble-footer">
           <form id="change-password-form" action="/api/change-password">
+
+            <label class="form-label" for="username"><h3>Username</h3></label>
+            <input class="form-input" id="username" type="text" placeholder="Username" name="username">
+
             <label class="form-label" for="old-pword"><h3>Old Password</h3></label>
-            <input class="form-input" id="old-pword" type="text" placeholder="Old Password" name="old_password">
+            <input class="form-input" id="old-pword" type="password" placeholder="Old Password" name="old_password">
 
             <label class="form-label" for="new-pword"><h3>New Password</h3></label>
-            <input class="form-input" id="new-pword" type="text" placeholder="New Password" name="new_password">
+            <input class="form-input" id="new-pword" type="password" placeholder="New Password" name="new_password">
 
-            <button type="submit">Submit</button>
+            <button id="submit-button" type="button">Submit</button>
           </form>
         </div>
       </div>
 
-      <admin-portal></admin-portal>
+      
     </div>
   </body>
 
   <template id="admin-template">
     <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/account.css">
+    <link rel="stylesheet" href="/css/components/admin.css">
     
     <div class="display-bubble" id="admin-bubble">
-      <div class="display-header">
-        <h3 class="bubble-title">Admin database access here</h3>
+      <div class="bubble-header">
+        <h3 class="bubble-title"><b>Admin database access here</b></h3>
         <p>Please use this portal to query the database</p>
       </div>
-      <div class="bubble-content">
-        <input type="text">
-        <button type="submit">Run Query</button>
+      <div class="bubble-footer">
+        <div id="IO-container">
+          <textarea name="input" id="text-input" placeholder="Use this panel to query the database"></textarea>
+          <textarea name="output" id="text-output" placeholder="Relevant outputs will be displayed here!"></textarea>
+        </div>
+        <div id="submit-container">
+          <button type="button">Run Query</button>
+        </div>
       </div>
     </div>
   </template>

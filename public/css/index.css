@@ -122,8 +122,9 @@ p {
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 0 15px black;
-  width: 100%;
-  max-width: 400px;
+  width: 40%;
+  min-width: 220px;
+  max-width: 800px;
   gap: 1rem;
 }
 

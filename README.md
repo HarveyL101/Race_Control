@@ -5,12 +5,23 @@
 All assumptions of logic and/ or  physical race organisation will be mentioned here.
 
 * Assumption 1: 
-  * Each runner can at least access the internet at the beginning/ ending checkpoint.
+  * Each runner can at least access the internet at least twice before they leave the premises of the race (once to enter, once to submit all results).
 
 * Assumption 2:
+  * There will be at least one volunteer at each race to tell runners to exit the track upon being disqualified, and to announce the winner to all participants
 
-## Key features
-Replace this text with an introduction to your key features.
+* Assumption 3: 
+  * This volunteer can also access the internet at least once, in order to remove any anomalous lap recordings
+
+## Key features: 
+
+### Login/ Register Page
+  *  capable of both logging in/ registering through the use of interchanging custom HTML elements
+
+### Dashboard 
+  * This uses dynamic text, addressing the user with their username in common welcome messages
+
+
 
 
 ### Key Feature Name/Description.

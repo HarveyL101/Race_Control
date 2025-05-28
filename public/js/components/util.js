@@ -1,7 +1,7 @@
 export { NumberPad } from './timer/NumberPad.js';
 export { StopWatch } from './timer/StopWatch.js';
 export { Login } from './login/Login.js';
-export { Admin } from './account/admin.js'
+export { Admin } from './account/admin.js';
 
 export const sharedState = {
     time: 0,
@@ -35,4 +35,12 @@ export function loadState() {
     }
   } 
   console.log("retrieved sharedState values: \n", sharedState);
+}
+
+export function flushLocalData() {
+  confirm("Are you sure you want to do this? any unsaved local data will be lost.");
+
+  localStorage.clear();
+
+  return console.log("storage flushed!");
 }

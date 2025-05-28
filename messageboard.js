@@ -111,19 +111,23 @@ export async function getCurrentUser(req, res) {
     const user = await db.get(`
       SELECT 
         id,
-        username
-      FROM users
-      WHERE id= ?`, 
+        username,
+        is_admin
+      FROM 
+        users
+      WHERE 
+        id= ?`, 
       [userId]
     );
 
     if (!user) {
-      return res.statuts(404).json({ error: "User not found in database" });
+      return res.status(404).json({ error: "User not found in database" });
     }
 
     return res.json({ 
       id: user.id, 
-      username: user.username
+      username: user.username,
+      isAdmin: user.is_admin
     });
   } catch(error) {
     console.log("Failed to retrieve user details: ", error);
@@ -160,6 +164,49 @@ export async function getCurrentLap(req, res) {
   }
 }
 // }
+
+// Handler for '/api/change-password'
+
+export async function changePassword(req, res) {
+  const { username, old_password, new_password } = req.body;
+
+  if (!username || !old_password || !new_password) {
+    return res.status(400).json({ 
+      message: "Error 400: Missing required fields",
+      received: req.body
+    });
+  }
+
+  const result = await checkUser(req, res, username, old_password);
+
+  if (!result) {
+    return res.status(404).json({
+      message: "User details not found",
+      received: result
+    });
+  }
+
+  try {
+    await db.run(`
+      UPDATE 
+        users
+      SET 
+        password=?
+      WHERE
+        username=? AND password=?`,
+      [new_password, username, old_password]
+    ); 
+
+    return res.status(200).json({ message: "Password Updated Successfully" })
+  } catch (error) {
+    console.log("Could not update password");
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error
+    });
+  }
+}
 
 // Handlers for '/api/lap-results' endpoint
 // {
@@ -261,21 +308,6 @@ export async function postLapResults(req, res) {
 
 // LOGIN RELATED CODE
 // {
-export async function isAdmin(username) {
-  try { // checks if 'is_admin' === 1 or 0
-    const result = await db.get(`
-      SELECT is_admin
-      FROM users
-      WHERE username= ?`,
-      [username]
-  );
-
-    return result;
-  } catch (error) {
-    console.log("Error 500: Internal Server Error", error)
-    return res.status(500).send("Error 500: Internal Server Error", error);
-  }
-}
 
 async function getUser(username, password) {
   try {

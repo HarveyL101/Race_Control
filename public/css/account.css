@@ -46,19 +46,6 @@
     max-width: 200px;
 }
 
-.bubble-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border: solid lightgrey 1px;
-    border-radius: 1rem;
-    box-shadow: 0 0 15px black;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    gap: 1rem;
-    width: 75%;
-}
-
 .bubble-footer {
     width: 60%;
 }

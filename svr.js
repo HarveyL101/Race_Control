@@ -104,15 +104,6 @@ app.get('/timer', mb.htmlAuth, (req, res) => {
 });
 
 // }
-
-// Some admin handlers
-app.post('/admin/give-admin', (req, res) => {
-  if (!req.session.isAdmin) {
-    return res.status(403).send("Access denied, you cannot do this with your current priveledges");
-  }
-  // call giveAdmin() function (WIP)
-});
-
 // API handlers
 // {
 
@@ -134,6 +125,8 @@ app.get('/api/current-user', mb.getCurrentUser);
 
 // handlers for loading a selected race
 app.get('/api/load-race/:id', mb.apiAuth, mb.loadRace);
+
+app.post('/api/change-password', mb.apiAuth, mb.changePassword);
 
 // handlers for retrieving the current lap of a runner in a race
 app.get('/api/current-lap', mb.apiAuth, mb.getCurrentLap);

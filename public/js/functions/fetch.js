@@ -14,7 +14,8 @@ export async function fetchCurrentUser() {
 
       return {
         id: data.id,
-        username: data.username
+        username: data.username,
+        isAdmin: data.isAdmin
       };
     } catch (error) {
       console.error("Failed to fetch user details: ", error);
