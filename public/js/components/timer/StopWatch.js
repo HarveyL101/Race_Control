@@ -199,18 +199,40 @@ export class StopWatch extends HTMLElement {
     this.refresh();
   }
 
+  disqualifyUser(username) {
+    const inputFields = [this.startBtn, this.submitBtn, this.resetBtn];
+
+    inputFields.forEach(el => {
+      const newEl = el.cloneNode(true);
+      el.replaceWith(newEl);
+
+      newEl.value = 'disabled';
+    });
+
+    return alert(`
+      Sorry ${username}, but you have been disqualifed, please stand clear of the track/ other runners \n
+      Make sure to upload any stored lap results before you leave!
+    `);
+  }
+
   async submitLap() {
     const runner = await fetchCurrentUser();
     const race = await fetchRaceDetails(raceId);
+    const time = this.getCurrentTime();
     let currentLap = null;
 
+
+    if (time > race.interval) {
+      this.disqualifyUser(runner.username)
+    }
     if (runner && race) currentLap = await fetchCurrentLap(raceId, runner.id);
+
 
     const payload = {
       race_id: raceId,
       lap_number: currentLap || null,
       runner_id: runner?.id || null,
-      time: this.getCurrentTime()
+      time: time
     }
 
     
@@ -262,7 +284,7 @@ export class StopWatch extends HTMLElement {
       Some helpful information you may need :) \n
       1. Please make sure to submit any previously saved lap results before submitting fresh results.\n
       2. The button to the right of this icon will upload all of your laps currently stored offline (You will be told if a result is stored offline)\n
-      3. this is a placeholder\n
+      3. If you are disqualified, please safely exit the track and follow tip No. 2 to help us better record race results :)\n
     `);
   }
   

@@ -38,11 +38,9 @@ app.use(session({
 app.use(mb.showFileStream);
 
 // serves files from within the /public directory
-app.use(express.static(path.resolve(__dirname, 'views')));
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/imgs', express.static(path.join(__dirname, 'public/imgs')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
-app.use('/views', express.static(path.join(__dirname, 'public/views')));
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -93,14 +91,21 @@ app.get('/race-finder', mb.htmlAuth, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
-  res.sendFile(path.resolve(__dirname, 'views/race/race-finder.html'));
+  res.sendFile(path.resolve(__dirname, 'views/race-finder.html'));
+});
+
+app.get('/viewer', mb.htmlAuth, (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send("Unauthorised");
+  }
+  res.sendFile(path.resolve(__dirname, 'views/viewer.html'));
 });
 
 app.get('/timer', mb.htmlAuth, (req, res) => {
   if (!req.session.userId) {
     return res.status(401).send("Unauthorised");
   }
-  res.sendFile(path.resolve(__dirname, 'views/race/timer.html'));
+  res.sendFile(path.resolve(__dirname, 'views/timer.html'));
 });
 
 // }
@@ -115,7 +120,6 @@ app.get('/api/lap-results/:id', mb.apiAuth, mb.getLapResults);
 app.post('/api/lap-results', mb.apiAuth, mb.postLapResults);
 
 // handlers for the race-results displayed on the leaderboard
-app.get('/api/race-results', mb.apiAuth, mb.getRaceResults);
 app.post('/api/race-results', mb.apiAuth, mb.postRaceResults);
 // handlers for searching for a race in race-finder
 app.get('/api/find-race', mb.apiAuth, mb.searchRaces);
@@ -126,6 +130,9 @@ app.get('/api/current-user', mb.getCurrentUser);
 // handlers for loading a selected race
 app.get('/api/load-race/:id', mb.apiAuth, mb.loadRace);
 
+// handlers for the hidden admin portal in /account
+app.post('/api/query-database', mb.apiAuth, mb.queryDB);
+// handlers for changing a users password in /account
 app.post('/api/change-password', mb.apiAuth, mb.changePassword);
 
 // handlers for retrieving the current lap of a runner in a race

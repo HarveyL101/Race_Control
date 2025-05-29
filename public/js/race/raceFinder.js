@@ -34,8 +34,8 @@ export async function searchRaces() {
             <p><b>Lap Distance:</b> ${race.lap_distance}Km</p>
           </div>
           <div class="race-links">
-            <a class="card-button" href="timer.html?race_id=${race.id}"><button><b>Run This Race</b></button></a>
-            <a class="card-button" href="viewer.html?race_id=${race.id}"><button><b>Spectate This Race</b></button></a>
+            <a class="card-button" href="/timer?race_id=${race.id}"><button><b>Run This Race</b></button></a>
+            <a class="card-button" href="/viewer?race_id=${race.id}"><button><b>Spectate This Race</b></button></a>
           </div>
         </div>
       `;

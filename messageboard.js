@@ -165,6 +165,36 @@ export async function getCurrentLap(req, res) {
 }
 // }
 
+// Handler for '/api/query-database'
+export async function queryDB(req, res) {
+  const naughtyWords = ["delete", "drop", "alter"];
+
+  const { query } = req.body;
+  
+  if (!query) {
+    return res.status(400).json({ message: "Please enter your query" });
+  }
+
+  // blocks dangerous queries
+  const trimmed = String(query).trim().toLowerCase();
+  for (const entry of naughtyWords) {
+    if (trimmed.startsWith(entry)) {
+      return res.status(403).json({ message: `Queries containing '${entry}' are forbidden in this portal` });
+    }
+  }
+
+  try {
+    const result = await db.all(query);
+    console.log(result);
+    return res.json({ result });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Error running your query",
+      error: error.message
+    });
+  }
+}
+
 // Handler for '/api/change-password'
 
 export async function changePassword(req, res) {
@@ -275,12 +305,6 @@ export async function postLapResults(req, res) {
 
 // Handlers for '/api/race-results' endpoint
 // {
-  export async function getRaceResults(req, res) {
-    const stored = localStorage.getItem('raceResults');
-  
-    console.log("getRaceResults(): ", stored);
-  }
-  
   export async function postRaceResults(req, res) {
     const { race_id, runner_id, position, time } = req.body;
   
