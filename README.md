@@ -106,4 +106,26 @@ After implementing a check using the `.hasChildNodes()` method my problem was so
 
 I then discovered and read about the `.bind(this)` method required for this operation. After implementing this I had no issues with attaching listeners to my custom elements for the rest of the project.
 
+## Improvements
+In my opinion, the bulk of improvements from my initial prototype have been the robustness of logic in the program, as well as the UI and interactivity. 
+
+### Logic
+During its initial stages i put more emphasis on building the first 'skeleton' of this app, my reasoning for this is that often the first stages of a project are the most indecisive due to the vast number of paths starting from fresh. By doing this I was able to make a good start and spend my time focusing in on aspects that could be improved and strengthened.
+
+---
+### UI
+After completing most of the core functionality for this project, I then made a much greater effort to include those outside of the typical user. 
+
+Examples of this would be large 'card' style inputs for the user to navigate the app, which in theory would be helpful to someone in harsh weather conditions (thick gloves) or less able than the average person (poor eyesight/ visibility).
+
+I also made the effort to restrict certain features when a user may be prone to accidental input that would hamper their experience. This would include accidentally pressing submit, reset or stop while recording a lap which are conveniently hidden while the timer is active, and reappearing only when the runner has stopped their timer (which they would typically be stationary for).
+
+---
+## Conclusion
+The development of this app was an enjoyable experience from start to finish, and one that i plan on gradually updating with features I was not able to implement in this time frame (e.g. tiered security permissions such as `Admin->Volunteer->Runner`, barcode/ QR scanning for a better method of keeping track who has signed up to the race).
+
+I was also surprised at how unhelpful AI tools were in some specific instances during development, with the relevant documentation proving more than enough to handle use cases that were either not typical or only occurring under certain constraints.
+
+As a whole I am very thankful for this first experience with full stack development. Thank you very much Kirsten/Rich/Matt!
+
 ---
